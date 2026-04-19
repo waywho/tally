@@ -5,6 +5,16 @@ Rails.application.routes.draw do
 
   resource :settings, only: [:edit, :update], controller: "users"
 
+  resource :onboarding, only: [], controller: "onboarding" do
+    get :step1
+    get :step2
+    get :step3
+    patch :update_step1
+    patch :update_step2
+    patch :finish
+    post :skip
+  end
+
   mount Lookbook::Engine, at: "/lookbook" if Rails.env.development?
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
