@@ -1,0 +1,19 @@
+.text-center.mb-6
+  .flex.gap-1.5.justify-center
+    %span.block.w-2.h-2.rounded-full.bg-primary
+    %span.block.w-2.h-2.rounded-full.bg-border
+    %span.block.w-2.h-2.rounded-full.bg-border
+
+%h2.text-lg.font-semibold.text-text.text-center.mb-1 Welcome to Tally!
+%p.text-sm.text-text-secondary.text-center.mb-6 Let's set up your profile and nutrition goals.
+
+= form_with model: @user, url: onboarding_update_step1_path, method: :patch do |f|
+  .mb-4
+    = f.label :display_name, class: "label"
+    = f.text_field :display_name, class: "input", placeholder: "Your name"
+    %p.text-xs.text-text-secondary.mt-1 We picked a fun name for you — feel free to change it!
+
+  = render ButtonComponent.new(label: "Continue", tag: :button, type: "submit", class: "w-full")
+
+.mt-4.text-center
+  = button_to "Skip and use defaults", onboarding_skip_path, method: :post, class: "text-sm text-text-secondary hover:text-primary cursor-pointer bg-transparent border-0"

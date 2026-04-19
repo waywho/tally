@@ -1,0 +1,46 @@
+.text-center.mb-6
+  .flex.gap-1.5.justify-center
+    %span.block.w-2.h-2.rounded-full.bg-primary
+    %span.block.w-2.h-2.rounded-full.bg-primary
+    %span.block.w-2.h-2.rounded-full.bg-primary
+
+%h2.text-lg.font-semibold.text-text.text-center.mb-1 Macro Targets
+%p.text-sm.text-text-secondary.text-center.mb-6 Set your daily macro goals in grams.
+
+= form_with model: @user, url: onboarding_finish_path, method: :patch do |f|
+  -# Protein
+  .mb-5{"data-controller": "slider-sync"}
+    .flex.justify-between.items-center.mb-2
+      = f.label :protein_target, "Protein (g)", class: "label mb-0"
+      = f.number_field :protein_target, class: "w-16 text-center font-semibold border border-border rounded-md py-1 text-sm text-text", min: 0, max: 500, step: 5, "data-slider-sync-target": "number", "data-action": "input->slider-sync#syncFromNumber"
+    = f.range_field :protein_target, min: 0, max: 500, step: 5, class: "w-full accent-primary", "data-slider-sync-target": "slider", "data-action": "input->slider-sync#syncFromSlider"
+
+  -# Carbs
+  .mb-5{"data-controller": "slider-sync"}
+    .flex.justify-between.items-center.mb-2
+      = f.label :carbs_target, "Carbs (g)", class: "label mb-0"
+      = f.number_field :carbs_target, class: "w-16 text-center font-semibold border border-border rounded-md py-1 text-sm text-text", min: 0, max: 500, step: 5, "data-slider-sync-target": "number", "data-action": "input->slider-sync#syncFromNumber"
+    = f.range_field :carbs_target, min: 0, max: 500, step: 5, class: "w-full accent-primary", "data-slider-sync-target": "slider", "data-action": "input->slider-sync#syncFromSlider"
+
+  -# Fat
+  .mb-5{"data-controller": "slider-sync"}
+    .flex.justify-between.items-center.mb-2
+      = f.label :fat_target, "Fat (g)", class: "label mb-0"
+      = f.number_field :fat_target, class: "w-16 text-center font-semibold border border-border rounded-md py-1 text-sm text-text", min: 0, max: 500, step: 5, "data-slider-sync-target": "number", "data-action": "input->slider-sync#syncFromNumber"
+    = f.range_field :fat_target, min: 0, max: 500, step: 5, class: "w-full accent-primary", "data-slider-sync-target": "slider", "data-action": "input->slider-sync#syncFromSlider"
+
+  -# Fiber (additional health target)
+  .border-t.border-border.pt-4.mt-2.mb-5
+    %p.text-xs.text-text-secondary.uppercase.tracking-wide.mb-4 Additional health target
+    .mb-0{"data-controller": "slider-sync"}
+      .flex.justify-between.items-center.mb-2
+        = f.label :fiber_target, "Fiber (g)", class: "label mb-0"
+        = f.number_field :fiber_target, class: "w-16 text-center font-semibold border border-border rounded-md py-1 text-sm text-text", min: 0, max: 200, step: 5, "data-slider-sync-target": "number", "data-action": "input->slider-sync#syncFromNumber"
+      = f.range_field :fiber_target, min: 0, max: 200, step: 5, class: "w-full accent-primary", "data-slider-sync-target": "slider", "data-action": "input->slider-sync#syncFromSlider"
+
+  .flex.gap-3.mt-6
+    = link_to "Back", onboarding_step2_path, class: "flex-1 inline-flex items-center justify-center font-semibold rounded-md transition-colors cursor-pointer px-4 py-2.5 text-base bg-white text-primary border border-primary hover:bg-primary-tint text-center"
+    = render ButtonComponent.new(label: "Finish", tag: :button, type: "submit", class: "flex-1")
+
+.mt-4.text-center
+  = button_to "Skip and use defaults", onboarding_skip_path, method: :post, class: "text-sm text-text-secondary hover:text-primary cursor-pointer bg-transparent border-0"
