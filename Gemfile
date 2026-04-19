@@ -97,6 +97,9 @@ group :test do
 
   # Stub HTTP requests in tests [https://github.com/bblimke/webmock]
   gem "webmock"
+
+  # Minitest mock support (extracted from minitest 6.0) [https://github.com/minitest/minitest-mock]
+  gem "minitest-mock"
 end
 # Enables Sequel to use Active Record's database connection
 gem "sequel-activerecord_connection", "~> 2.0", require: false
