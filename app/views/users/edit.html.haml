@@ -1,0 +1,82 @@
+- @page_title = "Settings"
+
+= form_with model: @user, url: settings_path, method: :patch do |f|
+  -# Profile section
+  = render CardComponent.new(class: "p-6 mb-6") do
+    %h2.text-lg.font-semibold.text-text.mb-4 Profile
+    .mb-4
+      = f.label :display_name, class: "label"
+      = f.text_field :display_name, class: "input", placeholder: "Your name"
+      - if @user.errors[:display_name].any?
+        %p.field-error= @user.errors[:display_name].first
+
+  -# Nutrition Targets section
+  = render CardComponent.new(class: "p-6 mb-6") do
+    %h2.text-lg.font-semibold.text-text.mb-4 Nutrition Targets
+    .mb-4
+      = f.label :daily_calorie_target, "Daily calorie target", class: "label"
+      = f.number_field :daily_calorie_target, class: "input", min: 1, max: 10000, step: 1
+      - if @user.errors[:daily_calorie_target].any?
+        %p.field-error= @user.errors[:daily_calorie_target].first
+    .grid.grid-cols-2.gap-4
+      .mb-4
+        = f.label :protein_target, "Protein (g)", class: "label"
+        = f.number_field :protein_target, class: "input", min: 0, max: 1000, step: 1
+        - if @user.errors[:protein_target].any?
+          %p.field-error= @user.errors[:protein_target].first
+      .mb-4
+        = f.label :carbs_target, "Carbs (g)", class: "label"
+        = f.number_field :carbs_target, class: "input", min: 0, max: 1000, step: 1
+        - if @user.errors[:carbs_target].any?
+          %p.field-error= @user.errors[:carbs_target].first
+      .mb-4
+        = f.label :fat_target, "Fat (g)", class: "label"
+        = f.number_field :fat_target, class: "input", min: 0, max: 1000, step: 1
+        - if @user.errors[:fat_target].any?
+          %p.field-error= @user.errors[:fat_target].first
+      .mb-4
+        = f.label :fiber_target, "Fiber (g)", class: "label"
+        = f.number_field :fiber_target, class: "input", min: 0, max: 1000, step: 1
+        - if @user.errors[:fiber_target].any?
+          %p.field-error= @user.errors[:fiber_target].first
+
+  -# Preferences section
+  = render CardComponent.new(class: "p-6 mb-6") do
+    %h2.text-lg.font-semibold.text-text.mb-4 Preferences
+    .mb-4
+      = f.label :timezone, class: "label"
+      = f.time_zone_select :timezone, nil, {}, class: "input"
+      - if @user.errors[:timezone].any?
+        %p.field-error= @user.errors[:timezone].first
+    .mb-4
+      = f.label :unit_preference, "Units", class: "label"
+      .flex.gap-4.mt-1
+        %label.flex.items-center.gap-2.text-sm.text-text.cursor-pointer
+          = f.radio_button :unit_preference, "metric", class: "accent-primary"
+          Metric
+        %label.flex.items-center.gap-2.text-sm.text-text.cursor-pointer
+          = f.radio_button :unit_preference, "imperial", class: "accent-primary"
+          Imperial
+    .mb-4
+      = f.label :country, class: "label"
+      = f.select :country, ISO3166::Country.all.sort_by(&:common_name).map { |c| [c.common_name, c.alpha2] }, { include_blank: "Select a country" }, class: "input"
+      - if @user.errors[:country].any?
+        %p.field-error= @user.errors[:country].first
+    .mb-4
+      = f.label :language, class: "label"
+      = f.select :language, I18n.available_locales.map { |l| [l.to_s.upcase, l.to_s] }, {}, class: "input"
+      - if @user.errors[:language].any?
+        %p.field-error= @user.errors[:language].first
+
+  -# Submit
+  .mb-6
+    = render ButtonComponent.new(label: "Save settings", tag: :button, type: "submit", class: "w-full")
+
+  -# Account section
+  = render CardComponent.new(class: "p-6") do
+    %h2.text-lg.font-semibold.text-text.mb-4 Account
+    .space-y-3
+      %p.text-sm
+        %a.text-primary.font-medium{href: rodauth.change_login_path} Change email
+      %p.text-sm
+        %a.text-primary.font-medium{href: rodauth.change_password_path} Change password
