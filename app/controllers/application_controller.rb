@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def require_authentication
+    rodauth.require_authentication
+  end
+
   def current_user
     @current_user ||= current_account&.user
   end

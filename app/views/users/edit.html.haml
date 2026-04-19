@@ -72,11 +72,11 @@
   .mb-6
     = render ButtonComponent.new(label: "Save settings", tag: :button, type: "submit", class: "w-full")
 
-  -# Account section
-  = render CardComponent.new(class: "p-6") do
-    %h2.text-lg.font-semibold.text-text.mb-4 Account
-    .space-y-3
-      %p.text-sm
-        %a.text-primary.font-medium{href: rodauth.change_login_path} Change email
-      %p.text-sm
-        %a.text-primary.font-medium{href: rodauth.change_password_path} Change password
+-# Account section (outside the form — these are navigation links, not form fields)
+= render CardComponent.new(class: "p-6") do
+  %h2.text-lg.font-semibold.text-text.mb-4 Account
+  .space-y-3
+    %p.text-sm
+      %a.text-primary.font-medium{href: rodauth.change_login_path} Change email
+    %p.text-sm
+      %a.text-primary.font-medium{href: rodauth.change_password_path} Change password

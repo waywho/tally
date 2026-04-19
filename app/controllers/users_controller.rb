@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action { rodauth.require_authentication }
+  before_action :require_authentication
 
   def edit
     @user = current_user
