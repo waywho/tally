@@ -57,6 +57,9 @@ gem "countries"
 # HTTP client for external API calls [https://github.com/rest-client/rest-client]
 gem "rest-client"
 
+# Open Food Facts API client [https://github.com/openfoodfacts/openfoodfacts-ruby]
+gem "openfoodfacts"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
