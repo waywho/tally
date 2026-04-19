@@ -4,19 +4,17 @@
     %p.text-sm.mt-1 Try a different search term
 
 - @results.each do |result|
-  - name = result.is_a?(Food) ? result.name : result.name
-  - brand = result.is_a?(Food) ? result.brand : result.brand
-  - calories = result.is_a?(Food) ? result.calories.to_f : result.calories
-  - protein = result.is_a?(Food) ? result.protein.to_f : result.protein
-  - carbs = result.is_a?(Food) ? result.carbs.to_f : result.carbs
-  - fat = result.is_a?(Food) ? result.fat.to_f : result.fat
-  - fiber = result.is_a?(Food) ? result.fiber.to_f : result.fiber
-  - source = result.is_a?(Food) ? result.source : "usda"
+  - calories = result.calories.to_f
+  - protein = result.protein.to_f
+  - carbs = result.carbs.to_f
+  - fat = result.fat.to_f
+  - fiber = result.fiber.to_f
+  - source = result.respond_to?(:source) ? result.source : "usda"
 
   %div.border-b.border-border.py-3{ data: { food_result: true } }
     .flex.justify-between.items-start
       .min-w-0.flex-1.mr-3
-        %p.font-medium.text-text.truncate= name
+        %p.font-medium.text-text.truncate= result.name
         %p.text-sm.text-text-secondary{ class: "mt-0.5" }
           - case source
           - when "usda"
@@ -25,8 +23,8 @@
             %span.inline-block.text-xs.font-medium.rounded{ class: "px-1.5 py-0.5", style: "background: #FEF3C7; color: #D97706;" } OFF
           - when "user"
             %span.inline-block.text-xs.font-medium.rounded{ class: "px-1.5 py-0.5", style: "background: #EDE9FE; color: #7C3AED;" } You
-          - if brand.present?
-            = brand
+          - if result.brand.present?
+            = result.brand
       .text-right.whitespace-nowrap
         %p.font-semibold.text-text= "#{calories.round} kcal"
     .flex.flex-wrap.gap-2.text-xs.text-text-secondary{ class: "mt-1.5" }

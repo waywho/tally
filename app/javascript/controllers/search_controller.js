@@ -16,7 +16,7 @@ export default class extends Controller {
     clearTimeout(this.timeout)
 
     const query = this.inputTarget.value.trim()
-    if (query.length < 3) return
+    if (query.length < 3 && query.length > 0) return
 
     this.timeout = setTimeout(() => {
       this.formTarget.requestSubmit()

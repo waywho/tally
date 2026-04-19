@@ -18,7 +18,7 @@ class Food < ApplicationRecord
 
     where("searchable @@ plainto_tsquery('english', ?)", query)
       .or(where("name ILIKE ?", "%#{sanitize_sql_like(query)}%"))
-      .order(Arel.sql("ts_rank(searchable, plainto_tsquery('english', #{connection.quote(query)})) DESC"))
+      .order(Arel.sql("ts_rank(searchable, plainto_tsquery('english', #{connection.quote(query)})) DESC"), :name)
       .limit(limit)
   end
 
