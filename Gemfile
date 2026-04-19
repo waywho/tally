@@ -76,6 +76,9 @@ group :development do
   gem "lookbook"
   gem "listen"
   gem "actioncable"
+
+  # Preview emails in the browser [https://github.com/ryanb/letter_opener]
+  gem "letter_opener"
 end
 
 group :test do
