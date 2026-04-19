@@ -10,6 +10,10 @@ bin/rails generate view_component:component NameComponent attr1 attr2 --sidecar 
 
 Do not create component files manually from scratch.
 
+## Controllers
+
+Always use conventional CRUD actions (`index`, `show`, `new`, `create`, `edit`, `update`, `destroy`) as much as possible. Avoid custom action names when the behavior maps to a standard REST action.
+
 ## Commits
 
 Always commit after completing each task. Do not batch multiple tasks into a single commit.
