@@ -9,3 +9,7 @@ bin/rails generate view_component:component NameComponent attr1 attr2 --sidecar 
 ```
 
 Do not create component files manually from scratch.
+
+## Commits
+
+Always commit after completing each task. Do not batch multiple tasks into a single commit.
