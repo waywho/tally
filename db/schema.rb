@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_19_110402) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_19_131718) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -46,8 +46,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_19_110402) do
     t.check_constraint "email ~ '^[^,;@ \r\n]+@[^,@; \r\n]+.[^,@; \r\n]+$'::citext", name: "valid_email"
   end
 
+  create_table "users", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.integer "carbs_target", default: 250, null: false
+    t.string "country"
+    t.datetime "created_at", null: false
+    t.integer "daily_calorie_target", default: 2000, null: false
+    t.string "display_name", default: "", null: false
+    t.integer "fat_target", default: 65, null: false
+    t.integer "fiber_target", default: 30, null: false
+    t.string "language", default: "en", null: false
+    t.integer "protein_target", default: 50, null: false
+    t.string "timezone", default: "UTC", null: false
+    t.integer "unit_preference", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_users_on_account_id", unique: true
+  end
+
   add_foreign_key "account_login_change_keys", "accounts", column: "id"
   add_foreign_key "account_password_reset_keys", "accounts", column: "id"
   add_foreign_key "account_remember_keys", "accounts", column: "id"
   add_foreign_key "account_verification_keys", "accounts", column: "id"
+  add_foreign_key "users", "accounts", on_delete: :cascade
 end
