@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_19_131718) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_19_164541) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -56,6 +56,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_19_131718) do
     t.integer "fat_target", default: 65, null: false
     t.integer "fiber_target", default: 30, null: false
     t.string "language", default: "en", null: false
+    t.datetime "onboarded_at"
     t.integer "protein_target", default: 50, null: false
     t.string "timezone", default: "UTC", null: false
     t.integer "unit_preference", default: 0, null: false
