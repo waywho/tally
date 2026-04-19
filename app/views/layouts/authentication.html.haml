@@ -12,9 +12,6 @@
     .min-h-screen.flex.flex-col.items-center.justify-center.px-4.py-8
       .mb-6.text-center
         %h1.text-2xl.font-bold.text-primary Tally
-      .w-full.max-w-sm
-        - if notice
-          .mb-4.p-3.bg-primary-tint.text-primary.text-sm.rounded-md= notice
-        - if alert
-          .mb-4.p-3.bg-red-50.text-over.text-sm.rounded-md= alert
+      .w-full.max-w-sm.relative
+        = render FlashComponent.new(notice:, alert:)
         = yield
