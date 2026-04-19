@@ -87,7 +87,7 @@ class RodauthMain < Rodauth::Rails::Auth
     # flash_error_key :error # default is :alert
 
     # Override default flash messages.
-    # create_account_notice_flash "Your account has been created. Please verify your account by visiting the confirmation link sent to your email address."
+    create_account_notice_flash "Your account has been created. Please check your email to verify your account."
     # require_login_error_flash "Login is required for accessing this page"
     # login_notice_flash nil
 
@@ -142,6 +142,9 @@ class RodauthMain < Rodauth::Rails::Auth
     # end
 
     # ==> Redirects
+    # After account creation, show the "check your email" page.
+    create_account_redirect { verify_account_resend_path }
+
     # Redirect to home page after logout.
     logout_redirect "/"
 
