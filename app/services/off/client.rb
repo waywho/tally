@@ -3,7 +3,7 @@ require_relative "error"
 module Off
   class Client
     def search(query, page: 1, per_page: 20)
-      results = Openfoodfacts::Product.search(query, locale: "world", page_size: per_page)
+      results = Openfoodfacts::Product.search(query, locale: "world", page_size: per_page, page: page)
 
       (results || []).map { |product| build_result(product) }
     rescue Off::Error

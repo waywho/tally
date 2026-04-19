@@ -137,6 +137,7 @@ class Off::ClientTest < ActiveSupport::TestCase
       assert_equal 0.0, food.fiber.to_f
       assert_equal 15.0, food.serving_size.to_f
       assert_equal "15 g", food.serving_label
+      assert_in_delta Time.current, food.verified_at, 2
     end
   end
 
