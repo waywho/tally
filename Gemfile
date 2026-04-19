@@ -42,6 +42,12 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "image_processing", "~> 1.2"
 
+# Auth via Rodauth [https://github.com/janko/rodauth-rails]
+gem "rodauth-rails"
+
+# Encapsulated view components [https://viewcomponent.org/]
+gem "view_component"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -54,6 +60,9 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # Test factories [https://github.com/thoughtbot/factory_bot_rails]
+  gem "factory_bot_rails"
 end
 
 group :development do
@@ -66,3 +75,9 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+# Enables Sequel to use Active Record's database connection
+gem "sequel-activerecord_connection", "~> 2.0", require: false
+# Used by Rodauth for password hashing
+gem "bcrypt", "~> 3.1", require: false
+# Used by Rodauth for rendering built-in view and email templates
+gem "tilt", "~> 2.4", require: false
