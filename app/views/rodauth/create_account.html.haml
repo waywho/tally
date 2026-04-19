@@ -1,0 +1,17 @@
+= render CardComponent.new(class: "p-6") do
+  %h2.text-lg.font-semibold.text-text.mb-4= @page_title
+  = form_tag rodauth.create_account_path, method: :post do
+    .mb-4
+      %label.label{for: "email"}= rodauth.login_label
+      %input.input{type: "email", name: "email", id: "email", value: param_or_nil("email"), autofocus: true, autocomplete: "email"}
+    .mb-4
+      %label.label{for: "password"}= rodauth.password_label
+      %input.input{type: "password", name: "password", id: "password", autocomplete: "new-password"}
+    .mb-4
+      %label.label{for: "password-confirm"}= rodauth.password_confirm_label
+      %input.input{type: "password", name: "password-confirm", id: "password-confirm", autocomplete: "new-password"}
+    = render ButtonComponent.new(label: rodauth.create_account_button, tag: :button, type: "submit", class: "w-full")
+.mt-4.text-center.text-sm
+  %p
+    Already have an account?
+    %a.text-primary.font-medium{href: rodauth.login_path} Log in

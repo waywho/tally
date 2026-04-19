@@ -1,0 +1,5 @@
+= render CardComponent.new(class: "p-6") do
+  %h2.text-lg.font-semibold.text-text.mb-4= @page_title
+  = form_tag rodauth.verify_account_path, method: :post do
+    = hidden_field_tag "key", params[:key]
+    = render ButtonComponent.new(label: rodauth.verify_account_button, tag: :button, type: "submit", class: "w-full")
