@@ -1,0 +1,20 @@
+!!!
+%html
+  %head
+    %title= @page_title || "Tally"
+    %meta{name: "viewport", content: "width=device-width,initial-scale=1"}/
+    %meta{name: "apple-mobile-web-app-capable", content: "yes"}/
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag :app, "data-turbo-track": "reload"
+    = javascript_importmap_tags
+  %body.bg-bg-page.text-text.font-sans.antialiased
+    .min-h-screen.flex.flex-col.items-center.justify-center.px-4.py-8
+      .mb-6.text-center
+        %h1.text-2xl.font-bold.text-primary Tally
+      .w-full.max-w-sm
+        - if notice
+          .mb-4.p-3.bg-primary-tint.text-primary.text-sm.rounded-md= notice
+        - if alert
+          .mb-4.p-3.bg-red-50.text-over.text-sm.rounded-md= alert
+        = yield
