@@ -132,4 +132,28 @@ class UserTest < ActiveSupport::TestCase
     user = build(:user, unit_preference: :imperial)
     assert user.imperial?
   end
+
+  # Fun name generator
+  test "generate_fun_name returns an Adjective Animal string" do
+    name = User.generate_fun_name
+    assert_match(/\A\w+ \w+\z/, name)
+  end
+
+  test "generate_fun_name only uses allowed animals" do
+    allowed = User::FUN_NAME_ANIMALS
+    50.times do
+      name = User.generate_fun_name
+      animal = name.split(" ").last
+      assert_includes allowed, animal, "#{animal} is not in the allowed animals list"
+    end
+  end
+
+  test "generate_fun_name only uses positive adjectives" do
+    allowed = User::FUN_NAME_ADJECTIVES
+    50.times do
+      name = User.generate_fun_name
+      adjective = name.split(" ").first
+      assert_includes allowed, adjective, "#{adjective} is not in the allowed adjectives list"
+    end
+  end
 end

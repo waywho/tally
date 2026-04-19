@@ -23,6 +23,6 @@ class UserCreationTest < ActionDispatch::IntegrationTest
     assert user.metric?
     assert_equal "en", user.language
     assert_nil user.country
-    assert_equal "", user.display_name
+    assert_match(/\A\w+ \w+\z/, user.display_name)
   end
 end

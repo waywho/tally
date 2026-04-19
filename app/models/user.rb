@@ -3,6 +3,20 @@ class User < ApplicationRecord
 
   enum :unit_preference, { metric: 0, imperial: 1 }, default: :metric
 
+  FUN_NAME_ADJECTIVES = %w[
+    Happy Brave Sunny Cheerful Mighty Radiant Gentle Bold Bright Lively
+    Jolly Swift Calm Kind Merry Keen Wise Noble Spirited Zesty
+  ].freeze
+
+  FUN_NAME_ANIMALS = %w[
+    Otter Fox Panda Owl Dolphin Rabbit Koala Penguin Falcon Hedgehog
+    Deer Squirrel Robin Butterfly Hummingbird Lynx Seal Crane Gecko Sparrow
+  ].freeze
+
+  def self.generate_fun_name
+    "#{FUN_NAME_ADJECTIVES.sample} #{FUN_NAME_ANIMALS.sample}"
+  end
+
   validates :daily_calorie_target, presence: true,
     numericality: { only_integer: true, in: 1..10_000 }
   validates :protein_target, :carbs_target, :fat_target, :fiber_target,
