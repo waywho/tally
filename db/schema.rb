@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_19_164541) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_19_180609) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
+  enable_extension "pg_trgm"
 
   create_table "account_login_change_keys", force: :cascade do |t|
     t.datetime "deadline", null: false
@@ -46,6 +47,31 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_19_164541) do
     t.check_constraint "email ~ '^[^,;@ \r\n]+@[^,@; \r\n]+.[^,@; \r\n]+$'::citext", name: "valid_email"
   end
 
+  create_table "foods", force: :cascade do |t|
+    t.string "barcode"
+    t.string "brand"
+    t.decimal "calories", precision: 8, scale: 2, null: false
+    t.decimal "carbs", precision: 8, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.bigint "creator_id"
+    t.string "external_id"
+    t.decimal "fat", precision: 8, scale: 2, null: false
+    t.decimal "fiber", precision: 8, scale: 2, default: "0.0", null: false
+    t.string "name", limit: 255, null: false
+    t.decimal "protein", precision: 8, scale: 2, null: false
+    t.virtual "searchable", type: :tsvector, as: "to_tsvector('english'::regconfig, (((COALESCE(name, ''::character varying))::text || ' '::text) || (COALESCE(brand, ''::character varying))::text))", stored: true
+    t.string "serving_label"
+    t.decimal "serving_size", precision: 8, scale: 2
+    t.integer "source", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "verified_at"
+    t.index ["barcode"], name: "index_foods_on_barcode"
+    t.index ["creator_id"], name: "index_foods_on_creator_id"
+    t.index ["name"], name: "index_foods_on_name_trigram", opclass: :gin_trgm_ops, using: :gin
+    t.index ["searchable"], name: "index_foods_on_searchable", using: :gin
+    t.index ["source", "external_id"], name: "index_foods_on_source_and_external_id", unique: true, where: "(external_id IS NOT NULL)"
+  end
+
   create_table "users", force: :cascade do |t|
     t.bigint "account_id", null: false
     t.integer "carbs_target", default: 250, null: false
@@ -68,5 +94,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_19_164541) do
   add_foreign_key "account_password_reset_keys", "accounts", column: "id"
   add_foreign_key "account_remember_keys", "accounts", column: "id"
   add_foreign_key "account_verification_keys", "accounts", column: "id"
+  add_foreign_key "foods", "users", column: "creator_id", on_delete: :cascade
   add_foreign_key "users", "accounts", on_delete: :cascade
 end
