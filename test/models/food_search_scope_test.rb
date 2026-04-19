@@ -10,8 +10,36 @@ class FoodSearchScopeTest < ActiveSupport::TestCase
   test "search finds foods by name using full-text search" do
     results = Food.search("chicken")
     assert_includes results, @chicken
-    assert_includes results, @chicken_stir
+    assert_not_includes results, @chicken_stir
     assert_not_includes results, @pasta
+  end
+
+  test "search with user includes that user's custom foods" do
+    user = create(:user)
+    custom = create(:food, name: "Chicken custom", source: :user, external_id: nil, creator: user)
+
+    results = Food.search("chicken", user: user)
+
+    assert_includes results, custom
+    assert_includes results, @chicken
+  end
+
+  test "search with user excludes other users' custom foods" do
+    other_user = create(:user)
+    other_custom = create(:food, name: "Chicken other", source: :user, external_id: nil, creator: other_user)
+
+    user = create(:user)
+    results = Food.search("chicken", user: user)
+
+    assert_not_includes results, other_custom
+    assert_includes results, @chicken
+  end
+
+  test "search without user excludes all user-created foods" do
+    results = Food.search("chicken")
+
+    assert_includes results, @chicken
+    assert_not_includes results, @chicken_stir
   end
 
   test "search finds foods by brand" do

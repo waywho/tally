@@ -13,11 +13,19 @@ class Food < ApplicationRecord
   validates :external_id, uniqueness: { scope: :source }, allow_nil: true
   validate :creator_required_for_user_source
 
-  def self.search(query, limit: 20)
+  def self.search(query, limit: 20, user: nil)
     return none if query.blank?
 
-    where("searchable @@ plainto_tsquery('english', ?)", query)
+    scope = where("searchable @@ plainto_tsquery('english', ?)", query)
       .or(where("name ILIKE ?", "%#{sanitize_sql_like(query)}%"))
+
+    if user
+      scope = scope.where.not(source: :user).or(scope.where(source: :user, creator_id: user.id))
+    else
+      scope = scope.where.not(source: :user)
+    end
+
+    scope
       .order(Arel.sql("ts_rank(searchable, plainto_tsquery('english', #{connection.quote(query)})) DESC"), :name)
       .limit(limit)
   end
