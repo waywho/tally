@@ -51,6 +51,9 @@ gem "rodauth-rails"
 # Encapsulated view components [https://viewcomponent.org/]
 gem "view_component"
 
+# ISO 3166 country data [https://github.com/countries/countries]
+gem "countries"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
