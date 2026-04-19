@@ -7,61 +7,61 @@ class OnboardingControllerTest < ActionDispatch::IntegrationTest
   end
 
   # Authentication
-  test "step1 redirects when not authenticated" do
-    get step1_onboarding_path
+  test "show redirects when not authenticated" do
+    get onboarding_step_path(:step1)
     assert_response :redirect
   end
 
   # Rendering steps
-  test "step1 renders when not onboarded" do
+  test "show step1 renders when not onboarded" do
     login(@account)
-    get step1_onboarding_path
+    get onboarding_step_path(:step1)
     assert_response :success
     assert_select "h2", "Welcome to Tally!"
   end
 
-  test "step2 renders when not onboarded" do
+  test "show step2 renders when not onboarded" do
     login(@account)
-    get step2_onboarding_path
+    get onboarding_step_path(:step2)
     assert_response :success
     assert_select "h2", "Daily Calorie Target"
   end
 
-  test "step3 renders when not onboarded" do
+  test "show step3 renders when not onboarded" do
     login(@account)
-    get step3_onboarding_path
+    get onboarding_step_path(:step3)
     assert_response :success
     assert_select "h2", "Macro Targets"
   end
 
   # Redirect if already onboarded
-  test "step1 redirects to root when already onboarded" do
+  test "show redirects to root when already onboarded" do
     @user.update!(onboarded_at: Time.current)
     login(@account)
-    get step1_onboarding_path
+    get onboarding_step_path(:step1)
     assert_redirected_to root_path
   end
 
-  # update_step1
-  test "update_step1 saves display name and redirects to step2" do
+  # update step1
+  test "update step1 saves display name and redirects to step2" do
     login(@account)
-    patch update_step1_onboarding_path, params: { user: { display_name: "New Name" } }
-    assert_redirected_to step2_onboarding_path
+    patch update_onboarding_step_path(:step1), params: { user: { display_name: "New Name" } }
+    assert_redirected_to onboarding_step_path(:step2)
     assert_equal "New Name", @user.reload.display_name
   end
 
-  # update_step2
-  test "update_step2 saves calorie target and redirects to step3" do
+  # update step2
+  test "update step2 saves calorie target and redirects to step3" do
     login(@account)
-    patch update_step2_onboarding_path, params: { user: { daily_calorie_target: 1800 } }
-    assert_redirected_to step3_onboarding_path
+    patch update_onboarding_step_path(:step2), params: { user: { daily_calorie_target: 1800 } }
+    assert_redirected_to onboarding_step_path(:step3)
     assert_equal 1800, @user.reload.daily_calorie_target
   end
 
-  # finish
-  test "finish saves macros and onboarded_at and redirects to root" do
+  # update step3 (finish)
+  test "update step3 saves macros and onboarded_at and redirects to root" do
     login(@account)
-    patch finish_onboarding_path, params: {
+    patch update_onboarding_step_path(:step3), params: {
       user: {
         protein_target: 60,
         carbs_target: 200,

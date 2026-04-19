@@ -7,7 +7,7 @@
 %h2.text-lg.font-semibold.text-text.text-center.mb-1 Welcome to Tally!
 %p.text-sm.text-text-secondary.text-center.mb-6 Let's set up your profile and nutrition goals.
 
-= form_with model: @user, url: update_step1_onboarding_path, method: :patch do |f|
+= form_with model: @user, url: update_onboarding_step_path(:step1), method: :patch do |f|
   .mb-4
     = f.label :display_name, class: "label"
     = f.text_field :display_name, class: "input", placeholder: "Your name"

@@ -7,7 +7,7 @@ class OnboardingRedirectTest < ActionDispatch::IntegrationTest
     login(account)
 
     get edit_settings_path
-    assert_redirected_to step1_onboarding_path
+    assert_redirected_to onboarding_step_path(:step1)
   end
 
   test "authenticated user with onboarded_at is not redirected" do
@@ -31,18 +31,18 @@ class OnboardingRedirectTest < ActionDispatch::IntegrationTest
 
     # Should be redirected to onboarding from settings
     get edit_settings_path
-    assert_redirected_to step1_onboarding_path
+    assert_redirected_to onboarding_step_path(:step1)
 
     # Complete step 1
-    patch update_step1_onboarding_path, params: { user: { display_name: "Test" } }
-    assert_redirected_to step2_onboarding_path
+    patch update_onboarding_step_path(:step1), params: { user: { display_name: "Test" } }
+    assert_redirected_to onboarding_step_path(:step2)
 
     # Complete step 2
-    patch update_step2_onboarding_path, params: { user: { daily_calorie_target: 2000 } }
-    assert_redirected_to step3_onboarding_path
+    patch update_onboarding_step_path(:step2), params: { user: { daily_calorie_target: 2000 } }
+    assert_redirected_to onboarding_step_path(:step3)
 
     # Complete step 3
-    patch finish_onboarding_path, params: {
+    patch update_onboarding_step_path(:step3), params: {
       user: { protein_target: 50, carbs_target: 250, fat_target: 65, fiber_target: 30 }
     }
     assert_redirected_to root_path

@@ -7,7 +7,7 @@
 %h2.text-lg.font-semibold.text-text.text-center.mb-1 Daily Calorie Target
 %p.text-sm.text-text-secondary.text-center.mb-6 How many calories are you aiming for each day?
 
-= form_with model: @user, url: update_step2_onboarding_path, method: :patch do |f|
+= form_with model: @user, url: update_onboarding_step_path(:step2), method: :patch do |f|
   .mb-6{"data-controller": "slider-sync"}
     .flex.justify-between.items-center.mb-2
       = f.label :daily_calorie_target, "Calories", class: "label mb-0"
@@ -18,7 +18,7 @@
       %span 5,000
 
   .flex.gap-3
-    = link_to "Back", step1_onboarding_path, class: "flex-1 inline-flex items-center justify-center font-semibold rounded-md transition-colors cursor-pointer px-4 py-2.5 text-base bg-white text-primary border border-primary hover:bg-primary-tint text-center"
+    = link_to "Back", onboarding_step_path(:step1), class: "flex-1 inline-flex items-center justify-center font-semibold rounded-md transition-colors cursor-pointer px-4 py-2.5 text-base bg-white text-primary border border-primary hover:bg-primary-tint text-center"
     = render ButtonComponent.new(label: "Continue", tag: :button, type: "submit", class: "flex-1")
 
 .mt-4.text-center
