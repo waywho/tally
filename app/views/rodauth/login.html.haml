@@ -3,7 +3,7 @@
   = form_tag rodauth.login_path, method: :post do
     .mb-4
       %label.label{for: "email"}= rodauth.login_label
-      %input.input{type: "email", name: "email", id: "email", value: param_or_nil("email"), autofocus: true, autocomplete: "email"}
+      %input.input{type: "email", name: "email", id: "email", value: rodauth.param_or_nil("email"), autofocus: true, autocomplete: "email"}
     .mb-4
       %label.label{for: "password"}= rodauth.password_label
       %input.input{type: "password", name: "password", id: "password", autocomplete: "current-password"}
