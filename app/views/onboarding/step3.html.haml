@@ -7,7 +7,7 @@
 %h2.text-lg.font-semibold.text-text.text-center.mb-1 Macro Targets
 %p.text-sm.text-text-secondary.text-center.mb-6 Set your daily macro goals in grams.
 
-= form_with model: @user, url: onboarding_finish_path, method: :patch do |f|
+= form_with model: @user, url: finish_onboarding_path, method: :patch do |f|
   -# Protein
   .mb-5{"data-controller": "slider-sync"}
     .flex.justify-between.items-center.mb-2
@@ -39,8 +39,8 @@
       = f.range_field :fiber_target, min: 0, max: 200, step: 5, class: "w-full accent-primary", "data-slider-sync-target": "slider", "data-action": "input->slider-sync#syncFromSlider"
 
   .flex.gap-3.mt-6
-    = link_to "Back", onboarding_step2_path, class: "flex-1 inline-flex items-center justify-center font-semibold rounded-md transition-colors cursor-pointer px-4 py-2.5 text-base bg-white text-primary border border-primary hover:bg-primary-tint text-center"
+    = link_to "Back", step2_onboarding_path, class: "flex-1 inline-flex items-center justify-center font-semibold rounded-md transition-colors cursor-pointer px-4 py-2.5 text-base bg-white text-primary border border-primary hover:bg-primary-tint text-center"
     = render ButtonComponent.new(label: "Finish", tag: :button, type: "submit", class: "flex-1")
 
 .mt-4.text-center
-  = button_to "Skip and use defaults", onboarding_skip_path, method: :post, class: "text-sm text-text-secondary hover:text-primary cursor-pointer bg-transparent border-0"
+  = button_to "Skip and use defaults", skip_onboarding_path, method: :post, class: "text-sm text-text-secondary hover:text-primary cursor-pointer bg-transparent border-0"

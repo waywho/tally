@@ -19,12 +19,12 @@ class OnboardingController < ApplicationController
 
   def update_step1
     current_user.update!(display_name: params[:user][:display_name])
-    redirect_to onboarding_step2_path
+    redirect_to step2_onboarding_path
   end
 
   def update_step2
     current_user.update!(daily_calorie_target: params[:user][:daily_calorie_target])
-    redirect_to onboarding_step3_path
+    redirect_to step3_onboarding_path
   end
 
   def finish
