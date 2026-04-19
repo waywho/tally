@@ -21,7 +21,7 @@ FactoryBot.define do
     trait :user_created do
       source { :user }
       external_id { nil }
-      creator factory: :user
+      association :creator, factory: :user, strategy: :create
     end
   end
 end
