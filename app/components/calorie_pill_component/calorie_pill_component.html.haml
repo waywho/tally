@@ -1,0 +1,24 @@
+= render CardComponent.new(class: "p-4") do
+  .flex.justify-between.items-baseline.mb-3
+    - if remaining_variant? && !over_target?
+      %div
+        %span.text-3xl.font-bold.text-text= formatted_remaining
+        %span.text-sm.text-text-secondary
+          = t(".remaining_label", target: formatted_target)
+      %span.text-sm.font-semibold.text-text-secondary= t(".consumed", count: formatted_eaten)
+    - else
+      %div
+        %span.text-3xl.font-bold.text-text= @eaten
+        %span.text-sm.text-text-secondary
+          \/ #{formatted_target} #{t(".cal")}
+      - if over_target?
+        %span.text-sm.font-semibold.text-over= t(".over", count: formatted_remaining)
+      - else
+        %span.text-sm.font-semibold.text-primary= t(".remaining", count: formatted_remaining)
+  .h-2.bg-primary-tint.rounded.overflow-hidden
+    %div{:class => "h-full rounded #{over_target? ? 'bg-over' : 'bg-primary'}", :style => "width: #{progress_percent}%"}
+  .flex.gap-4.mt-3
+    %span.text-xs.text-text-secondary= "#{t('.protein')}: #{@protein}"
+    %span.text-xs.text-text-secondary= "#{t('.carbs')}: #{@carbs}"
+    %span.text-xs.text-text-secondary= "#{t('.fat')}: #{@fat}"
+    %span.text-xs.text-text-secondary= "#{t('.fiber')}: #{@fiber}"

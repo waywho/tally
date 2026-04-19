@@ -1,7 +1,7 @@
 class BucketHeaderComponentPreview < Lookbook::Preview
   # @label Breakfast with entries
   def with_entries
-    render_with_template(template: "bucket_header_component_preview/with_entries")
+    render_with_template
   end
 
   # @label Empty bucket

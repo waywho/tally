@@ -18,9 +18,9 @@ class CaloriePillComponentTest < ViewComponent::TestCase
       protein: "28g / 150g", carbs: "52g / 250g", fat: "12g / 67g", fiber: "8g / 30g"
     ))
 
-    assert_text "P: 28g / 150g"
-    assert_text "C: 52g / 250g"
-    assert_text "F: 12g / 67g"
+    assert_text "Protein: 28g / 150g"
+    assert_text "Carbs: 52g / 250g"
+    assert_text "Fat: 12g / 67g"
     assert_text "Fiber: 8g / 30g"
   end
 
@@ -40,6 +40,39 @@ class CaloriePillComponentTest < ViewComponent::TestCase
     ))
 
     assert_text "150 over"
-    assert_selector ".bg-danger"
+    assert_selector ".bg-over"
+  end
+
+  test "remaining variant shows remaining as hero number" do
+    render_inline(CaloriePillComponent.new(
+      eaten: 470, target: 2000,
+      protein: "28g / 150g", carbs: "52g / 250g", fat: "12g / 67g", fiber: "8g / 30g",
+      variant: :remaining
+    ))
+
+    assert_selector ".text-3xl.font-bold", text: "1,530"
+    assert_text "of 2,000 cal remaining"
+    assert_text "470 consumed"
+  end
+
+  test "remaining variant progress bar shows remaining percentage" do
+    render_inline(CaloriePillComponent.new(
+      eaten: 500, target: 2000,
+      protein: "0g / 0g", carbs: "0g / 0g", fat: "0g / 0g", fiber: "0g / 0g",
+      variant: :remaining
+    ))
+
+    assert_selector "[style*='width: 75%']"
+  end
+
+  test "remaining variant falls back to consumed when over target" do
+    render_inline(CaloriePillComponent.new(
+      eaten: 2150, target: 2000,
+      protein: "0g / 0g", carbs: "0g / 0g", fat: "0g / 0g", fiber: "0g / 0g",
+      variant: :remaining
+    ))
+
+    assert_text "150 over"
+    assert_selector ".bg-over"
   end
 end

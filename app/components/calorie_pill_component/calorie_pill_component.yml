@@ -1,0 +1,10 @@
+en:
+  cal: "cal"
+  remaining: "%{count} remaining"
+  remaining_label: "of %{target} cal remaining"
+  consumed: "%{count} consumed"
+  over: "%{count} over"
+  protein: "Protein"
+  carbs: "Carbs"
+  fat: "Fat"
+  fiber: "Fiber"

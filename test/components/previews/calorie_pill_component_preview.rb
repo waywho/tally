@@ -15,6 +15,15 @@ class CaloriePillComponentPreview < Lookbook::Preview
     )
   end
 
+  # @label Remaining variant (470 / 2,000)
+  def remaining_variant
+    render CaloriePillComponent.new(
+      eaten: 470, target: 2000,
+      protein: "28g / 150g", carbs: "52g / 250g", fat: "12g / 67g", fiber: "8g / 30g",
+      variant: :remaining
+    )
+  end
+
   # @label Empty day
   def empty_day
     render CaloriePillComponent.new(
