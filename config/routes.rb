@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   root "pages#home"
 
+  resource :settings, only: [:edit, :update], controller: "users"
+
   mount Lookbook::Engine, at: "/lookbook" if Rails.env.development?
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
