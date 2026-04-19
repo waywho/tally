@@ -8,8 +8,9 @@ class UsersController < ApplicationController
   def update
     @user = current_user
     if @user.update(user_params)
-      redirect_to edit_settings_path, notice: "Settings saved."
+      redirect_to edit_settings_path, notice: t("flash.settings_saved")
     else
+      flash.now[:alert] = @user.errors.full_messages.to_sentence
       render :edit, status: :unprocessable_entity
     end
   end

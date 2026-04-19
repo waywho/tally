@@ -28,4 +28,7 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  flash:
+    settings_saved: "Settings saved."
+    account_created: "Your account has been created. Please check your email to verify your account."
+    account_verified: "Your account has been verified successfully."

@@ -87,7 +87,7 @@ class RodauthMain < Rodauth::Rails::Auth
     # flash_error_key :error # default is :alert
 
     # Override default flash messages.
-    create_account_notice_flash "Your account has been created. Please check your email to verify your account."
+    create_account_notice_flash { I18n.t("flash.account_created") }
     # require_login_error_flash "Login is required for accessing this page"
     # login_notice_flash nil
 
@@ -150,7 +150,7 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # Redirect to settings after account verification so the user can set up their profile.
     verify_account_redirect { "/settings/edit" }
-    verify_account_notice_flash "Your account has been verified successfully."
+    verify_account_notice_flash { I18n.t("flash.account_verified") }
 
     # Redirect to login page after password reset.
     reset_password_redirect { login_path }
