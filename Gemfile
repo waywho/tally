@@ -54,6 +54,9 @@ gem "view_component"
 # ISO 3166 country data [https://github.com/countries/countries]
 gem "countries"
 
+# HTTP client for external API calls [https://github.com/rest-client/rest-client]
+gem "rest-client"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -89,6 +92,8 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 
+  # Stub HTTP requests in tests [https://github.com/bblimke/webmock]
+  gem "webmock"
 end
 # Enables Sequel to use Active Record's database connection
 gem "sequel-activerecord_connection", "~> 2.0", require: false
