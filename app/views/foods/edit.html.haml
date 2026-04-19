@@ -1,0 +1,8 @@
+- @page_title = "Edit Food"
+
+%h1.text-xl.font-bold.mb-4 Edit Food
+
+= render "form", food: @food, url: food_path(@food), submit_label: "Save Changes"
+
+%p.text-center.text-sm.text-text-secondary.mt-4
+  = link_to "Back to search", foods_path, class: "text-primary"

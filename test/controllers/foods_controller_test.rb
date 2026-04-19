@@ -54,6 +54,130 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  # New
+  test "new renders form when authenticated" do
+    login(@account)
+    get new_food_path
+    assert_response :success
+    assert_select "form[action='#{foods_path}']"
+    assert_select "input[name='food[name]']"
+    assert_select "input[name='food[calories]']"
+  end
+
+  test "new redirects when not authenticated" do
+    get new_food_path
+    assert_response :redirect
+  end
+
+  test "new pre-fills name from query param" do
+    login(@account)
+    get new_food_path(name: "My special food")
+    assert_response :success
+    assert_select "input[name='food[name]'][value='My special food']"
+  end
+
+  # Create
+  test "create saves food with source user and creator" do
+    login(@account)
+
+    assert_difference "Food.count", 1 do
+      post foods_path, params: {
+        food: {
+          name: "Homemade pasta",
+          calories: 200,
+          protein: 8,
+          carbs: 35,
+          fat: 4,
+          fiber: 2,
+          brand: "Mom's kitchen",
+          barcode: "",
+          serving_size: 150,
+          serving_label: "1 plate"
+        }
+      }
+    end
+
+    food = Food.last
+    assert food.user?
+    assert_equal @user.id, food.creator_id
+    assert_equal "Homemade pasta", food.name
+    assert_redirected_to foods_path(q: "Homemade pasta")
+  end
+
+  test "create with invalid params re-renders form" do
+    login(@account)
+
+    assert_no_difference "Food.count" do
+      post foods_path, params: {
+        food: { name: "", calories: -1 }
+      }
+    end
+
+    assert_response :unprocessable_entity
+    assert_select "p.field-error"
+  end
+
+  # Edit
+  test "edit renders form for creator" do
+    login(@account)
+    food = create(:food, :user_created, creator: @user, name: "My food")
+
+    get edit_food_path(food)
+    assert_response :success
+    assert_select "input[name='food[name]'][value='My food']"
+  end
+
+  test "edit returns 404 for non-creator" do
+    other_user = create(:user)
+    food = create(:food, :user_created, creator: other_user, name: "Other food")
+
+    login(@account)
+    get edit_food_path(food)
+    assert_response :not_found
+  end
+
+  # Update
+  test "update saves changes for creator" do
+    login(@account)
+    food = create(:food, :user_created, creator: @user, name: "Old name")
+
+    patch food_path(food), params: { food: { name: "New name" } }
+
+    assert_redirected_to foods_path(q: "New name")
+    assert_equal "New name", food.reload.name
+  end
+
+  test "update returns 404 for non-creator" do
+    other_user = create(:user)
+    food = create(:food, :user_created, creator: other_user)
+
+    login(@account)
+    patch food_path(food), params: { food: { name: "Hacked" } }
+    assert_response :not_found
+  end
+
+  # Destroy
+  test "destroy removes food for creator" do
+    login(@account)
+    food = create(:food, :user_created, creator: @user)
+
+    assert_difference "Food.count", -1 do
+      delete food_path(food)
+    end
+
+    assert_redirected_to foods_path
+    assert_equal "Food deleted.", flash[:notice]
+  end
+
+  test "destroy returns 404 for non-creator" do
+    other_user = create(:user)
+    food = create(:food, :user_created, creator: other_user)
+
+    login(@account)
+    delete food_path(food)
+    assert_response :not_found
+  end
+
   private
 
   def login(account)

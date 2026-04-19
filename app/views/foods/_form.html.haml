@@ -1,0 +1,55 @@
+= form_with model: food, url: url do |f|
+  = render CardComponent.new(class: "p-6 mb-6") do
+    %h2.text-lg.font-semibold.text-text.mb-4 Food Details
+    .mb-4
+      = f.label :name, class: "label"
+      = f.text_field :name, class: "input", placeholder: "e.g. Homemade pasta", required: true, maxlength: 255
+      - if food.errors[:name].any?
+        %p.field-error= food.errors[:name].first
+    .mb-4
+      = f.label :brand, class: "label"
+      = f.text_field :brand, class: "input", placeholder: "Optional"
+
+  = render CardComponent.new(class: "p-6 mb-6") do
+    %h2.text-lg.font-semibold.text-text.mb-4 Nutrition (per 100g)
+    .mb-4
+      = f.label :calories, "Calories (kcal)", class: "label"
+      = f.number_field :calories, class: "input", min: 0, step: "any", required: true
+      - if food.errors[:calories].any?
+        %p.field-error= food.errors[:calories].first
+    .grid.grid-cols-2.gap-4
+      .mb-4
+        = f.label :protein, "Protein (g)", class: "label"
+        = f.number_field :protein, class: "input", min: 0, step: "any", required: true
+        - if food.errors[:protein].any?
+          %p.field-error= food.errors[:protein].first
+      .mb-4
+        = f.label :carbs, "Carbs (g)", class: "label"
+        = f.number_field :carbs, class: "input", min: 0, step: "any", required: true
+        - if food.errors[:carbs].any?
+          %p.field-error= food.errors[:carbs].first
+      .mb-4
+        = f.label :fat, "Fat (g)", class: "label"
+        = f.number_field :fat, class: "input", min: 0, step: "any", required: true
+        - if food.errors[:fat].any?
+          %p.field-error= food.errors[:fat].first
+      .mb-4
+        = f.label :fiber, "Fiber (g)", class: "label"
+        = f.number_field :fiber, class: "input", min: 0, step: "any", value: food.fiber || 0
+        - if food.errors[:fiber].any?
+          %p.field-error= food.errors[:fiber].first
+
+  = render CardComponent.new(class: "p-6 mb-6") do
+    %h2.text-lg.font-semibold.text-text.mb-4 Serving Info (optional)
+    .grid.grid-cols-2.gap-4
+      .mb-4
+        = f.label :serving_size, "Serving size (g)", class: "label"
+        = f.number_field :serving_size, class: "input", min: 0, step: "any"
+      .mb-4
+        = f.label :serving_label, "Serving label", class: "label"
+        = f.text_field :serving_label, class: "input", placeholder: "e.g. 1 cup"
+    .mb-4
+      = f.label :barcode, class: "label"
+      = f.text_field :barcode, class: "input", placeholder: "Optional"
+
+  = render ButtonComponent.new(label: submit_label, tag: :button, type: "submit", class: "w-full")

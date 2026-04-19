@@ -1,0 +1,8 @@
+- @page_title = "Create Food"
+
+%h1.text-xl.font-bold.mb-4 Create Food
+
+= render "form", food: @food, url: foods_path, submit_label: "Create Food"
+
+%p.text-center.text-sm.text-text-secondary.mt-4
+  = link_to "Back to search", foods_path, class: "text-primary"
