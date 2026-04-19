@@ -21,8 +21,8 @@ class ButtonComponent < ViewComponent::Base
     content_tag(
       @tag,
       @label,
-      class: class_names,
-      **@system_arguments
+      **@system_arguments,
+      class: [class_names, @system_arguments[:class]].compact.join(" ")
     )
   end
 
