@@ -188,6 +188,14 @@ The `finish` action sets this notice. The `skip` action does not set a flash (si
 - `before_action` does not redirect when onboarded_at is set
 - Full wizard flow: step1 → step2 → step3 → finish → lands on root without redirect loop
 
+### System tests — Capybara (test/system/onboarding_test.rb)
+- Step 1: page shows "Welcome to Tally!", displays pre-filled fun name, can change name and continue
+- Step 2: page shows "Daily Calorie Target", slider and number input are present and synced, can adjust and continue
+- Step 3: page shows "Macro Targets", all 4 sliders present, fiber is under "Additional health target" section, can adjust and finish
+- Skip: clicking "Skip and use defaults" on any step completes onboarding with defaults intact
+- Back navigation: Back button on step 2 returns to step 1, Back on step 3 returns to step 2
+- Full flow end-to-end: complete all 3 steps, verify user record is updated and onboarded_at is set
+
 ## Gems
 
 - `faker` gem (development/test group) — not needed. Using custom curated arrays instead for full control over tone and appropriateness.
