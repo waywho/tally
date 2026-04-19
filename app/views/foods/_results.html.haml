@@ -44,3 +44,13 @@
         Fiber
         %b.text-text= "#{fiber.round(1)}g"
       %span.ml-auto{ style: "font-size: 11px;" } per 100g
+    - if result.is_a?(Food) && result.user? && result.creator_id == current_user&.id
+      .flex.gap-3.mt-1.text-xs
+        = link_to "Edit", edit_food_path(result), class: "text-primary"
+        = link_to "Delete", food_path(result), data: { turbo_method: :delete, turbo_confirm: "Delete #{result.name}?" }, class: "text-danger"
+
+- if @query.present? && @query.length >= 3
+  .text-center.py-4.border-t.border-border.mt-2
+    %p.text-sm.text-text-secondary
+      Can't find it?
+      = link_to "Create your own", new_food_path(name: @query), class: "text-primary font-medium"
