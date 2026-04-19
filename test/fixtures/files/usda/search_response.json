@@ -1,0 +1,33 @@
+{
+  "totalHits": 2,
+  "currentPage": 1,
+  "totalPages": 1,
+  "foods": [
+    {
+      "fdcId": 171077,
+      "description": "Chicken, broilers or fryers, breast, skinless, boneless, meat only, raw",
+      "dataType": "SR Legacy",
+      "brandName": null,
+      "foodNutrients": [
+        { "nutrientId": 1008, "nutrientName": "Energy", "value": 120.0, "unitName": "KCAL" },
+        { "nutrientId": 1003, "nutrientName": "Protein", "value": 22.5, "unitName": "G" },
+        { "nutrientId": 1005, "nutrientName": "Carbohydrate, by difference", "value": 0.0, "unitName": "G" },
+        { "nutrientId": 1004, "nutrientName": "Total lipid (fat)", "value": 2.62, "unitName": "G" },
+        { "nutrientId": 1079, "nutrientName": "Fiber, total dietary", "value": 0.0, "unitName": "G" }
+      ]
+    },
+    {
+      "fdcId": 331960,
+      "description": "Chicken, breast, raw",
+      "dataType": "Foundation",
+      "brandName": null,
+      "foodNutrients": [
+        { "nutrientId": 1008, "nutrientName": "Energy", "value": 100.0, "unitName": "KCAL" },
+        { "nutrientId": 1003, "nutrientName": "Protein", "value": 22.0, "unitName": "G" },
+        { "nutrientId": 1005, "nutrientName": "Carbohydrate, by difference", "value": 0.0, "unitName": "G" },
+        { "nutrientId": 1004, "nutrientName": "Total lipid (fat)", "value": 1.0, "unitName": "G" },
+        { "nutrientId": 1079, "nutrientName": "Fiber, total dietary", "value": 0.0, "unitName": "G" }
+      ]
+    }
+  ]
+}
