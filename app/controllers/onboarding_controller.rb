@@ -1,5 +1,5 @@
 class OnboardingController < ApplicationController
-  skip_before_action :ensure_onboarded, raise: false
+  skip_before_action :ensure_onboarded
   before_action :require_authentication
   before_action :redirect_if_onboarded
 

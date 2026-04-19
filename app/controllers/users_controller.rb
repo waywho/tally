@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :require_authentication
+  skip_before_action :ensure_onboarded
 
   def edit
     @user = current_user

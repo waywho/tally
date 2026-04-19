@@ -1,14 +1,20 @@
 class ApplicationController < ActionController::Base
-  # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
-
-  # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
+
+  before_action :ensure_onboarded
 
   private
 
   def require_authentication
     rodauth.require_authentication
+  end
+
+  def ensure_onboarded
+    return unless rodauth.logged_in?
+    return if current_user&.onboarded_at.present?
+
+    redirect_to onboarding_step1_path
   end
 
   def current_user

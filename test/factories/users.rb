@@ -11,5 +11,10 @@ FactoryBot.define do
     unit_preference { :metric }
     language { "en" }
     country { nil }
+    onboarded_at { Time.current }
+
+    trait :not_onboarded do
+      onboarded_at { nil }
+    end
   end
 end

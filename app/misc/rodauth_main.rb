@@ -149,7 +149,7 @@ class RodauthMain < Rodauth::Rails::Auth
     logout_redirect "/"
 
     # Redirect to settings after account verification so the user can set up their profile.
-    verify_account_redirect { "/settings/edit" }
+    verify_account_redirect { "/" }
     verify_account_notice_flash { I18n.t("flash.account_verified") }
 
     # Redirect to login page after password reset.
