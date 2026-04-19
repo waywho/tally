@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
     return unless rodauth.logged_in?
     return if current_user&.onboarded_at.present?
 
-    redirect_to onboarding_step1_path
+    redirect_to step1_onboarding_path
   end
 
   def current_user
