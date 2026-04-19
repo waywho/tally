@@ -4,7 +4,7 @@ class FoodsController < ApplicationController
   def index
     @query = params[:q].to_s.strip
     @results = if @query.length >= 3
-      FoodSearch.call(@query)
+      FoodSearch.call(@query, user: current_user)
     else
       []
     end

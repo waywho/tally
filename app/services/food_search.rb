@@ -1,13 +1,14 @@
 class FoodSearch
   LOCAL_THRESHOLD = 5
 
-  def self.call(query, limit: 20, off_client: nil, usda_client: nil)
-    new(query, limit: limit, off_client: off_client, usda_client: usda_client).call
+  def self.call(query, limit: 20, user: nil, off_client: nil, usda_client: nil)
+    new(query, limit: limit, user: user, off_client: off_client, usda_client: usda_client).call
   end
 
-  def initialize(query, limit: 20, off_client: nil, usda_client: nil)
+  def initialize(query, limit: 20, user: nil, off_client: nil, usda_client: nil)
     @query = query
     @limit = limit
+    @user = user
     @injected_off_client = off_client
     @injected_usda_client = usda_client
   end
@@ -15,7 +16,7 @@ class FoodSearch
   def call
     return [] if @query.blank?
 
-    local_results = Food.search(@query, limit: @limit)
+    local_results = Food.search(@query, limit: @limit, user: @user)
 
     if local_results.size >= LOCAL_THRESHOLD
       return local_results.first(@limit)

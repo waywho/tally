@@ -161,4 +161,25 @@ class FoodSearchTest < ActiveSupport::TestCase
 
     assert results.any? { |r| r.is_a?(Food) && r.name == "OFF Fallback" }
   end
+
+  test "passes user to Food.search for visibility scoping" do
+    user = create(:user)
+    custom = create(:food, name: "Chicken custom", source: :user, external_id: nil, creator: user)
+    5.times { |i| create(:food, name: "Chicken item #{i}", source: :off, external_id: "scope-#{i}") }
+
+    results = FoodSearch.call("chicken", user: user)
+
+    assert results.any? { |r| r.is_a?(Food) && r.user? && r.creator_id == user.id }
+  end
+
+  test "excludes other users custom foods from results" do
+    other_user = create(:user)
+    create(:food, name: "Chicken other", source: :user, external_id: nil, creator: other_user)
+    5.times { |i| create(:food, name: "Chicken item #{i}", source: :off, external_id: "excl-#{i}") }
+
+    user = create(:user)
+    results = FoodSearch.call("chicken", user: user)
+
+    assert_not results.any? { |r| r.is_a?(Food) && r.user? && r.creator_id == other_user.id }
+  end
 end
