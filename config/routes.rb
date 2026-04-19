@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   resource :settings, only: [:edit, :update], controller: "users"
 
+  resources :foods, only: [:index]
+
   post "onboarding/skip", to: "onboarding#skip", as: :skip_onboarding
   get "onboarding/:step", to: "onboarding#show", as: :onboarding_step
   patch "onboarding/:step", to: "onboarding#update", as: :update_onboarding_step

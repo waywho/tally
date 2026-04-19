@@ -1,0 +1,48 @@
+- if @query.present? && @query.length >= 3 && @results.empty?
+  .text-center.py-8.text-text-secondary
+    %p No foods found for "#{@query}"
+    %p.text-sm.mt-1 Try a different search term
+
+- @results.each do |result|
+  - name = result.is_a?(Food) ? result.name : result.name
+  - brand = result.is_a?(Food) ? result.brand : result.brand
+  - calories = result.is_a?(Food) ? result.calories.to_f : result.calories
+  - protein = result.is_a?(Food) ? result.protein.to_f : result.protein
+  - carbs = result.is_a?(Food) ? result.carbs.to_f : result.carbs
+  - fat = result.is_a?(Food) ? result.fat.to_f : result.fat
+  - fiber = result.is_a?(Food) ? result.fiber.to_f : result.fiber
+  - source = result.is_a?(Food) ? result.source : "usda"
+
+  %div.border-b.border-border.py-3{ data: { food_result: true } }
+    .flex.justify-between.items-start
+      .min-w-0.flex-1.mr-3
+        %p.font-medium.text-text.truncate= name
+        %p.text-sm.text-text-secondary{ class: "mt-0.5" }
+          - case source
+          - when "usda"
+            %span.inline-block.text-xs.font-medium.rounded{ class: "px-1.5 py-0.5", style: "background: #F0FDF4; color: #16A34A;" } USDA
+          - when "off"
+            %span.inline-block.text-xs.font-medium.rounded{ class: "px-1.5 py-0.5", style: "background: #FEF3C7; color: #D97706;" } OFF
+          - when "user"
+            %span.inline-block.text-xs.font-medium.rounded{ class: "px-1.5 py-0.5", style: "background: #EDE9FE; color: #7C3AED;" } You
+          - if brand.present?
+            = brand
+      .text-right.whitespace-nowrap
+        %p.font-semibold.text-text= "#{calories.round} kcal"
+    .flex.flex-wrap.gap-2.text-xs.text-text-secondary{ class: "mt-1.5" }
+      %span
+        Protein
+        %b.text-text= "#{protein.round(1)}g"
+      %span.text-border &middot;
+      %span
+        Carbs
+        %b.text-text= "#{carbs.round(1)}g"
+      %span.text-border &middot;
+      %span
+        Fat
+        %b.text-text= "#{fat.round(1)}g"
+      %span.text-border &middot;
+      %span
+        Fiber
+        %b.text-text= "#{fiber.round(1)}g"
+      %span.ml-auto{ style: "font-size: 11px;" } per 100g
