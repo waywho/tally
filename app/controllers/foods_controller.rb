@@ -18,6 +18,11 @@ class FoodsController < ApplicationController
     else
       []
     end
+    @quick_add_foods = if @meal.present? && @query.length < 3
+      QuickAddFoods.call(user: current_user, meal: @meal)
+    else
+      []
+    end
   end
 
   def new
