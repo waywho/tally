@@ -206,6 +206,41 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
+  # Quick add
+  test "index with meal context and empty query shows quick add section" do
+    food = create(:food, name: "Chicken breast")
+    create(:food_log_entry, user: @user, food: food, meal: :breakfast, logged_on: Date.current)
+
+    login(@account)
+    get foods_path(meal: "breakfast", date: Date.current.iso8601)
+
+    assert_response :success
+    assert_select "[data-quick-add]", minimum: 1
+  end
+
+  test "index with meal context and query hides quick add section" do
+    5.times { |i| create(:food, name: "Chicken item #{i}", source: :off, external_id: "qa-#{i}") }
+    food = create(:food, name: "Chicken breast")
+    create(:food_log_entry, user: @user, food: food, meal: :breakfast, logged_on: Date.current)
+
+    login(@account)
+    get foods_path(meal: "breakfast", date: Date.current.iso8601, q: "chicken")
+
+    assert_response :success
+    assert_select "[data-quick-add]", count: 0
+  end
+
+  test "index without meal context does not show quick add section" do
+    food = create(:food, name: "Chicken breast")
+    create(:food_log_entry, user: @user, food: food, meal: :breakfast, logged_on: Date.current)
+
+    login(@account)
+    get foods_path
+
+    assert_response :success
+    assert_select "[data-quick-add]", count: 0
+  end
+
   # Templates section
   test "index shows templates section when meal context and templates exist" do
     food = create(:food, name: "Eggs", calories: 150)
