@@ -1,0 +1,32 @@
+- @page_title = "Save as Template"
+
+%h1.text-xl.font-bold.mb-4 Save as Template
+
+= form_with model: @meal_template, url: meal_templates_path, method: :post do |f|
+  %input{ type: "hidden", name: "date", value: @date }
+  %input{ type: "hidden", name: "meal", value: @meal }
+
+  .mb-4
+    = f.label :name, "Template name", class: "block text-sm font-medium text-text mb-1"
+    = f.text_field :name, class: "input w-full", maxlength: 255, required: true
+
+  - if @entries.any?
+    .mb-6
+      %h2.text-sm.font-semibold.text-text-secondary.mb-2 Foods to save
+      = render CardComponent.new(class: "divide-y divide-gray-100") do
+        - @entries.each do |entry|
+          .flex.justify-between.items-center.px-4.py-3{ data: { preview_item: true } }
+            .min-w-0.flex-1
+              %p.font-medium.text-text.truncate= entry.food.name
+              %p.text-xs.text-text-secondary= "#{entry.weight.to_i}g"
+            %span.text-sm.font-semibold.text-text.whitespace-nowrap= "#{entry.calories.round} kcal"
+
+    = f.submit "Save Template", class: "w-full bg-primary text-white font-semibold py-2.5 px-4 rounded-md hover:bg-primary-light transition-colors cursor-pointer"
+  - else
+    %div{ data: { empty_preview: true } }
+      = render CardComponent.new(class: "p-6 text-center text-text-secondary") do
+        %p No entries found for this meal.
+        %p.mt-2.text-sm Log some foods first, then save as a template.
+
+%p.text-center.text-sm.text-text-secondary.mt-4
+  = link_to "Back to templates", meal_templates_path, class: "text-primary"

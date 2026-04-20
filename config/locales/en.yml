@@ -42,3 +42,6 @@ en:
     recipe_created: "Recipe created."
     recipe_updated: "Recipe updated."
     recipe_deleted: "Recipe deleted."
+    template_saved: "Template saved."
+    template_deleted: "Template deleted."
+    template_logged: "Template logged."

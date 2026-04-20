@@ -14,6 +14,12 @@ Rails.application.routes.draw do
 
   resources :recipes
 
+  resources :meal_templates, only: [:index, :new, :create, :destroy] do
+    member do
+      post :log
+    end
+  end
+
   post "onboarding/skip", to: "onboarding#skip", as: :skip_onboarding
   get "onboarding/:step", to: "onboarding#show", as: :onboarding_step
   patch "onboarding/:step", to: "onboarding#update", as: :update_onboarding_step
