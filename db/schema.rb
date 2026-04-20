@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_20_214838) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_20_221740) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -86,6 +86,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_20_214838) do
     t.index ["source", "external_id"], name: "index_foods_on_source_and_external_id", unique: true, where: "(external_id IS NOT NULL)"
   end
 
+  create_table "meal_template_items", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "food_id", null: false
+    t.bigint "meal_template_id", null: false
+    t.datetime "updated_at", null: false
+    t.decimal "weight", precision: 8, scale: 2, null: false
+    t.index ["food_id"], name: "index_meal_template_items_on_food_id"
+    t.index ["meal_template_id"], name: "index_meal_template_items_on_meal_template_id"
+  end
+
+  create_table "meal_templates", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", limit: 255, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_meal_templates_on_user_id"
+  end
+
   create_table "recipe_ingredients", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "food_id", null: false
@@ -132,6 +150,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_20_214838) do
   add_foreign_key "food_log_entries", "foods"
   add_foreign_key "food_log_entries", "users", on_delete: :cascade
   add_foreign_key "foods", "users", column: "creator_id", on_delete: :cascade
+  add_foreign_key "meal_template_items", "foods"
+  add_foreign_key "meal_template_items", "meal_templates", on_delete: :cascade
+  add_foreign_key "meal_templates", "users", on_delete: :cascade
   add_foreign_key "recipe_ingredients", "foods"
   add_foreign_key "recipe_ingredients", "recipes", on_delete: :cascade
   add_foreign_key "recipes", "foods"
