@@ -1,3 +1,5 @@
+- has_meal_context = @meal.present? && @date.present?
+
 - if @query.present? && @query.length >= 3 && @results.empty?
   .text-center.py-8.text-text-secondary
     %p No foods found for "#{@query}"
@@ -10,9 +12,11 @@
   - fat = result.fat.to_f
   - fiber = result.fiber.to_f
   - source = result.respond_to?(:source) ? result.source : "usda"
+  - is_local = result.is_a?(Food)
+  - food_id = is_local ? result.id : nil
+  - usda_fdc_id = result.is_a?(Usda::FoodResult) ? result.fdc_id : nil
 
-  - has_meal_context = @meal.present? && @date.present?
-  %div.border-b.border-border.py-3{ data: { food_result: true }.merge(has_meal_context ? { meal_context_active: true } : {}) }
+  %div.border-b.border-border.py-3{ data: { food_result: true }.merge(has_meal_context ? { meal_context_active: true, action: "click->sheet#open", sheet_name_param: result.name, sheet_calories_param: calories, sheet_protein_param: protein, sheet_carbs_param: carbs, sheet_fat_param: fat, sheet_fiber_param: fiber, sheet_food_id_param: food_id, sheet_usda_fdc_id_param: usda_fdc_id } : {}), class: has_meal_context ? "cursor-pointer hover:bg-primary-tint transition-colors" : nil }
     .flex.justify-between.items-start
       .min-w-0.flex-1.mr-3
         %p.font-medium.text-text.truncate= result.name
@@ -45,7 +49,7 @@
         Fiber
         %b.text-text= "#{fiber.round(1)}g"
       %span.ml-auto{ style: "font-size: 11px;" } per 100g
-    - if result.is_a?(Food) && result.user? && result.creator_id == current_user&.id
+    - if !has_meal_context && result.is_a?(Food) && result.user? && result.creator_id == current_user&.id
       .flex.gap-3.mt-1.text-xs
         = link_to "Edit", edit_food_path(result), class: "text-primary"
         = link_to "Delete", food_path(result), data: { turbo_method: :delete, turbo_confirm: "Delete #{result.name}?" }, class: "text-danger"

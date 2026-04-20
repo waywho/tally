@@ -1,0 +1,64 @@
+%div.hidden.fixed.inset-0.z-50.bg-black.bg-opacity-50.flex.items-end.justify-center{ data: { sheet_target: "overlay", action: "click->sheet#closeOnOverlay" } }
+  %div.bg-bg.rounded-t-xl.w-full.max-w-lg.overflow-y-auto.p-5{ class: "max-h-[85vh]", data: { sheet_target: "panel" } }
+    .flex.justify-center.mb-3
+      .w-10.h-1.rounded-full.bg-border
+
+    .flex.justify-between.items-center.mb-4
+      %h2.text-lg.font-bold.text-text{ data: { sheet_target: "foodName" } }
+      %button.text-text-secondary.text-xl{ data: { action: "click->sheet#close" } } &times;
+
+    %p.text-sm.text-text-secondary.mb-4{ data: { sheet_target: "foodCalories" } }
+
+    = form_with url: day_food_log_entries_path(day_date: @date), method: :post do |f|
+      %input{ type: "hidden", name: "food_log_entry[meal]", value: @meal }
+      %input{ type: "hidden", name: "food_log_entry[food_id]", data: { sheet_target: "foodIdField" } }
+      %input{ type: "hidden", name: "usda_fdc_id", disabled: true, data: { sheet_target: "usdaFdcIdField" } }
+      %input{ type: "hidden", name: "usda_name", disabled: true, data: { sheet_target: "usdaNameField" } }
+      %input{ type: "hidden", name: "usda_calories", disabled: true, data: { sheet_target: "usdaCaloriesField" } }
+      %input{ type: "hidden", name: "usda_protein", disabled: true, data: { sheet_target: "usdaProteinField" } }
+      %input{ type: "hidden", name: "usda_carbs", disabled: true, data: { sheet_target: "usdaCarbsField" } }
+      %input{ type: "hidden", name: "usda_fat", disabled: true, data: { sheet_target: "usdaFatField" } }
+      %input{ type: "hidden", name: "usda_fiber", disabled: true, data: { sheet_target: "usdaFiberField" } }
+
+      %div{ data: { controller: "quantity-preview" } }
+        .mb-4
+          = label_tag :quantity_g, "Grams", class: "label"
+          %input.input.w-full.text-center.text-2xl.font-bold{ type: "number", name: "food_log_entry[quantity_g]", step: "0.01", min: "0.01", placeholder: "0", autofocus: true, data: { quantity_preview_target: "input", action: "input->quantity-preview#update" } }
+
+        .bg-primary-tint.rounded-md.p-3.mb-4
+          %p.text-xs.font-medium.text-text-secondary.mb-1 This food
+          .flex.items-baseline.gap-1
+            %span.text-lg.font-bold.text-text{ data: { quantity_preview_target: "calories" } } 0
+            %span.text-sm.text-text-secondary kcal
+          .flex.gap-3.mt-1.text-xs.text-text-secondary
+            %span
+              P
+              %b.text-text{ data: { quantity_preview_target: "protein" } } 0
+              g
+            %span
+              C
+              %b.text-text{ data: { quantity_preview_target: "carbs" } } 0
+              g
+            %span
+              F
+              %b.text-text{ data: { quantity_preview_target: "fat" } } 0
+              g
+            %span
+              Fiber
+              %b.text-text{ data: { quantity_preview_target: "fiber" } } 0
+              g
+
+        %div{ data: { controller: "swipe" } }
+          .flex.overflow-x-auto.snap-x.snap-mandatory.scrollbar-none.rounded-md.border.border-border{ data: { swipe_target: "container" }, style: "-webkit-overflow-scrolling: touch;" }
+            .snap-center.min-w-full.p-3
+              %p.text-xs.font-semibold.text-primary.mb-2= "#{@meal&.capitalize} total"
+              %p.text-text-secondary.text-xs (projected values shown after adding)
+            .snap-center.min-w-full.p-3
+              %p.text-xs.font-semibold.text-primary.mb-2 Daily total
+              %p.text-text-secondary.text-xs (projected values shown after adding)
+          .flex.justify-center.gap-1.mt-2{ class: "py-0.5" }
+            %span.w-1.h-1.rounded-full.bg-primary{ data: { swipe_target: "dot" } }
+            %span.w-1.h-1.rounded-full.bg-border{ data: { swipe_target: "dot" } }
+
+        .mt-4
+          = render ButtonComponent.new(label: "Add to #{@meal&.capitalize}", tag: :input, type: :submit, class: "w-full")
