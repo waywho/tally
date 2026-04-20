@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_19_180609) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_20_063632) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -45,6 +45,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_19_180609) do
     t.integer "status", default: 1, null: false
     t.index ["email"], name: "index_accounts_on_email", unique: true, where: "(status = ANY (ARRAY[1, 2]))"
     t.check_constraint "email ~ '^[^,;@ \r\n]+@[^,@; \r\n]+.[^,@; \r\n]+$'::citext", name: "valid_email"
+  end
+
+  create_table "food_log_entries", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "food_id", null: false
+    t.date "logged_on", null: false
+    t.integer "meal", null: false
+    t.decimal "quantity_g", precision: 8, scale: 2, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["food_id"], name: "index_food_log_entries_on_food_id"
+    t.index ["user_id", "food_id"], name: "index_food_log_entries_on_user_id_and_food_id"
+    t.index ["user_id", "logged_on"], name: "index_food_log_entries_on_user_id_and_logged_on"
+    t.index ["user_id"], name: "index_food_log_entries_on_user_id"
   end
 
   create_table "foods", force: :cascade do |t|
@@ -94,6 +108,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_19_180609) do
   add_foreign_key "account_password_reset_keys", "accounts", column: "id"
   add_foreign_key "account_remember_keys", "accounts", column: "id"
   add_foreign_key "account_verification_keys", "accounts", column: "id"
+  add_foreign_key "food_log_entries", "foods"
+  add_foreign_key "food_log_entries", "users", on_delete: :cascade
   add_foreign_key "foods", "users", column: "creator_id", on_delete: :cascade
   add_foreign_key "users", "accounts", on_delete: :cascade
 end
