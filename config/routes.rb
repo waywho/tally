@@ -3,6 +3,11 @@ Rails.application.routes.draw do
 
   root "pages#home"
 
+  get "today", to: "days#show", as: :today
+  resources :days, only: [:show], param: :date do
+    resources :food_log_entries, only: [:create, :edit, :update, :destroy], path: "entries"
+  end
+
   resource :settings, only: [:edit, :update], controller: "users"
 
   resources :foods, only: [:index, :new, :create, :edit, :update, :destroy]

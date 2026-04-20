@@ -1,0 +1,30 @@
+%div{ data: { date: @date.iso8601 } }
+  %h1.text-lg.font-semibold.text-text.mb-4= @date.strftime("%A, %b %-d")
+
+  -# Calorie summary card
+  %div{ data: { calorie_summary: true } }
+    = render CaloriePillComponent.new(eaten: @daily_totals[:calories].round, target: @daily_totals[:target_calories], protein: "#{@daily_totals[:protein].round}g / #{@daily_totals[:target_protein]}g", carbs: "#{@daily_totals[:carbs].round}g / #{@daily_totals[:target_carbs]}g", fat: "#{@daily_totals[:fat].round}g / #{@daily_totals[:target_fat]}g", fiber: "#{@daily_totals[:fiber].round}g / #{@daily_totals[:target_fiber]}g")
+
+  -# Meal buckets
+  .mt-6.space-y-4
+    - FoodLogEntry.meals.each_key do |meal|
+      - entries = @entries_by_meal[meal]
+      - subtotal = @meal_totals[meal][:calories].round
+      - add_path = foods_path(meal: meal, date: @date.iso8601)
+
+      %div{ data: { meal: meal } }
+        = render CardComponent.new do
+          = render BucketHeaderComponent.new(meal: meal.capitalize, subtotal: subtotal, add_path: add_path)
+
+          - if entries.any?
+            - entries.each do |entry|
+              = link_to edit_day_food_log_entry_path(day_date: @date.iso8601, id: entry.id), class: "block" do
+                .flex.justify-between.items-center.px-4.py-3.border-b.border-border{ data: { entry_id: entry.id } }
+                  .min-w-0.flex-1
+                    %p.font-medium.text-text.truncate= entry.food.name
+                    %p.text-xs.text-text-secondary= "#{entry.quantity_g.to_i}g"
+                  %span.text-sm.font-semibold.text-text.whitespace-nowrap= "#{entry.calories.round} kcal"
+          - else
+            .px-4.py-6.text-center.text-text-secondary.text-sm{ data: { empty_meal: true } }
+              %p No foods logged yet
+              = link_to "+ Add food", add_path, class: "text-primary font-medium"
