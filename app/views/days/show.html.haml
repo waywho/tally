@@ -33,6 +33,8 @@
                     %p.font-medium.text-text.truncate= entry.food.name
                     %p.text-xs.text-text-secondary= "#{entry.weight.to_i}g"
                   %span.text-sm.font-semibold.text-text.whitespace-nowrap= "#{entry.calories.round} kcal"
+            .px-4.py-2.text-center
+              = link_to "Save as template", new_meal_template_path(date: @date.iso8601, meal: meal), class: "text-xs text-primary font-medium", data: { save_template: true }
           - else
             .px-4.py-6.text-center.text-text-secondary.text-sm{ data: { empty_meal: true } }
               %p No foods logged yet
