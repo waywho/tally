@@ -99,6 +99,7 @@ Tickets are grouped by milestone. Each one is sized to be a coherent PR. `[L]` =
 34. **Analytics (privacy-respecting)** — basic event log table for funnel analysis (`signed_up`, `onboarding_completed`, `first_food_logged`, `barcode_scanned`). No third-party SDK.
 35. **Sentry / error reporting** — Rails side + iOS side.
 36. **Recommended daily targets** — Pre-fill calorie and macro goals based on standard government dietary guidelines (by age/sex). Selectable during onboarding or from settings as a starting point.
+37. **Build meal templates from scratch** — Dedicated form to create meal templates by picking foods + weights manually, similar to the recipe builder. Complements the "save from Today view" flow added in MVP.
 
 ## Long poles & risks
 
