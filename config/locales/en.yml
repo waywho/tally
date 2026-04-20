@@ -39,3 +39,6 @@ en:
     entry_created: "Entry added."
     entry_updated: "Entry updated."
     entry_deleted: "Entry deleted."
+    recipe_created: "Recipe created."
+    recipe_updated: "Recipe updated."
+    recipe_deleted: "Recipe deleted."

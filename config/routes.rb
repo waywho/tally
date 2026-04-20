@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
   resources :foods, only: [:index, :new, :create, :edit, :update, :destroy]
 
+  resources :recipes
+
   post "onboarding/skip", to: "onboarding#skip", as: :skip_onboarding
   get "onboarding/:step", to: "onboarding#show", as: :onboarding_step
   patch "onboarding/:step", to: "onboarding#update", as: :update_onboarding_step
