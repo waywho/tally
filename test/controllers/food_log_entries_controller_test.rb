@@ -39,6 +39,54 @@ class FoodLogEntriesControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
+  test "POST creates entry from USDA transient result" do
+    login(@account)
+
+    ENV["USDA_API_KEY"] = "test-key"
+
+    assert_difference ["FoodLogEntry.count", "Food.count"], 1 do
+      post day_food_log_entries_path(day_date: @date), params: {
+        food_log_entry: {
+          meal: "breakfast",
+          quantity_g: 100,
+          usda_fdc_id: "12345",
+          usda_name: "Test USDA Food",
+          usda_brand: "Test Brand",
+          usda_calories: 200,
+          usda_protein: 15,
+          usda_carbs: 25,
+          usda_fat: 8,
+          usda_fiber: 4
+        }
+      }
+    end
+
+    food = Food.last
+    assert_equal "usda", food.source
+    assert_equal "12345", food.external_id
+    assert_equal "Test USDA Food", food.name
+    assert_equal 200.0, food.calories.to_f
+
+    entry = FoodLogEntry.last
+    assert_equal food.id, entry.food_id
+    assert_equal @user.id, entry.user_id
+    assert_redirected_to day_path(date: @date)
+  ensure
+    ENV.delete("USDA_API_KEY")
+  end
+
+  test "POST with neither food_id nor usda_fdc_id returns error" do
+    login(@account)
+
+    assert_no_difference ["FoodLogEntry.count", "Food.count"] do
+      post day_food_log_entries_path(day_date: @date), params: {
+        food_log_entry: { meal: "breakfast", quantity_g: 100 }
+      }
+    end
+
+    assert_response :unprocessable_entity
+  end
+
   test "POST requires authentication" do
     post day_food_log_entries_path(day_date: @date), params: {
       food_log_entry: { food_id: @food.id, meal: "breakfast", quantity_g: 100 }
