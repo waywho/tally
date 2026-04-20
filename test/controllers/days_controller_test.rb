@@ -72,6 +72,31 @@ class DaysControllerTest < ActionDispatch::IntegrationTest
     assert_select "[data-entry-id]", count: 0
   end
 
+  test "shows prev/next date navigation links" do
+    login(@account)
+    get day_path(date: "2026-04-20")
+
+    assert_response :success
+    assert_select "a[href='#{day_path(date: '2026-04-19')}']"
+    assert_select "a[href='#{day_path(date: '2026-04-21')}']"
+  end
+
+  test "shows date picker input" do
+    login(@account)
+    get day_path(date: "2026-04-20")
+
+    assert_response :success
+    assert_select "input[type='date'][value='2026-04-20']"
+  end
+
+  test "shows Today label when viewing current date" do
+    login(@account)
+    get today_path
+
+    assert_response :success
+    assert_select "h1", "Today"
+  end
+
   test "home page redirects to today for logged in user" do
     login(@account)
     get root_path
