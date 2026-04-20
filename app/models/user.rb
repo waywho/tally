@@ -2,6 +2,7 @@ class User < ApplicationRecord
   belongs_to :account
   has_many :created_foods, class_name: "Food", foreign_key: :creator_id, dependent: :destroy
   has_many :food_log_entries, dependent: :destroy
+  has_many :recipes, dependent: :destroy
 
   enum :unit_preference, { metric: 0, imperial: 1 }, default: :metric
 
