@@ -36,3 +36,6 @@ en:
     food_created: "Food created."
     food_updated: "Food updated."
     food_deleted: "Food deleted."
+    entry_created: "Entry added."
+    entry_updated: "Entry updated."
+    entry_deleted: "Entry deleted."

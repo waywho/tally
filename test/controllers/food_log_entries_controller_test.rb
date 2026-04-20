@@ -1,0 +1,140 @@
+require "test_helper"
+
+class FoodLogEntriesControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    @account = create(:account)
+    @user = create(:user, account: @account)
+    @food = create(:food, calories: 250, protein: 10, carbs: 30, fat: 12, fiber: 3)
+    @date = "2026-04-19"
+  end
+
+  # Create
+  test "POST creates entry with correct attributes" do
+    login(@account)
+
+    assert_difference "FoodLogEntry.count", 1 do
+      post day_food_log_entries_path(day_date: @date), params: {
+        food_log_entry: { food_id: @food.id, meal: "breakfast", quantity_g: 150 }
+      }
+    end
+
+    entry = FoodLogEntry.last
+    assert_equal @user.id, entry.user_id
+    assert_equal @food.id, entry.food_id
+    assert_equal Date.parse(@date), entry.logged_on
+    assert_equal "breakfast", entry.meal
+    assert_equal 150.0, entry.quantity_g.to_f
+    assert_redirected_to day_path(date: @date)
+  end
+
+  test "POST with invalid params does not create entry" do
+    login(@account)
+
+    assert_no_difference "FoodLogEntry.count" do
+      post day_food_log_entries_path(day_date: @date), params: {
+        food_log_entry: { food_id: @food.id, meal: "breakfast", quantity_g: 0 }
+      }
+    end
+
+    assert_response :unprocessable_entity
+  end
+
+  test "POST requires authentication" do
+    post day_food_log_entries_path(day_date: @date), params: {
+      food_log_entry: { food_id: @food.id, meal: "breakfast", quantity_g: 100 }
+    }
+    assert_response :redirect
+  end
+
+  # Edit
+  test "GET edit renders form for own entry" do
+    login(@account)
+    entry = create(:food_log_entry, user: @user, food: @food, logged_on: Date.parse(@date), meal: :breakfast, quantity_g: 150)
+
+    get edit_day_food_log_entry_path(day_date: @date, id: entry.id)
+
+    assert_response :success
+    assert_select "input[name='food_log_entry[quantity_g]']"
+    assert_select "form[action='#{day_food_log_entry_path(day_date: @date, id: entry.id)}']"
+  end
+
+  test "GET edit returns 404 for other user's entry" do
+    other_user = create(:user)
+    entry = create(:food_log_entry, user: other_user, food: @food, logged_on: Date.parse(@date))
+
+    login(@account)
+    get edit_day_food_log_entry_path(day_date: @date, id: entry.id)
+
+    assert_response :not_found
+  end
+
+  # Update
+  test "PATCH updates quantity_g" do
+    login(@account)
+    entry = create(:food_log_entry, user: @user, food: @food, logged_on: Date.parse(@date), quantity_g: 100)
+
+    patch day_food_log_entry_path(day_date: @date, id: entry.id), params: {
+      food_log_entry: { quantity_g: 200 }
+    }
+
+    assert_redirected_to day_path(date: @date)
+    assert_equal 200.0, entry.reload.quantity_g.to_f
+  end
+
+  test "PATCH with invalid quantity re-renders form" do
+    login(@account)
+    entry = create(:food_log_entry, user: @user, food: @food, logged_on: Date.parse(@date), quantity_g: 100)
+
+    patch day_food_log_entry_path(day_date: @date, id: entry.id), params: {
+      food_log_entry: { quantity_g: 0 }
+    }
+
+    assert_response :unprocessable_entity
+    assert_equal 100.0, entry.reload.quantity_g.to_f
+  end
+
+  test "PATCH returns 404 for other user's entry" do
+    other_user = create(:user)
+    entry = create(:food_log_entry, user: other_user, food: @food, logged_on: Date.parse(@date))
+
+    login(@account)
+    patch day_food_log_entry_path(day_date: @date, id: entry.id), params: {
+      food_log_entry: { quantity_g: 200 }
+    }
+
+    assert_response :not_found
+  end
+
+  # Destroy
+  test "DELETE destroys entry and redirects" do
+    login(@account)
+    entry = create(:food_log_entry, user: @user, food: @food, logged_on: Date.parse(@date))
+
+    assert_difference "FoodLogEntry.count", -1 do
+      delete day_food_log_entry_path(day_date: @date, id: entry.id)
+    end
+
+    assert_redirected_to day_path(date: @date)
+    follow_redirect!
+    assert_equal "Entry deleted.", flash[:notice]
+  end
+
+  test "DELETE returns 404 for other user's entry" do
+    other_user = create(:user)
+    entry = create(:food_log_entry, user: other_user, food: @food, logged_on: Date.parse(@date))
+
+    login(@account)
+
+    assert_no_difference "FoodLogEntry.count" do
+      delete day_food_log_entry_path(day_date: @date, id: entry.id)
+    end
+
+    assert_response :not_found
+  end
+
+  private
+
+  def login(account)
+    post "/login", params: { email: account.email, password: "password" }
+  end
+end

@@ -1,0 +1,27 @@
+%h1.text-xl.font-bold.mb-4 Edit Entry
+
+= render CardComponent.new(class: "p-4") do
+  %p.font-medium.text-text.mb-1= @entry.food.name
+  %p.text-sm.text-text-secondary.mb-4= "#{@entry.food.calories.round} kcal per 100g"
+
+  = form_with model: @entry, url: day_food_log_entry_path(day_date: @date.iso8601, id: @entry.id), method: :patch do |f|
+    .mb-4
+      = f.label :quantity_g, "Grams", class: "label"
+      = f.number_field :quantity_g, step: 0.01, min: 0.01, class: "input w-full", autofocus: true
+      - if @entry.errors[:quantity_g].any?
+        %p.field-error= @entry.errors[:quantity_g].first
+
+    .flex.justify-between.items-center.gap-3.mt-4.text-sm
+      %p.text-text-secondary
+        = "#{@entry.calories.round} kcal"
+        %span.mx-1 &middot;
+        = "P #{@entry.protein.round(1)}g"
+        %span.mx-1 &middot;
+        = "C #{@entry.carbs.round(1)}g"
+        %span.mx-1 &middot;
+        = "F #{@entry.fat.round(1)}g"
+
+    .mt-6.space-y-3
+      = render ButtonComponent.new(label: "Save", tag: :input, type: :submit)
+      .text-center
+        = link_to "Delete entry", day_food_log_entry_path(day_date: @date.iso8601, id: @entry.id), data: { turbo_method: :delete, turbo_confirm: "Delete this entry?" }, class: "text-danger text-sm font-medium"
