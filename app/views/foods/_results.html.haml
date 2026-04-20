@@ -11,7 +11,8 @@
   - fiber = result.fiber.to_f
   - source = result.respond_to?(:source) ? result.source : "usda"
 
-  %div.border-b.border-border.py-3{ data: { food_result: true } }
+  - has_meal_context = @meal.present? && @date.present?
+  %div.border-b.border-border.py-3{ data: { food_result: true }.merge(has_meal_context ? { meal_context_active: true } : {}) }
     .flex.justify-between.items-start
       .min-w-0.flex-1.mr-3
         %p.font-medium.text-text.truncate= result.name

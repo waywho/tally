@@ -54,6 +54,34 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  # Meal context
+  test "index shows meal context header when meal param present" do
+    login(@account)
+    get foods_path(meal: "breakfast", date: "2026-04-19")
+
+    assert_response :success
+    assert_select "[data-meal-context]", /Adding to Breakfast/
+    assert_select "[data-meal-context]", /Apr 19/
+  end
+
+  test "index does not show meal context header without meal param" do
+    login(@account)
+    get foods_path
+
+    assert_response :success
+    assert_select "[data-meal-context]", count: 0
+  end
+
+  test "index passes meal context to results" do
+    5.times { |i| create(:food, name: "Chicken breast #{i}", source: :off, external_id: "ctx-#{i}") }
+
+    login(@account)
+    get foods_path(q: "chicken", meal: "lunch", date: "2026-04-19")
+
+    assert_response :success
+    assert_select "[data-food-result][data-meal-context-active]"
+  end
+
   # New
   test "new renders form when authenticated" do
     login(@account)

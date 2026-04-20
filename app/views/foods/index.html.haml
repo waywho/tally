@@ -1,6 +1,14 @@
 %h1.text-xl.font-bold.mb-4 Search Foods
 
+- if @meal.present? && @date.present?
+  %div.text-sm.text-text-secondary.mb-3.font-medium{ data: { meal_context: true } }
+    Adding to #{@meal.capitalize} &middot; #{Date.parse(@date).strftime("%b %-d")}
+
 = form_with url: foods_path, method: :get, data: { controller: "search", search_target: "form", turbo_frame: "food_search_results" } do
+  - if @meal.present?
+    %input{ type: "hidden", name: "meal", value: @meal }
+  - if @date.present?
+    %input{ type: "hidden", name: "date", value: @date }
   .relative
     %input.input.w-full.pl-10{ type: "text", name: "q", value: @query, placeholder: "Search foods...", autocomplete: "off", data: { search_target: "input", action: "input->search#debounce" } }
     %div.absolute.left-3{ class: "top-1/2 -translate-y-1/2 text-text-secondary" }

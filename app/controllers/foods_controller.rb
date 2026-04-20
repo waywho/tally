@@ -9,6 +9,8 @@ class FoodsController < ApplicationController
     else
       []
     end
+    @meal = params[:meal]
+    @date = params[:date]
   end
 
   def new
