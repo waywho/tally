@@ -64,6 +64,6 @@ class FoodLogEntriesController < ApplicationController
   end
 
   def entry_params
-    params.require(:food_log_entry).permit(:food_id, :meal, :quantity_g)
+    params.require(:food_log_entry).permit(:food_id, :meal, :weight)
   end
 end

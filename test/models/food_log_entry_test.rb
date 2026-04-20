@@ -61,26 +61,26 @@ class FoodLogEntryTest < ActiveSupport::TestCase
     assert_includes entry.errors[:meal], "can't be blank"
   end
 
-  test "invalid without quantity_g" do
-    entry = build(:food_log_entry, quantity_g: nil)
+  test "invalid without weight" do
+    entry = build(:food_log_entry, weight: nil)
     assert_not entry.valid?
-    assert entry.errors[:quantity_g].any?
+    assert entry.errors[:weight].any?
   end
 
-  test "invalid with quantity_g of zero" do
-    entry = build(:food_log_entry, quantity_g: 0)
+  test "invalid with weight of zero" do
+    entry = build(:food_log_entry, weight: 0)
     assert_not entry.valid?
-    assert entry.errors[:quantity_g].any?
+    assert entry.errors[:weight].any?
   end
 
-  test "invalid with negative quantity_g" do
-    entry = build(:food_log_entry, quantity_g: -10)
+  test "invalid with negative weight" do
+    entry = build(:food_log_entry, weight: -10)
     assert_not entry.valid?
-    assert entry.errors[:quantity_g].any?
+    assert entry.errors[:weight].any?
   end
 
-  test "valid with positive quantity_g" do
-    entry = build(:food_log_entry, quantity_g: 150)
+  test "valid with positive weight" do
+    entry = build(:food_log_entry, weight: 150)
     assert entry.valid?
   end
 
@@ -114,32 +114,32 @@ class FoodLogEntryTest < ActiveSupport::TestCase
 
   # Computed methods
   test "calories computed from food per 100g and quantity" do
-    entry = build(:food_log_entry, food: @food, quantity_g: 200)
+    entry = build(:food_log_entry, food: @food, weight: 200)
     assert_equal 500.0, entry.calories
   end
 
   test "protein computed from food per 100g and quantity" do
-    entry = build(:food_log_entry, food: @food, quantity_g: 200)
+    entry = build(:food_log_entry, food: @food, weight: 200)
     assert_equal 20.0, entry.protein
   end
 
   test "carbs computed from food per 100g and quantity" do
-    entry = build(:food_log_entry, food: @food, quantity_g: 200)
+    entry = build(:food_log_entry, food: @food, weight: 200)
     assert_equal 60.0, entry.carbs
   end
 
   test "fat computed from food per 100g and quantity" do
-    entry = build(:food_log_entry, food: @food, quantity_g: 200)
+    entry = build(:food_log_entry, food: @food, weight: 200)
     assert_equal 24.0, entry.fat
   end
 
   test "fiber computed from food per 100g and quantity" do
-    entry = build(:food_log_entry, food: @food, quantity_g: 200)
+    entry = build(:food_log_entry, food: @food, weight: 200)
     assert_equal 6.0, entry.fiber
   end
 
   test "computed values work with decimal quantities" do
-    entry = build(:food_log_entry, food: @food, quantity_g: 150)
+    entry = build(:food_log_entry, food: @food, weight: 150)
     assert_equal 375.0, entry.calories
     assert_equal 15.0, entry.protein
     assert_equal 45.0, entry.carbs

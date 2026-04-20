@@ -4,6 +4,6 @@ FactoryBot.define do
     food
     logged_on { Date.current }
     meal { :breakfast }
-    quantity_g { 100.0 }
+    weight { 100.0 }
   end
 end

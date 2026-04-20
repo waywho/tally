@@ -27,8 +27,8 @@ class DaysControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "shows entries grouped by meal" do
-    breakfast_entry = create(:food_log_entry, user: @user, food: @food, logged_on: Date.current, meal: :breakfast, quantity_g: 200)
-    lunch_entry = create(:food_log_entry, user: @user, food: @food, logged_on: Date.current, meal: :lunch, quantity_g: 150)
+    breakfast_entry = create(:food_log_entry, user: @user, food: @food, logged_on: Date.current, meal: :breakfast, weight: 200)
+    lunch_entry = create(:food_log_entry, user: @user, food: @food, logged_on: Date.current, meal: :lunch, weight: 150)
 
     login(@account)
     get today_path
@@ -43,7 +43,7 @@ class DaysControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "shows calorie summary card with consumed and target" do
-    create(:food_log_entry, user: @user, food: @food, logged_on: Date.current, meal: :breakfast, quantity_g: 200)
+    create(:food_log_entry, user: @user, food: @food, logged_on: Date.current, meal: :breakfast, weight: 200)
 
     login(@account)
     get today_path
@@ -63,7 +63,7 @@ class DaysControllerTest < ActionDispatch::IntegrationTest
 
   test "does not show other user's entries" do
     other_user = create(:user)
-    create(:food_log_entry, user: other_user, food: @food, logged_on: Date.current, meal: :breakfast, quantity_g: 100)
+    create(:food_log_entry, user: other_user, food: @food, logged_on: Date.current, meal: :breakfast, weight: 100)
 
     login(@account)
     get today_path

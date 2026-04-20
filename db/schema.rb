@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_20_063632) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_20_213810) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -52,9 +52,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_20_063632) do
     t.bigint "food_id", null: false
     t.date "logged_on", null: false
     t.integer "meal", null: false
-    t.decimal "quantity_g", precision: 8, scale: 2, null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.decimal "weight", precision: 8, scale: 2, null: false
     t.index ["food_id"], name: "index_food_log_entries_on_food_id"
     t.index ["user_id", "food_id"], name: "index_food_log_entries_on_user_id_and_food_id"
     t.index ["user_id", "logged_on"], name: "index_food_log_entries_on_user_id_and_logged_on"

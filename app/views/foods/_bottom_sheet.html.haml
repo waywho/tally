@@ -22,8 +22,8 @@
 
       %div{ data: { controller: "quantity-preview" } }
         .mb-4
-          = label_tag :quantity_g, "Grams", class: "label"
-          %input.input.w-full.text-center.text-2xl.font-bold{ type: "number", name: "food_log_entry[quantity_g]", step: "0.01", min: "0.01", placeholder: "0", autofocus: true, data: { quantity_preview_target: "input", action: "input->quantity-preview#update" } }
+          = label_tag :weight, "Grams", class: "label"
+          %input.input.w-full.text-center.text-2xl.font-bold{ type: "number", name: "food_log_entry[weight]", step: "0.01", min: "0.01", placeholder: "0", autofocus: true, data: { quantity_preview_target: "input", action: "input->quantity-preview#update" } }
 
         .bg-primary-tint.rounded-md.p-3.mb-4
           %p.text-xs.font-medium.text-text-secondary.mb-1 This food

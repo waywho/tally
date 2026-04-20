@@ -31,7 +31,7 @@
                 .flex.justify-between.items-center.px-4.py-3.border-b.border-border{ data: { entry_id: entry.id } }
                   .min-w-0.flex-1
                     %p.font-medium.text-text.truncate= entry.food.name
-                    %p.text-xs.text-text-secondary= "#{entry.quantity_g.to_i}g"
+                    %p.text-xs.text-text-secondary= "#{entry.weight.to_i}g"
                   %span.text-sm.font-semibold.text-text.whitespace-nowrap= "#{entry.calories.round} kcal"
           - else
             .px-4.py-6.text-center.text-text-secondary.text-sm{ data: { empty_meal: true } }

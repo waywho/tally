@@ -6,10 +6,10 @@
 
   = form_with model: @entry, url: day_food_log_entry_path(day_date: @date.iso8601, id: @entry.id), method: :patch do |f|
     .mb-4
-      = f.label :quantity_g, "Grams", class: "label"
-      = f.number_field :quantity_g, step: 0.01, min: 0.01, class: "input w-full", autofocus: true
-      - if @entry.errors[:quantity_g].any?
-        %p.field-error= @entry.errors[:quantity_g].first
+      = f.label :weight, "Grams", class: "label"
+      = f.number_field :weight, step: 0.01, min: 0.01, class: "input w-full", autofocus: true
+      - if @entry.errors[:weight].any?
+        %p.field-error= @entry.errors[:weight].first
 
     .flex.justify-between.items-center.gap-3.mt-4.text-sm
       %p.text-text-secondary

@@ -6,25 +6,25 @@ class FoodLogEntry < ApplicationRecord
 
   validates :logged_on, presence: true
   validates :meal, presence: true
-  validates :quantity_g, presence: true, numericality: { greater_than: 0 }
+  validates :weight, presence: true, numericality: { greater_than: 0 }
 
   def calories
-    food.calories * quantity_g / 100
+    food.calories * weight / 100
   end
 
   def protein
-    food.protein * quantity_g / 100
+    food.protein * weight / 100
   end
 
   def carbs
-    food.carbs * quantity_g / 100
+    food.carbs * weight / 100
   end
 
   def fat
-    food.fat * quantity_g / 100
+    food.fat * weight / 100
   end
 
   def fiber
-    food.fiber * quantity_g / 100
+    food.fiber * weight / 100
   end
 end
