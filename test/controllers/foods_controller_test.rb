@@ -206,6 +206,39 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
+  # Templates section
+  test "index shows templates section when meal context and templates exist" do
+    food = create(:food, name: "Eggs", calories: 150)
+    template = create(:meal_template, user: @user, name: "Quick Breakfast")
+    create(:meal_template_item, meal_template: template, food: food, weight: 100)
+
+    login(@account)
+    get foods_path(meal: "breakfast", date: "2026-04-21")
+
+    assert_response :success
+    assert_select "[data-templates-section]"
+    assert_select "[data-templates-section]", text: /Quick Breakfast/
+  end
+
+  test "index does not show templates section without meal param" do
+    template = create(:meal_template, user: @user, name: "Quick Breakfast")
+    create(:meal_template_item, meal_template: template)
+
+    login(@account)
+    get foods_path
+
+    assert_response :success
+    assert_select "[data-templates-section]", count: 0
+  end
+
+  test "index does not show templates section when user has no templates" do
+    login(@account)
+    get foods_path(meal: "breakfast", date: "2026-04-21")
+
+    assert_response :success
+    assert_select "[data-templates-section]", count: 0
+  end
+
   private
 
   def login(account)

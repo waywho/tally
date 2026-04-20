@@ -5,6 +5,8 @@
     %div.text-sm.text-text-secondary.mb-3.font-medium{ data: { meal_context: true } }
       Adding to #{@meal.capitalize} &middot; #{Date.parse(@date).strftime("%b %-d")}
 
+  = render "meal_templates/templates_section", meal_templates: @meal_templates, date: @date, meal: @meal
+
   = form_with url: foods_path, method: :get, data: { controller: "search", search_target: "form", turbo_frame: "food_search_results" } do
     - if @meal.present?
       %input{ type: "hidden", name: "meal", value: @meal }

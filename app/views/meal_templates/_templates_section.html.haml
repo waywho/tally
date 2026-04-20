@@ -1,0 +1,22 @@
+- if meal_templates.any?
+  %div{ data: { templates_section: true } }
+    %h2.text-sm.font-semibold.text-text-secondary.mb-2 Templates
+    = render CardComponent.new(class: "divide-y divide-gray-100 mb-4") do
+      - meal_templates.each do |template|
+        - total_calories = template.meal_template_items.sum { |item| item.food.calories * item.weight / 100 }.round
+        - item_count = template.meal_template_items.size
+
+        .flex.justify-between.items-center.px-4.py-3
+          .min-w-0.flex-1
+            %p.font-medium.text-text.truncate= template.name
+            %p.text-xs.text-text-secondary
+              = "#{total_calories} kcal"
+              %span.mx-1 &middot;
+              = pluralize(item_count, "item")
+          = form_with url: log_meal_template_path(template), method: :post, class: "ml-3" do
+            %input{ type: "hidden", name: "date", value: date }
+            %input{ type: "hidden", name: "meal", value: meal }
+            %button.text-sm.font-semibold.text-primary.cursor-pointer{ type: "submit" } Log
+
+    .text-center.mb-4
+      = link_to "Manage templates", meal_templates_path, class: "text-xs text-text-secondary hover:text-primary"

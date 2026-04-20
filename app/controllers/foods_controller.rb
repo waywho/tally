@@ -11,6 +11,13 @@ class FoodsController < ApplicationController
     end
     @meal = params[:meal]
     @date = params[:date]
+    @meal_templates = if @meal.present? && @date.present?
+      current_user.meal_templates
+        .includes(meal_template_items: :food)
+        .order(updated_at: :desc)
+    else
+      []
+    end
   end
 
   def new
