@@ -1,0 +1,8 @@
+- @page_title = "Edit Recipe"
+
+%h1.text-xl.font-bold.mb-4 Edit Recipe
+
+= render "form", recipe: @recipe, foods: @foods, url: recipe_path(@recipe), submit_label: "Save Changes"
+
+%p.text-center.text-sm.text-text-secondary.mt-4
+  = link_to "Back to recipe", recipe_path(@recipe), class: "text-primary"

@@ -1,0 +1,8 @@
+- @page_title = "Create Recipe"
+
+%h1.text-xl.font-bold.mb-4 Create Recipe
+
+= render "form", recipe: @recipe, foods: @foods, url: recipes_path, submit_label: "Create Recipe"
+
+%p.text-center.text-sm.text-text-secondary.mt-4
+  = link_to "Back to recipes", recipes_path, class: "text-primary"

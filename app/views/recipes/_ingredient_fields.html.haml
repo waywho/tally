@@ -1,0 +1,16 @@
+.ingredient-row.grid.grid-cols-12.gap-2.items-end.mb-2{ data: { recipe_ingredients_target: "row" } }
+  .col-span-6
+    - if index == 0
+      %label.label Ingredient
+    = form.select :food_id, foods.map { |f| [f.name, f.id] }, { include_blank: "Select food..." }, class: "input w-full"
+  .col-span-4
+    - if index == 0
+      %label.label Weight (g)
+    = form.number_field :weight, class: "input w-full", min: 0, step: "any", placeholder: "grams"
+  .col-span-2.flex.items-center
+    - if index == 0
+      %label.label.invisible &nbsp;
+    - if form.object.persisted?
+      = form.hidden_field :_destroy, value: "0", data: { recipe_ingredients_target: "destroyField" }
+    = form.hidden_field :id if form.object.persisted?
+    %button.text-red-500.text-sm.cursor-pointer.hover\:text-red-700{ type: "button", data: { action: "click->recipe-ingredients#remove" } } Remove

@@ -1,0 +1,46 @@
+- @page_title = @recipe.name
+
+%h1.text-xl.font-bold.mb-4= @recipe.name
+
+= render CardComponent.new(class: "p-6 mb-6") do
+  %h2.text-lg.font-semibold.text-text.mb-4 Ingredients
+  - if @recipe_ingredients.any?
+    .divide-y.divide-gray-100
+      - @recipe_ingredients.each do |ingredient|
+        .py-2.flex.justify-between.items-center
+          .text-text= ingredient.food.name
+          .text-sm.text-text-secondary= "#{ingredient.weight}g"
+
+= render CardComponent.new(class: "p-6 mb-6") do
+  %h2.text-lg.font-semibold.text-text.mb-4 Nutrition (per 100g)
+  .grid.grid-cols-2.gap-4
+    .text-center
+      .text-2xl.font-bold.text-text= @recipe.food.calories.round
+      .text-sm.text-text-secondary Calories
+    .text-center
+      .text-2xl.font-bold.text-text= @recipe.food.protein.round(1)
+      .text-sm.text-text-secondary Protein (g)
+    .text-center
+      .text-2xl.font-bold.text-text= @recipe.food.carbs.round(1)
+      .text-sm.text-text-secondary Carbs (g)
+    .text-center
+      .text-2xl.font-bold.text-text= @recipe.food.fat.round(1)
+      .text-sm.text-text-secondary Fat (g)
+    .text-center
+      .text-2xl.font-bold.text-text= @recipe.food.fiber.round(1)
+      .text-sm.text-text-secondary Fiber (g)
+
+= render CardComponent.new(class: "p-6 mb-6") do
+  %h2.text-lg.font-semibold.text-text.mb-4 Serving Info
+  .text-sm.text-text-secondary
+    %p= "#{pluralize(@recipe.servings_in_recipe, 'serving')} per recipe"
+    %p= "#{@recipe.food.serving_size&.round}g per serving"
+
+.flex.gap-4
+  = link_to edit_recipe_path(@recipe) do
+    = render ButtonComponent.new(label: "Edit Recipe", scheme: :secondary, size: :md)
+  = button_to recipe_path(@recipe), method: :delete, data: { turbo_confirm: "Delete this recipe?" }, class: "inline-block" do
+    = render ButtonComponent.new(label: "Delete Recipe", scheme: :secondary, size: :md)
+
+%p.text-center.text-sm.text-text-secondary.mt-4
+  = link_to "Back to recipes", recipes_path, class: "text-primary"

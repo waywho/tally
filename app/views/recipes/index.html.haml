@@ -1,0 +1,23 @@
+- @page_title = "Recipes"
+
+%h1.text-xl.font-bold.mb-4 Recipes
+
+.mb-4
+  = link_to new_recipe_path do
+    = render ButtonComponent.new(label: "Create Recipe", scheme: :primary, size: :md)
+
+- if @recipes.any?
+  = render CardComponent.new(class: "divide-y divide-gray-100") do
+    - @recipes.each do |recipe|
+      %div{ data: { recipe: true } }
+        = link_to recipe_path(recipe), class: "block p-4 hover:bg-gray-50 transition-colors" do
+          .flex.justify-between.items-center
+            .font-medium.text-text= recipe.name
+            .text-sm.text-text-secondary
+              = "#{recipe.food.calories.round} kcal/100g"
+              %span.mx-1 &middot;
+              = pluralize(recipe.servings_in_recipe, "serving")
+- else
+  = render CardComponent.new(class: "p-6 text-center text-text-secondary") do
+    %p You haven't created any recipes yet.
+    %p.mt-2= link_to "Create your first recipe", new_recipe_path, class: "text-primary font-semibold"
