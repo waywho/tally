@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-APP_NAME="tally"
+APP_NAME="tally-quest"
 DB_NAME="tally-db"
 REGION="lhr"
 

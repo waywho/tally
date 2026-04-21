@@ -1,4 +1,4 @@
-app = 'tally'
+app = 'tally-quest'
 primary_region = 'lhr'
 
 [build]
