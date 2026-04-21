@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+cd "$(dirname "$0")/.."
 
 APP_NAME="tally"
 DB_NAME="tally-db"
@@ -31,11 +32,9 @@ fly postgres attach "$DB_NAME" --app "$APP_NAME" || echo "May already be attache
 echo ""
 echo "--- Creating auxiliary databases ---"
 echo "Connecting to Postgres to create cache, queue, and cable databases..."
-fly postgres connect --app "$DB_NAME" --command "
-CREATE DATABASE tally_production_cache;
-CREATE DATABASE tally_production_queue;
-CREATE DATABASE tally_production_cable;
-" || echo "Databases may already exist, continuing..."
+fly postgres connect --app "$DB_NAME" --command "CREATE DATABASE tally_production_cache;" || echo "tally_production_cache may already exist, continuing..."
+fly postgres connect --app "$DB_NAME" --command "CREATE DATABASE tally_production_queue;" || echo "tally_production_queue may already exist, continuing..."
+fly postgres connect --app "$DB_NAME" --command "CREATE DATABASE tally_production_cable;" || echo "tally_production_cable may already exist, continuing..."
 
 # 5. Build auxiliary DATABASE_URLs
 # Extract the DATABASE_URL from Fly secrets to construct auxiliary URLs
