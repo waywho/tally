@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+APP_NAME="tally"
+DB_NAME="tally-db"
+REGION="lhr"
+
+echo "=== Fly.io Setup for Tally ==="
+echo ""
+
+# 1. Create the Fly app
+echo "--- Creating Fly app: $APP_NAME ---"
+fly apps create "$APP_NAME" --org personal || echo "App may already exist, continuing..."
+
+# 2. Create the Postgres cluster
+echo ""
+echo "--- Creating Postgres cluster: $DB_NAME ---"
+fly postgres create \
+  --name "$DB_NAME" \
+  --region "$REGION" \
+  --vm-size shared-cpu-1x \
+  --initial-cluster-size 1 \
+  --volume-size 10 || echo "Postgres cluster may already exist, continuing..."
+
+# 3. Attach Postgres to the app (sets DATABASE_URL automatically)
+echo ""
+echo "--- Attaching Postgres to app ---"
+fly postgres attach "$DB_NAME" --app "$APP_NAME" || echo "May already be attached, continuing..."
+
+# 4. Create auxiliary databases
+echo ""
+echo "--- Creating auxiliary databases ---"
+echo "Connecting to Postgres to create cache, queue, and cable databases..."
+fly postgres connect --app "$DB_NAME" --command "
+CREATE DATABASE tally_production_cache;
+CREATE DATABASE tally_production_queue;
+CREATE DATABASE tally_production_cable;
+" || echo "Databases may already exist, continuing..."
+
+# 5. Build auxiliary DATABASE_URLs
+# Extract the DATABASE_URL from Fly secrets to construct auxiliary URLs
+echo ""
+echo "--- Setting auxiliary database URLs ---"
+echo "Fetching DATABASE_URL to construct auxiliary URLs..."
+echo ""
+echo "NOTE: You need to manually set these secrets using the DATABASE_URL format."
+echo "Run 'fly secrets list --app $APP_NAME' to see DATABASE_URL,"
+echo "then set auxiliary URLs by replacing the database name in the URL:"
+echo ""
+echo "  fly secrets set --app $APP_NAME \\"
+echo "    CACHE_DATABASE_URL=\"postgres://.../<db_cache>\" \\"
+echo "    QUEUE_DATABASE_URL=\"postgres://.../<db_queue>\" \\"
+echo "    CABLE_DATABASE_URL=\"postgres://.../<db_cable>\""
+echo ""
+
+# 6. Set RAILS_MASTER_KEY
+echo "--- Setting RAILS_MASTER_KEY ---"
+if [ -f config/master.key ]; then
+  fly secrets set --app "$APP_NAME" RAILS_MASTER_KEY="$(cat config/master.key)"
+  echo "RAILS_MASTER_KEY set from config/master.key"
+else
+  echo "WARNING: config/master.key not found. Set it manually:"
+  echo "  fly secrets set --app $APP_NAME RAILS_MASTER_KEY=<your-key>"
+fi
+
+echo ""
+echo "=== Setup complete ==="
+echo ""
+echo "Next steps:"
+echo "  1. Set the auxiliary database URLs (see above)"
+echo "  2. Point tally.quest DNS to Fly: fly certs create --app $APP_NAME tally.quest"
+echo "  3. Deploy: fly deploy --app $APP_NAME"
