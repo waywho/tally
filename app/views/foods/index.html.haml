@@ -2,13 +2,13 @@
   %h1.text-xl.font-bold.mb-4 Search Foods
 
   - if @meal.present? && @date.present?
-    %div.bg-primary-tint.-mx-4.px-4.py-3.mb-3{ data: { meal_context: true } }
-      %div.text-sm.text-text-secondary.font-medium
+    %div.mb-3{ data: { meal_context: true } }
+      %div.text-sm.text-text-secondary.font-medium.mb-2
         Adding to
         %span.text-primary.font-semibold= @meal.capitalize
         &middot; #{Date.parse(@date).strftime("%b %-d")}
       - if @meal_totals && @meal_totals[:calories] > 0
-        .flex.items-center.gap-x-2.text-xs.text-text-secondary{ class: "mt-0.5" }
+        .bg-primary-tint.-mx-4.px-4.py-2.flex.items-center.gap-x-2.text-xs.text-text-secondary
           %span.font-medium.text-text= "#{@meal_totals[:calories].round} kcal"
           %span
             = t('macros.protein')
