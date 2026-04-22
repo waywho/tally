@@ -2,7 +2,7 @@
   %h1.text-xl.font-bold.mb-4 Search Foods
 
   - if @meal.present? && @date.present?
-    %div.mb-3{ data: { meal_context: true } }
+    %div.bg-primary-tint.-mx-4.px-4.py-3.mb-3{ data: { meal_context: true } }
       %div.text-sm.text-text-secondary.font-medium
         Adding to
         %span.text-primary.font-semibold= @meal.capitalize
