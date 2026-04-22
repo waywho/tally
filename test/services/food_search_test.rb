@@ -172,6 +172,64 @@ class FoodSearchTest < ActiveSupport::TestCase
     assert results.any? { |r| r.is_a?(Food) && r.user? && r.creator_id == user.id }
   end
 
+  test "skips OFF results that lack a barcode (no way to dedupe)" do
+    off_client = Minitest::Mock.new
+    usda_client = Minitest::Mock.new
+
+    with_barcode = Off::FoodResult.new(
+      barcode: "1234", name: "Apple Juice", brand: "Brand",
+      calories: 50.0, protein: 0.0, carbs: 12.0, fat: 0.0, fiber: 0.0,
+      serving_size: 100.0, serving_label: "100g"
+    )
+    without_barcode = Off::FoodResult.new(
+      barcode: nil, name: "Apple Snack", brand: nil,
+      calories: 100.0, protein: 1.0, carbs: 20.0, fat: 0.0, fiber: 1.0,
+      serving_size: 100.0, serving_label: "100g"
+    )
+    persisted = create(:food, name: "Apple Juice", source: :off, external_id: "1234")
+
+    off_client.expect(:search, [with_barcode, without_barcode]) { true }
+    off_client.expect(:persist, persisted) { |r| r.barcode == "1234" }
+    usda_client.expect(:search, []) { true }
+
+    results = FoodSearch.call("apple", off_client: off_client, usda_client: usda_client)
+
+    off_client.verify  # only one persist call — the barcode-less one was skipped
+    assert results.none? { |r| r.respond_to?(:name) && r.name == "Apple Snack" }
+  end
+
+  test "ranks exact/prefix matches above longer branded names" do
+    # All three match "apple" but differ in match quality and source.
+    apple_raw = create(:food, name: "Apple, raw, with skin", source: :usda, external_id: "usda-apple")
+    branded_long = create(:food, name: "Apple & Raisin Oat Bar", source: :off, external_id: "off-long")
+    substring = create(:food, name: "Pineapple chunks", source: :off, external_id: "off-sub")
+
+    off_client = Minitest::Mock.new
+    usda_client = Minitest::Mock.new
+    off_client.expect(:search, []) { true }
+    usda_client.expect(:search, []) { true }
+
+    results = FoodSearch.call("apple", off_client: off_client, usda_client: usda_client)
+
+    assert_equal apple_raw.id, results.first.id, "USDA whole-food should rank first"
+    assert_equal substring.id, results.last.id, "substring-only match should rank last"
+  end
+
+  test "exact name match ranks first regardless of source" do
+    exact = create(:food, name: "Apple", source: :off, external_id: "exact")
+    prefix = create(:food, name: "Apple, raw", source: :usda, external_id: "prefix")
+
+    off_client = Minitest::Mock.new
+    usda_client = Minitest::Mock.new
+    off_client.expect(:search, []) { true }
+    usda_client.expect(:search, []) { true }
+
+    results = FoodSearch.call("apple", off_client: off_client, usda_client: usda_client)
+
+    assert_equal exact.id, results.first.id
+    assert_equal prefix.id, results.second.id
+  end
+
   test "excludes other users custom foods from results" do
     other_user = create(:user)
     create(:food, name: "Chicken other", source: :user, external_id: nil, creator: other_user)
