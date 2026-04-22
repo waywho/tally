@@ -7,14 +7,14 @@
   - if @subtotal > 0
     .flex.gap-3.mt-1
       %span.text-xs.text-text-secondary
-        %span.font-medium.text-text Protein
+        %span.font-medium.text-text= t('macros.protein')
         = " #{@protein.round(1)}g"
       %span.text-xs.text-text-secondary
-        %span.font-medium.text-text Carbs
+        %span.font-medium.text-text= t('macros.carbs')
         = " #{@carbs.round(1)}g"
       %span.text-xs.text-text-secondary
-        %span.font-medium.text-text Fat
+        %span.font-medium.text-text= t('macros.fat')
         = " #{@fat.round(1)}g"
       %span.text-xs.text-text-secondary
-        %span.font-medium.text-text Fiber
+        %span.font-medium.text-text= t('macros.fiber')
         = " #{@fiber.round(1)}g"

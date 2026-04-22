@@ -17,15 +17,15 @@
           %span{ data: { quantity_preview_target: "calories" } }= @entry.calories.round
           |  kcal
           %span.mx-1 &middot;
-          | Protein
+          = t('macros.protein')
           %span{ data: { quantity_preview_target: "protein" } }= @entry.protein.round(1)
           | g
           %span.mx-1 &middot;
-          | Carbs
+          = t('macros.carbs')
           %span{ data: { quantity_preview_target: "carbs" } }= @entry.carbs.round(1)
           | g
           %span.mx-1 &middot;
-          | Fat
+          = t('macros.fat')
           %span{ data: { quantity_preview_target: "fat" } }= @entry.fat.round(1)
           | g
 

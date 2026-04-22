@@ -28,6 +28,11 @@
 #       enabled: "ON"
 
 en:
+  macros:
+    protein: "Protein"
+    carbs: "Carbs"
+    fat: "Fat"
+    fiber: "Fiber"
   flash:
     settings_saved: "Settings saved."
     account_created: "Your account has been created. Please check your email to verify your account."

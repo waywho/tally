@@ -35,16 +35,16 @@
                     %p.text-xs.text-text-secondary= "#{entry.weight.to_i}g"
                     .flex.gap-2.mt-1
                       %span.text-xs.text-text-secondary
-                        %span.font-medium.text-text Protein
+                        %span.font-medium.text-text= t('macros.protein')
                         = " #{entry.protein.round(1)}g"
                       %span.text-xs.text-text-secondary
-                        %span.font-medium.text-text Carbs
+                        %span.font-medium.text-text= t('macros.carbs')
                         = " #{entry.carbs.round(1)}g"
                       %span.text-xs.text-text-secondary
-                        %span.font-medium.text-text Fat
+                        %span.font-medium.text-text= t('macros.fat')
                         = " #{entry.fat.round(1)}g"
                       %span.text-xs.text-text-secondary
-                        %span.font-medium.text-text Fiber
+                        %span.font-medium.text-text= t('macros.fiber')
                         = " #{entry.fiber.round(1)}g"
                   %span.text-sm.font-semibold.text-text.whitespace-nowrap= "#{entry.calories.round} kcal"
             .px-4.py-2.text-center
