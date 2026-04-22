@@ -26,10 +26,10 @@ export default class extends Controller {
     const grams = parseFloat(this.inputTarget.value) || 0
     const factor = grams / 100
 
-    this.caloriesTarget.textContent = Math.round(this.caloriesPer100Value * factor)
-    this.proteinTarget.textContent = (this.proteinPer100Value * factor).toFixed(1)
-    this.carbsTarget.textContent = (this.carbsPer100Value * factor).toFixed(1)
-    this.fatTarget.textContent = (this.fatPer100Value * factor).toFixed(1)
-    this.fiberTarget.textContent = (this.fiberPer100Value * factor).toFixed(1)
+    if (this.hasCaloriesTarget) this.caloriesTarget.textContent = Math.round(this.caloriesPer100Value * factor)
+    if (this.hasProteinTarget) this.proteinTarget.textContent = (this.proteinPer100Value * factor).toFixed(1)
+    if (this.hasCarbsTarget) this.carbsTarget.textContent = (this.carbsPer100Value * factor).toFixed(1)
+    if (this.hasFatTarget) this.fatTarget.textContent = (this.fatPer100Value * factor).toFixed(1)
+    if (this.hasFiberTarget) this.fiberTarget.textContent = (this.fiberPer100Value * factor).toFixed(1)
   }
 }

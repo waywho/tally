@@ -20,12 +20,22 @@ export default class extends Controller {
     this.foodNameTarget.textContent = dataset.sheetNameParam
     this.foodCaloriesTarget.textContent = `${Math.round(parseFloat(dataset.sheetCaloriesParam))} kcal per 100g`
 
-    // Store per-100g values for the preview controller
-    this.panelTarget.dataset.caloriesPer100 = dataset.sheetCaloriesParam
-    this.panelTarget.dataset.proteinPer100 = dataset.sheetProteinParam
-    this.panelTarget.dataset.carbsPer100 = dataset.sheetCarbsParam
-    this.panelTarget.dataset.fatPer100 = dataset.sheetFatParam
-    this.panelTarget.dataset.fiberPer100 = dataset.sheetFiberParam
+    // Store per-100g values on the quantity-preview controller element
+    const previewEl = this.panelTarget.querySelector('[data-controller="quantity-preview"]')
+    if (previewEl) {
+      previewEl.dataset.quantityPreviewCaloriesPer100Value = dataset.sheetCaloriesParam
+      previewEl.dataset.quantityPreviewProteinPer100Value = dataset.sheetProteinParam
+      previewEl.dataset.quantityPreviewCarbsPer100Value = dataset.sheetCarbsParam
+      previewEl.dataset.quantityPreviewFatPer100Value = dataset.sheetFatParam
+      previewEl.dataset.quantityPreviewFiberPer100Value = dataset.sheetFiberParam
+
+      // Reset the grams input and preview when opening a new food
+      const input = previewEl.querySelector('input[type="number"]')
+      if (input) {
+        input.value = ""
+        input.dispatchEvent(new Event("input"))
+      }
+    }
 
     // Set food_id or USDA fields
     if (dataset.sheetFoodIdParam) {
