@@ -18,12 +18,21 @@ class ButtonComponent < ViewComponent::Base
   end
 
   def call
-    content_tag(
-      @tag,
-      @label,
-      **@system_arguments,
-      class: [class_names, @system_arguments[:class]].compact.join(" ")
-    )
+    if @tag == :input
+      tag(
+        :input,
+        **@system_arguments,
+        value: @label,
+        class: [class_names, @system_arguments[:class]].compact.join(" ")
+      )
+    else
+      content_tag(
+        @tag,
+        @label,
+        **@system_arguments,
+        class: [class_names, @system_arguments[:class]].compact.join(" ")
+      )
+    end
   end
 
   private
