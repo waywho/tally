@@ -3,7 +3,9 @@
 
   - if @meal.present? && @date.present?
     %div.text-sm.text-text-secondary.mb-3.font-medium{ data: { meal_context: true } }
-      Adding to #{@meal.capitalize} &middot; #{Date.parse(@date).strftime("%b %-d")}
+      Adding to
+      %span.text-primary.font-semibold= @meal.capitalize
+      &middot; #{Date.parse(@date).strftime("%b %-d")}
 
   = render "meal_templates/templates_section", meal_templates: @meal_templates, date: @date, meal: @meal
 
