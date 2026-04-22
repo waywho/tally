@@ -24,15 +24,16 @@
 
       .px-5.pb-5
         %div{ data: { controller: "quantity-preview" } }
-          .mb-3
-            = label_tag :weight, "Grams", class: "label"
-            %input.input.w-full.text-center.text-xl.font-bold{ type: "number", name: "food_log_entry[weight]", step: "0.01", min: "0.01", placeholder: "0", autofocus: true, data: { quantity_preview_target: "input", action: "input->quantity-preview#update" } }
+          .flex.gap-3.mb-3
+            .flex-1
+              .label kcal
+              .w-full.bg-primary-tint.rounded-md.border.border-transparent.px-3.py-2.text-center.text-xl.font-bold.text-primary{ data: { quantity_preview_target: "calories" } } 0
+            .flex-1
+              = label_tag :weight, "Grams", class: "label"
+              %input.input.w-full.text-center.text-xl.font-bold{ type: "number", name: "food_log_entry[weight]", step: "0.01", min: "0.01", placeholder: "0", autofocus: true, data: { quantity_preview_target: "input", action: "input->quantity-preview#update" } }
 
           .bg-primary-tint.rounded-md.px-3.py-2.mb-4
-            .flex.items-baseline.gap-1
-              %span.text-base.font-bold.text-text{ data: { quantity_preview_target: "calories" } } 0
-              %span.text-xs.text-text-secondary kcal
-            .flex.flex-wrap.gap-x-3.gap-y-1.mt-1.text-xs.text-text-secondary
+            .flex.flex-wrap.gap-x-3.gap-y-1.text-xs.text-text-secondary
               %span.whitespace-nowrap
                 = t('macros.protein')
                 %b.text-text{ data: { quantity_preview_target: "protein" } } 0g
