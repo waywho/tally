@@ -32,8 +32,7 @@
                 .flex.justify-between.items-start.px-4.py-3.border-b.border-border{ data: { entry_id: entry.id } }
                   .min-w-0.flex-1
                     %p.font-medium.text-text.truncate= entry.food.name
-                    %p.text-xs.text-text-secondary= "#{entry.weight.to_i}g"
-                    .flex.gap-2.mt-1
+                    .flex.flex-wrap.gap-2.mt-1
                       %span.text-xs.text-text-secondary
                         %span.font-medium.text-text= t('macros.protein')
                         = " #{entry.protein.round(1)}g"
@@ -46,7 +45,9 @@
                       %span.text-xs.text-text-secondary
                         %span.font-medium.text-text= t('macros.fiber')
                         = " #{entry.fiber.round(1)}g"
-                  %span.text-sm.font-semibold.text-text.whitespace-nowrap= "#{entry.calories.round} kcal"
+                  .text-right.ml-3.shrink-0
+                    %p.text-sm.font-semibold.text-text= "#{entry.calories.round} kcal"
+                    %p.text-xs.text-text-secondary.mt-1= "#{entry.weight.to_i}g"
             .px-4.py-2.text-center
               = link_to "Save as template", new_meal_template_path(date: @date.iso8601, meal: meal), class: "text-xs text-primary font-medium", data: { save_template: true }
           - else
