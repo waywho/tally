@@ -1,5 +1,5 @@
-%div.hidden.fixed.z-50{ style: "top: 0; left: 0; right: 0; bottom: 0; width: 100vw; height: 100vh; overflow: hidden; background: rgba(0,0,0,0.5);", data: { sheet_target: "overlay", action: "click->sheet#closeOnOverlay" } }
-  %div.absolute.bg-bg.rounded-t-xl{ style: "bottom: 0; left: 0; right: 0; max-height: 80vh; overflow-y: auto;", data: { sheet_target: "panel" } }
+%div.hidden.fixed.inset-x-0.top-0.z-50.flex.items-end.overflow-hidden{ class: "h-dvh bg-black/50", data: { sheet_target: "overlay", action: "click->sheet#closeOnOverlay" } }
+  %div.w-full.bg-bg.rounded-t-xl.overflow-y-auto{ class: "max-h-[85dvh]", data: { sheet_target: "panel" } }
     -# Drag handle
     .flex.justify-center.pt-3.pb-2
       .w-10.h-1.rounded-full.bg-border
@@ -22,7 +22,7 @@
       %input{ type: "hidden", name: "usda_fat", disabled: true, data: { sheet_target: "usdaFatField" } }
       %input{ type: "hidden", name: "usda_fiber", disabled: true, data: { sheet_target: "usdaFiberField" } }
 
-      .px-5
+      .px-5.pb-5
         %div{ data: { controller: "quantity-preview" } }
           .mb-3
             = label_tag :weight, "Grams", class: "label"
@@ -50,4 +50,4 @@
                 %b.text-text{ data: { quantity_preview_target: "fiber" } } 0
                 g
 
-        = render ButtonComponent.new(label: "Add to #{@meal&.capitalize}", tag: :input, type: :submit, class: "w-full mb-5")
+        = render ButtonComponent.new(label: "Add to #{@meal&.capitalize}", tag: :input, type: :submit, class: "w-full")
