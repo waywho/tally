@@ -23,6 +23,16 @@ class FoodsController < ApplicationController
     else
       []
     end
+    @quick_add_last_weights = if @quick_add_foods.any?
+      current_user.food_log_entries
+        .where(food_id: @quick_add_foods.map(&:id))
+        .select("DISTINCT ON (food_id) food_id, weight")
+        .order("food_id, created_at DESC")
+        .to_a
+        .to_h { |e| [e.food_id, e.weight] }
+    else
+      {}
+    end
     @meal_totals = if @meal.present? && @date.present?
       date = Date.parse(@date) rescue nil
       entries = date ? current_user.food_log_entries.where(logged_on: date, meal: @meal) : []

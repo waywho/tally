@@ -37,7 +37,7 @@
 
   = render "meal_templates/templates_section", meal_templates: @meal_templates, date: @date, meal: @meal
 
-  = render "quick_add", quick_add_foods: @quick_add_foods
+  = render "quick_add", quick_add_foods: @quick_add_foods, last_weights: @quick_add_last_weights
 
   = turbo_frame_tag "food_search_results", class: "block mt-1" do
     = render "results"

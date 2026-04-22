@@ -8,7 +8,8 @@
         - carbs = food.carbs.to_f
         - fat = food.fat.to_f
         - fiber = food.fiber.to_f
-        %div.py-3.px-4.cursor-pointer{ class: "hover:bg-primary-tint transition-colors", data: { food_result: true, quick_add: true, action: "click->sheet#open", sheet_name_param: food.name, sheet_calories_param: calories, sheet_protein_param: protein, sheet_carbs_param: carbs, sheet_fat_param: fat, sheet_fiber_param: fiber, sheet_food_id_param: food.id } }
+        - last_weight = (defined?(last_weights) && last_weights) ? last_weights[food.id] : nil
+        %div.py-3.px-4.cursor-pointer{ class: "hover:bg-primary-tint transition-colors", data: { food_result: true, quick_add: true, action: "click->sheet#open", sheet_name_param: food.name, sheet_calories_param: calories, sheet_protein_param: protein, sheet_carbs_param: carbs, sheet_fat_param: fat, sheet_fiber_param: fiber, sheet_food_id_param: food.id, sheet_weight_param: last_weight } }
           .flex.justify-between.items-center
             .min-w-0.flex-1.mr-3
               %p.font-medium.text-text.truncate= food.name

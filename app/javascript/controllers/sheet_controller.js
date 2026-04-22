@@ -29,10 +29,12 @@ export default class extends Controller {
       previewEl.dataset.quantityPreviewFatPer100Value = dataset.sheetFatParam
       previewEl.dataset.quantityPreviewFiberPer100Value = dataset.sheetFiberParam
 
-      // Reset the grams input and preview when opening a new food
+      // Pre-fill the grams input with the last weight the user used for this
+      // food (passed via sheet-weight-param from quick-add rows) — otherwise
+      // start blank so the preview resets to zero.
       const input = previewEl.querySelector('input[type="number"]')
       if (input) {
-        input.value = ""
+        input.value = dataset.sheetWeightParam || ""
         input.dispatchEvent(new Event("input"))
       }
     }
