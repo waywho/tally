@@ -1,9 +1,17 @@
 %div.hidden.fixed.inset-0.z-50.flex.items-end.justify-center{ style: "background: rgba(0,0,0,0.5);", data: { sheet_target: "overlay", action: "click->sheet#closeOnOverlay" } }
-  %div.bg-bg.rounded-t-xl.w-full.max-w-lg.flex.flex-col{ class: "max-h-[85vh]", data: { sheet_target: "panel" } }
-    .flex.justify-center.pt-4.pb-2
+  %div.bg-bg.rounded-t-xl.w-full.max-w-lg{ style: "max-height: 85vh; display: flex; flex-direction: column;", data: { sheet_target: "panel" } }
+    -# Drag handle
+    .flex.justify-center.pt-3.pb-1
       .w-10.h-1.rounded-full.bg-border
 
-    = form_with url: day_food_log_entries_path(day_date: @date), method: :post, class: "flex flex-col flex-1 min-h-0" do |f|
+    -# Header
+    .flex.justify-between.items-start.px-5.pt-2.pb-1
+      .min-w-0.flex-1.mr-3
+        %h2.text-base.font-bold.text-text.truncate{ data: { sheet_target: "foodName" } }
+        %p.text-xs.text-text-secondary{ data: { sheet_target: "foodCalories" } }
+      %button.text-text-secondary.text-xl.shrink-0{ data: { action: "click->sheet#close" } } &times;
+
+    = form_with url: day_food_log_entries_path(day_date: @date), method: :post, style: "display: flex; flex-direction: column; flex: 1; min-height: 0;" do |f|
       %input{ type: "hidden", name: "food_log_entry[meal]", value: @meal }
       %input{ type: "hidden", name: "food_log_entry[food_id]", data: { sheet_target: "foodIdField" } }
       %input{ type: "hidden", name: "usda_fdc_id", disabled: true, data: { sheet_target: "usdaFdcIdField" } }
@@ -15,23 +23,16 @@
       %input{ type: "hidden", name: "usda_fiber", disabled: true, data: { sheet_target: "usdaFiberField" } }
 
       -# Scrollable content
-      .overflow-y-auto.flex-1.px-5
-        .flex.justify-between.items-center.mb-4
-          %h2.text-lg.font-bold.text-text{ data: { sheet_target: "foodName" } }
-          %button.text-text-secondary.text-xl{ data: { action: "click->sheet#close" } } &times;
-
-        %p.text-sm.text-text-secondary.mb-4{ data: { sheet_target: "foodCalories" } }
-
+      .px-5.py-3{ style: "overflow-y: auto; flex: 1;" }
         %div{ data: { controller: "quantity-preview" } }
-          .mb-4
+          .mb-3
             = label_tag :weight, "Grams", class: "label"
-            %input.input.w-full.text-center.text-2xl.font-bold{ type: "number", name: "food_log_entry[weight]", step: "0.01", min: "0.01", placeholder: "0", autofocus: true, data: { quantity_preview_target: "input", action: "input->quantity-preview#update" } }
+            %input.input.w-full.text-center.text-xl.font-bold{ type: "number", name: "food_log_entry[weight]", step: "0.01", min: "0.01", placeholder: "0", autofocus: true, data: { quantity_preview_target: "input", action: "input->quantity-preview#update" } }
 
-          .bg-primary-tint.rounded-md.p-3
-            %p.text-xs.font-medium.text-text-secondary.mb-1 This food
+          .bg-primary-tint.rounded-md.px-3.py-2
             .flex.items-baseline.gap-1
-              %span.text-lg.font-bold.text-text{ data: { quantity_preview_target: "calories" } } 0
-              %span.text-sm.text-text-secondary kcal
+              %span.text-base.font-bold.text-text{ data: { quantity_preview_target: "calories" } } 0
+              %span.text-xs.text-text-secondary kcal
             .flex.gap-3.mt-1.text-xs.text-text-secondary
               %span
                 = t('macros.protein')
@@ -51,5 +52,5 @@
                 g
 
       -# Sticky button footer
-      .px-5.py-4.border-t.border-border
+      .px-5.py-4
         = render ButtonComponent.new(label: "Add to #{@meal&.capitalize}", tag: :input, type: :submit, class: "w-full")
