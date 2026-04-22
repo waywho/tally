@@ -1,35 +1,44 @@
-%h1.text-xl.font-bold.mb-4 Edit Entry
+%h1.text-xl.font-bold.mb-1 Edit Entry
+%div.mb-3.text-sm.text-text-secondary.font-medium
+  Editing
+  %span.text-primary.font-semibold= @entry.meal.capitalize
+  &middot; #{@date.strftime("%b %-d")}
 
 = render CardComponent.new(class: "p-4") do
-  %p.font-medium.text-text.mb-1= @entry.food.name
-  %p.text-sm.text-text-secondary.mb-4= "#{@entry.food.calories.round} kcal per 100g"
+  .mb-4
+    %h2.text-base.font-bold.text-text.truncate= @entry.food.name
+    %p.text-xs.text-text-secondary= "#{@entry.food.calories.round} kcal per 100g"
 
   = form_with model: @entry, url: day_food_log_entry_path(day_date: @date.iso8601, id: @entry.id), method: :patch do |f|
     %div{ data: { controller: "quantity-preview", quantity_preview_calories_per100_value: @entry.food.calories.to_f, quantity_preview_protein_per100_value: @entry.food.protein.to_f, quantity_preview_carbs_per100_value: @entry.food.carbs.to_f, quantity_preview_fat_per100_value: @entry.food.fat.to_f, quantity_preview_fiber_per100_value: @entry.food.fiber.to_f } }
-      .mb-4
-        = f.label :weight, "Grams", class: "label"
-        = f.number_field :weight, step: 0.01, min: 0.01, class: "input w-full", autofocus: true, data: { quantity_preview_target: "input", action: "input->quantity-preview#update" }
-        - if @entry.errors[:weight].any?
-          %p.field-error= @entry.errors[:weight].first
+      .flex.gap-3.mb-3
+        .flex-1
+          .label kcal
+          .w-full.bg-primary-tint.rounded-md.border.border-transparent.px-3.py-2.text-center.text-xl.font-bold.text-primary{ data: { quantity_preview_target: "calories" } }= @entry.calories.round
+        .flex-1
+          = f.label :weight, "Grams", class: "label"
+          = f.number_field :weight, step: 0.01, min: 0.01, class: "input w-full text-center text-xl font-bold", data: { quantity_preview_target: "input", action: "input->quantity-preview#update" }
 
-      .flex.flex-wrap.gap-x-3.gap-y-1.mt-4.text-xs.text-text-secondary
-        %span.whitespace-nowrap
-          %b.text-text{ data: { quantity_preview_target: "calories" } }= @entry.calories.round
-          kcal
-        %span.whitespace-nowrap
-          = t('macros.protein')
-          %b.text-text{ data: { quantity_preview_target: "protein" } }= "#{@entry.protein.round(1)}g"
-        %span.whitespace-nowrap
-          = t('macros.carbs')
-          %b.text-text{ data: { quantity_preview_target: "carbs" } }= "#{@entry.carbs.round(1)}g"
-        %span.whitespace-nowrap
-          = t('macros.fat')
-          %b.text-text{ data: { quantity_preview_target: "fat" } }= "#{@entry.fat.round(1)}g"
-        %span.whitespace-nowrap
-          = t('macros.fiber')
-          %b.text-text{ data: { quantity_preview_target: "fiber" } }= "#{@entry.fiber.to_f.round(1)}g"
+      - if @entry.errors[:weight].any?
+        %p.field-error.mb-2= @entry.errors[:weight].first
 
-    .mt-6.space-y-3
-      = render ButtonComponent.new(label: "Save", tag: :input, type: :submit)
-      .text-center
-        = link_to "Delete entry", day_food_log_entry_path(day_date: @date.iso8601, id: @entry.id), data: { turbo_method: :delete, turbo_confirm: "Delete this entry?" }, class: "text-danger text-sm font-medium"
+      %input.w-full.mb-3.accent-primary{ type: "range", min: "0", max: "500", step: "5", value: @entry.weight.to_f.round, "aria-label": "Adjust grams", data: { quantity_preview_target: "slider", action: "input->quantity-preview#slide" } }
+
+      .bg-primary-tint.rounded-md.px-3.py-2.mb-4
+        .flex.flex-wrap.gap-x-3.gap-y-1.text-xs.text-text-secondary
+          %span.whitespace-nowrap
+            = t('macros.protein')
+            %b.text-text{ data: { quantity_preview_target: "protein" } }= "#{@entry.protein.round(1)}g"
+          %span.whitespace-nowrap
+            = t('macros.carbs')
+            %b.text-text{ data: { quantity_preview_target: "carbs" } }= "#{@entry.carbs.round(1)}g"
+          %span.whitespace-nowrap
+            = t('macros.fat')
+            %b.text-text{ data: { quantity_preview_target: "fat" } }= "#{@entry.fat.round(1)}g"
+          %span.whitespace-nowrap
+            = t('macros.fiber')
+            %b.text-text{ data: { quantity_preview_target: "fiber" } }= "#{@entry.fiber.to_f.round(1)}g"
+
+    = render ButtonComponent.new(label: "Save", tag: :input, type: :submit, class: "w-full")
+    .text-center.mt-3
+      = link_to "Delete entry", day_food_log_entry_path(day_date: @date.iso8601, id: @entry.id), data: { turbo_method: :delete, turbo_confirm: "Delete this entry?" }, class: "text-danger text-sm font-medium"
