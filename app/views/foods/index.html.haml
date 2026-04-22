@@ -1,41 +1,42 @@
 %div{ data: { controller: @meal.present? ? "sheet" : nil } }
-  %h1.text-xl.font-bold.mb-1 Search Foods
+  .sticky.top-0.z-20.bg-bg-page.-mx-4.-mt-6.px-4.pt-6.pb-2
+    %h1.text-xl.font-bold.mb-1 Search Foods
 
-  - if @meal.present? && @date.present?
-    %div.mb-2{ data: { meal_context: true } }
-      %div.text-sm.text-text-secondary.font-medium.mb-1
-        Adding to
-        %span.text-primary.font-semibold= @meal.capitalize
-        &middot; #{Date.parse(@date).strftime("%b %-d")}
-      - if @meal_totals && @meal_totals[:calories] > 0
-        .bg-primary-tint.-mx-4.px-4.py-2.flex.items-center.gap-x-2.text-xs.text-text-secondary
-          %span.font-medium.text-text= "#{@meal_totals[:calories].round} kcal"
-          %span
-            = t('macros.protein')
-            %span.font-medium.text-text= "#{@meal_totals[:protein].round(1)}g"
-          %span
-            = t('macros.carbs')
-            %span.font-medium.text-text= "#{@meal_totals[:carbs].round(1)}g"
-          %span
-            = t('macros.fat')
-            %span.font-medium.text-text= "#{@meal_totals[:fat].round(1)}g"
-          %span
-            = t('macros.fiber')
-            %span.font-medium.text-text= "#{@meal_totals[:fiber].round(1)}g"
+    - if @meal.present? && @date.present?
+      %div.mb-2{ data: { meal_context: true } }
+        %div.text-sm.text-text-secondary.font-medium.mb-1
+          Adding to
+          %span.text-primary.font-semibold= @meal.capitalize
+          &middot; #{Date.parse(@date).strftime("%b %-d")}
+        - if @meal_totals && @meal_totals[:calories] > 0
+          .bg-primary-tint.-mx-4.px-4.py-2.flex.items-center.gap-x-2.text-xs.text-text-secondary
+            %span.font-medium.text-text= "#{@meal_totals[:calories].round} kcal"
+            %span
+              = t('macros.protein')
+              %span.font-medium.text-text= "#{@meal_totals[:protein].round(1)}g"
+            %span
+              = t('macros.carbs')
+              %span.font-medium.text-text= "#{@meal_totals[:carbs].round(1)}g"
+            %span
+              = t('macros.fat')
+              %span.font-medium.text-text= "#{@meal_totals[:fat].round(1)}g"
+            %span
+              = t('macros.fiber')
+              %span.font-medium.text-text= "#{@meal_totals[:fiber].round(1)}g"
+
+    = form_with url: foods_path, method: :get, data: { controller: "search", search_target: "form", turbo_frame: "food_search_results" } do
+      - if @meal.present?
+        %input{ type: "hidden", name: "meal", value: @meal }
+      - if @date.present?
+        %input{ type: "hidden", name: "date", value: @date }
+      .relative
+        %input.input.w-full.pl-10{ type: "text", name: "q", value: @query, placeholder: "Search foods...", autocomplete: "off", data: { search_target: "input", action: "input->search#debounce" } }
+        %div.absolute.left-3{ class: "top-1/2 -translate-y-1/2 text-text-secondary" }
+          != '<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>'
 
   = render "meal_templates/templates_section", meal_templates: @meal_templates, date: @date, meal: @meal
 
   = render "quick_add", quick_add_foods: @quick_add_foods
-
-  = form_with url: foods_path, method: :get, data: { controller: "search", search_target: "form", turbo_frame: "food_search_results" } do
-    - if @meal.present?
-      %input{ type: "hidden", name: "meal", value: @meal }
-    - if @date.present?
-      %input{ type: "hidden", name: "date", value: @date }
-    .relative
-      %input.input.w-full.pl-10{ type: "text", name: "q", value: @query, placeholder: "Search foods...", autocomplete: "off", data: { search_target: "input", action: "input->search#debounce" } }
-      %div.absolute.left-3{ class: "top-1/2 -translate-y-1/2 text-text-secondary" }
-        != '<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>'
 
   = turbo_frame_tag "food_search_results", class: "block mt-1" do
     = render "results"
