@@ -46,7 +46,7 @@
                         %span.font-medium.text-text= t('macros.fiber')
                         = " #{entry.fiber.round(1)}g"
                   .text-right.ml-3.shrink-0
-                    %p.text-sm.font-semibold.text-text= "#{entry.calories.round} kcal"
+                    %p.text-sm.font-medium.text-text= "#{entry.calories.round} kcal"
                     %p.text-xs.text-text-secondary.mt-1= "#{entry.weight.to_i}g"
             .px-4.py-2.text-center
               = link_to "Save as template", new_meal_template_path(date: @date.iso8601, meal: meal), class: "text-xs text-primary font-medium", data: { save_template: true }
