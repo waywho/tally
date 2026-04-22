@@ -1,9 +1,9 @@
 %div{ data: { controller: @meal.present? ? "sheet" : nil } }
-  %h1.text-xl.font-bold.mb-4 Search Foods
+  %h1.text-xl.font-bold.mb-1 Search Foods
 
   - if @meal.present? && @date.present?
-    %div.mb-3{ data: { meal_context: true } }
-      %div.text-sm.text-text-secondary.font-medium.mb-2
+    %div.mb-2{ data: { meal_context: true } }
+      %div.text-sm.text-text-secondary.font-medium.mb-1
         Adding to
         %span.text-primary.font-semibold= @meal.capitalize
         &middot; #{Date.parse(@date).strftime("%b %-d")}
@@ -37,7 +37,7 @@
       %div.absolute.left-3{ class: "top-1/2 -translate-y-1/2 text-text-secondary" }
         != '<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>'
 
-  = turbo_frame_tag "food_search_results", class: "block mt-4" do
+  = turbo_frame_tag "food_search_results", class: "block mt-1" do
     = render "results"
 
   - if @meal.present? && @date.present?
