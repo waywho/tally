@@ -23,6 +23,17 @@ class FoodsController < ApplicationController
     else
       []
     end
+    @meal_totals = if @meal.present? && @date.present?
+      date = Date.parse(@date) rescue nil
+      entries = date ? current_user.food_log_entries.where(logged_on: date, meal: @meal) : []
+      {
+        calories: entries.sum(&:calories),
+        protein: entries.sum(&:protein),
+        carbs: entries.sum(&:carbs),
+        fat: entries.sum(&:fat),
+        fiber: entries.sum(&:fiber)
+      }
+    end
   end
 
   def new

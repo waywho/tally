@@ -2,10 +2,26 @@
   %h1.text-xl.font-bold.mb-4 Search Foods
 
   - if @meal.present? && @date.present?
-    %div.text-sm.text-text-secondary.mb-3.font-medium{ data: { meal_context: true } }
-      Adding to
-      %span.text-primary.font-semibold= @meal.capitalize
-      &middot; #{Date.parse(@date).strftime("%b %-d")}
+    %div.mb-3{ data: { meal_context: true } }
+      %div.text-sm.text-text-secondary.font-medium
+        Adding to
+        %span.text-primary.font-semibold= @meal.capitalize
+        &middot; #{Date.parse(@date).strftime("%b %-d")}
+      - if @meal_totals && @meal_totals[:calories] > 0
+        .flex.items-center.gap-x-2.text-xs.text-text-secondary{ class: "mt-0.5" }
+          %span.font-medium.text-text= "#{@meal_totals[:calories].round} kcal"
+          %span
+            = t('macros.protein')
+            %span.font-medium.text-text= "#{@meal_totals[:protein].round(1)}g"
+          %span
+            = t('macros.carbs')
+            %span.font-medium.text-text= "#{@meal_totals[:carbs].round(1)}g"
+          %span
+            = t('macros.fat')
+            %span.font-medium.text-text= "#{@meal_totals[:fat].round(1)}g"
+          %span
+            = t('macros.fiber')
+            %span.font-medium.text-text= "#{@meal_totals[:fiber].round(1)}g"
 
   = render "meal_templates/templates_section", meal_templates: @meal_templates, date: @date, meal: @meal
 
