@@ -1,13 +1,13 @@
 %div{ data: { date: @date.iso8601 } }
   .flex.items-center.justify-between.mb-4
-    = link_to day_path(date: (@date - 1.day).iso8601), class: "flex items-center justify-center w-11 h-11 text-text-secondary hover:text-text rounded-full hover:bg-primary-tint transition-colors" do
+    = link_to day_path(date: (@date - 1.day).iso8601), class: "flex items-center justify-center w-11 h-11 text-text-secondary hover:text-text rounded-lg hover:bg-primary-tint border border-border transition-colors" do
       != '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>'
     .text-center{ data: { controller: "date-picker" } }
       %h1.text-lg.font-semibold.text-text.cursor-pointer{ data: { action: "click->date-picker#open" } }
         = @date == Date.current ? "Today" : @date.strftime("%A")
       %p.text-sm.text-text-secondary.cursor-pointer{ data: { action: "click->date-picker#open" } }= @date.strftime("%b %-d, %Y")
       %input.sr-only{ type: "date", value: @date.iso8601, data: { date_picker_target: "input", action: "change->date-picker#navigate" } }
-    = link_to day_path(date: (@date + 1.day).iso8601), class: "flex items-center justify-center w-11 h-11 text-text-secondary hover:text-text rounded-full hover:bg-primary-tint transition-colors" do
+    = link_to day_path(date: (@date + 1.day).iso8601), class: "flex items-center justify-center w-11 h-11 text-text-secondary hover:text-text rounded-lg hover:bg-primary-tint border border-border transition-colors" do
       != '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>'
 
   -# Calorie summary card
