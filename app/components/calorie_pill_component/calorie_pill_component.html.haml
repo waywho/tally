@@ -18,7 +18,15 @@
   .h-2.bg-primary-tint.rounded.overflow-hidden
     %div{:class => "h-full rounded #{over_target? ? 'bg-over' : 'bg-primary'}", :style => "width: #{progress_percent}%"}
   .flex.gap-4.mt-3
-    %span.text-xs.text-text-secondary= "#{t('.protein')}: #{@protein}"
-    %span.text-xs.text-text-secondary= "#{t('.carbs')}: #{@carbs}"
-    %span.text-xs.text-text-secondary= "#{t('.fat')}: #{@fat}"
-    %span.text-xs.text-text-secondary= "#{t('.fiber')}: #{@fiber}"
+    %span.text-xs.text-text-secondary
+      %span.font-semibold.text-text= t('.protein')
+      = ": #{@protein}"
+    %span.text-xs.text-text-secondary
+      %span.font-semibold.text-text= t('.carbs')
+      = ": #{@carbs}"
+    %span.text-xs.text-text-secondary
+      %span.font-semibold.text-text= t('.fat')
+      = ": #{@fat}"
+    %span.text-xs.text-text-secondary
+      %span.font-semibold.text-text= t('.fiber')
+      = ": #{@fiber}"
