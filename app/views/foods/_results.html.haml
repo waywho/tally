@@ -19,8 +19,8 @@
   %div.border-b.border-border.py-3{ data: { food_result: true }.merge(has_meal_context ? { meal_context_active: true, action: "click->sheet#open", sheet_name_param: result.name, sheet_calories_param: calories, sheet_protein_param: protein, sheet_carbs_param: carbs, sheet_fat_param: fat, sheet_fiber_param: fiber, sheet_food_id_param: food_id, sheet_usda_fdc_id_param: usda_fdc_id } : {}), class: has_meal_context ? "cursor-pointer hover:bg-primary-tint transition-colors" : nil }
     .flex.justify-between.items-start
       .min-w-0.flex-1.mr-3
-        %p.text-sm.font-medium.text-text.truncate= result.name
-        %p.text-sm.text-text-secondary{ class: "mt-0.5" }
+        %p.text-sm.font-semibold.text-text.truncate= result.name
+        %p.text-xs.text-text-secondary{ class: "mt-0.5" }
           - case source
           - when "usda"
             %span.inline-block.text-xs.font-medium.rounded{ class: "px-1.5 py-0.5", style: "background: #F0FDF4; color: #16A34A;" } USDA
@@ -31,7 +31,7 @@
           - if result.brand.present?
             = result.brand
       .text-right.whitespace-nowrap
-        %p.text-sm.font-medium.text-text= "#{calories.round} kcal"
+        %p.text-sm.font-semibold.text-text= "#{calories.round} kcal"
     .flex.flex-wrap.gap-2.text-xs.text-text-secondary{ class: "mt-1.5" }
       %span
         Protein
