@@ -12,22 +12,22 @@
         - if @entry.errors[:weight].any?
           %p.field-error= @entry.errors[:weight].first
 
-      .flex.justify-between.items-center.gap-3.mt-4.text-sm
-        %p.text-text-secondary
-          %span{ data: { quantity_preview_target: "calories" } }= @entry.calories.round
-          |  kcal
-          %span.mx-1 &middot;
+      .flex.flex-wrap.gap-x-3.gap-y-1.mt-4.text-xs.text-text-secondary
+        %span.whitespace-nowrap
+          %b.text-text{ data: { quantity_preview_target: "calories" } }= @entry.calories.round
+          kcal
+        %span.whitespace-nowrap
           = t('macros.protein')
-          %span{ data: { quantity_preview_target: "protein" } }= @entry.protein.round(1)
-          | g
-          %span.mx-1 &middot;
+          %b.text-text{ data: { quantity_preview_target: "protein" } }= "#{@entry.protein.round(1)}g"
+        %span.whitespace-nowrap
           = t('macros.carbs')
-          %span{ data: { quantity_preview_target: "carbs" } }= @entry.carbs.round(1)
-          | g
-          %span.mx-1 &middot;
+          %b.text-text{ data: { quantity_preview_target: "carbs" } }= "#{@entry.carbs.round(1)}g"
+        %span.whitespace-nowrap
           = t('macros.fat')
-          %span{ data: { quantity_preview_target: "fat" } }= @entry.fat.round(1)
-          | g
+          %b.text-text{ data: { quantity_preview_target: "fat" } }= "#{@entry.fat.round(1)}g"
+        %span.whitespace-nowrap
+          = t('macros.fiber')
+          %b.text-text{ data: { quantity_preview_target: "fiber" } }= "#{@entry.fiber.to_f.round(1)}g"
 
     .mt-6.space-y-3
       = render ButtonComponent.new(label: "Save", tag: :input, type: :submit)
