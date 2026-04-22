@@ -19,14 +19,14 @@
     %div{:class => "h-full rounded #{over_target? ? 'bg-over' : 'bg-primary'}", :style => "width: #{progress_percent}%"}
   .flex.gap-4.mt-3
     %span.text-xs.text-text-secondary
-      %span.font-semibold.text-text= t('macros.protein')
+      %span.font-semibold.text-text>= t('macros.protein')
       = ": #{@protein}"
     %span.text-xs.text-text-secondary
-      %span.font-semibold.text-text= t('macros.carbs')
+      %span.font-semibold.text-text>= t('macros.carbs')
       = ": #{@carbs}"
     %span.text-xs.text-text-secondary
-      %span.font-semibold.text-text= t('macros.fat')
+      %span.font-semibold.text-text>= t('macros.fat')
       = ": #{@fat}"
     %span.text-xs.text-text-secondary
-      %span.font-semibold.text-text= t('macros.fiber')
+      %span.font-semibold.text-text>= t('macros.fiber')
       = ": #{@fiber}"

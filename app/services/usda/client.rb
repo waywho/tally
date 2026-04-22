@@ -5,8 +5,9 @@ module Usda
     BASE_URL = "https://api.nal.usda.gov/fdc/v1".freeze
     DATA_TYPES = ["Foundation", "SR Legacy"].freeze
 
-    def initialize(api_key: nil)
-      @api_key = api_key || ENV.fetch("USDA_API_KEY") { raise ConfigError, "USDA_API_KEY environment variable is not set" }
+    def initialize(api_key: Rails.application.credentials.usda_api_key)
+      @api_key = api_key
+      raise ConfigError, "USDA API key not configured" if @api_key.blank?
     end
 
     def search(query, page: 1, per_page: 20)
