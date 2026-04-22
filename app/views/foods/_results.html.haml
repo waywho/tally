@@ -32,20 +32,21 @@
             = result.brand
       .text-right.whitespace-nowrap
         %p.text-sm.font-semibold.text-text= "#{calories.round} kcal"
-    .flex.items-center.gap-x-2.gap-y-0.text-xs.text-text-secondary{ class: "mt-1.5" }
-      %span
-        Protein
-        %span.font-medium.text-text= "#{protein.round(1)}g"
-      %span
-        Carbs
-        %span.font-medium.text-text= "#{carbs.round(1)}g"
-      %span
-        Fat
-        %span.font-medium.text-text= "#{fat.round(1)}g"
-      %span
-        Fiber
-        %span.font-medium.text-text= "#{fiber.round(1)}g"
-      %span{ style: "font-size: 11px;" } per 100g
+    .flex.justify-between.items-center{ class: "mt-1.5" }
+      .flex.items-center.gap-x-2.text-xs.text-text-secondary
+        %span
+          Protein
+          %span.font-medium.text-text= "#{protein.round(1)}g"
+        %span
+          Carbs
+          %span.font-medium.text-text= "#{carbs.round(1)}g"
+        %span
+          Fat
+          %span.font-medium.text-text= "#{fat.round(1)}g"
+        %span
+          Fiber
+          %span.font-medium.text-text= "#{fiber.round(1)}g"
+      .text-right.whitespace-nowrap.text-text-secondary{ style: "font-size: 11px;" } per 100g
     - if !has_meal_context && result.is_a?(Food) && result.user? && result.creator_id == current_user&.id
       .flex.gap-3.mt-1.text-xs
         = link_to "Edit", edit_food_path(result), class: "text-primary"
