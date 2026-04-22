@@ -30,7 +30,9 @@
               .w-full.bg-primary-tint.rounded-md.border.border-transparent.px-3.py-2.text-center.text-xl.font-bold.text-primary{ data: { quantity_preview_target: "calories" } } 0
             .flex-1
               = label_tag :weight, "Grams", class: "label"
-              %input.input.w-full.text-center.text-xl.font-bold{ type: "number", name: "food_log_entry[weight]", step: "0.01", min: "0.01", placeholder: "0", autofocus: true, data: { quantity_preview_target: "input", action: "input->quantity-preview#update" } }
+              %input.input.w-full.text-center.text-xl.font-bold{ type: "number", name: "food_log_entry[weight]", step: "0.01", min: "0.01", placeholder: "0", data: { quantity_preview_target: "input", action: "input->quantity-preview#update" } }
+
+          %input.w-full.mb-3.accent-primary{ type: "range", min: "0", max: "500", step: "5", value: "0", "aria-label": "Adjust grams", data: { quantity_preview_target: "slider", action: "input->quantity-preview#slide" } }
 
           .bg-primary-tint.rounded-md.px-3.py-2.mb-4
             .flex.flex-wrap.gap-x-3.gap-y-1.text-xs.text-text-secondary

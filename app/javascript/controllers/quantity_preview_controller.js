@@ -13,7 +13,7 @@ import { Controller } from "@hotwired/stimulus"
 //     ...
 //   </div>
 export default class extends Controller {
-  static targets = ["input", "calories", "protein", "carbs", "fat", "fiber"]
+  static targets = ["input", "slider", "calories", "protein", "carbs", "fat", "fiber"]
   static values = {
     caloriesPer100: { type: Number, default: 0 },
     proteinPer100: { type: Number, default: 0 },
@@ -26,10 +26,23 @@ export default class extends Controller {
     const grams = parseFloat(this.inputTarget.value) || 0
     const factor = grams / 100
 
+    // Keep the slider in sync whenever the input changes — typing, programmatic
+    // pre-fill (quick-add), or the slider itself all route through update().
+    // Clamp to the slider's max so values above the range don't break it.
+    if (this.hasSliderTarget) {
+      const max = parseFloat(this.sliderTarget.max) || 0
+      this.sliderTarget.value = max > 0 ? Math.min(grams, max) : grams
+    }
+
     if (this.hasCaloriesTarget) this.caloriesTarget.textContent = Math.round(this.caloriesPer100Value * factor)
     if (this.hasProteinTarget) this.proteinTarget.textContent = `${(this.proteinPer100Value * factor).toFixed(1)}g`
     if (this.hasCarbsTarget) this.carbsTarget.textContent = `${(this.carbsPer100Value * factor).toFixed(1)}g`
     if (this.hasFatTarget) this.fatTarget.textContent = `${(this.fatPer100Value * factor).toFixed(1)}g`
     if (this.hasFiberTarget) this.fiberTarget.textContent = `${(this.fiberPer100Value * factor).toFixed(1)}g`
+  }
+
+  slide() {
+    this.inputTarget.value = this.sliderTarget.value
+    this.update()
   }
 }
