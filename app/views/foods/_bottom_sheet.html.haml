@@ -32,22 +32,18 @@
             .flex.items-baseline.gap-1
               %span.text-base.font-bold.text-text{ data: { quantity_preview_target: "calories" } } 0
               %span.text-xs.text-text-secondary kcal
-            .flex.gap-3.mt-1.text-xs.text-text-secondary
-              %span
+            .flex.flex-wrap.gap-x-3.gap-y-1.mt-1.text-xs.text-text-secondary
+              %span.whitespace-nowrap
                 = t('macros.protein')
-                %b.text-text{ data: { quantity_preview_target: "protein" } } 0
-                g
-              %span
+                %b.text-text{ data: { quantity_preview_target: "protein" } } 0g
+              %span.whitespace-nowrap
                 = t('macros.carbs')
-                %b.text-text{ data: { quantity_preview_target: "carbs" } } 0
-                g
-              %span
+                %b.text-text{ data: { quantity_preview_target: "carbs" } } 0g
+              %span.whitespace-nowrap
                 = t('macros.fat')
-                %b.text-text{ data: { quantity_preview_target: "fat" } } 0
-                g
-              %span
+                %b.text-text{ data: { quantity_preview_target: "fat" } } 0g
+              %span.whitespace-nowrap
                 = t('macros.fiber')
-                %b.text-text{ data: { quantity_preview_target: "fiber" } } 0
-                g
+                %b.text-text{ data: { quantity_preview_target: "fiber" } } 0g
 
         = render ButtonComponent.new(label: "Add to #{@meal&.capitalize}", tag: :input, type: :submit, class: "w-full")
