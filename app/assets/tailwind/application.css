@@ -32,4 +32,15 @@
   .field-error {
     @apply text-sm text-over mt-1;
   }
+
+  /* Range slider track — replace the browser default (dark on macOS) with
+     a soft gray that matches the app's neutral border. accent-primary still
+     colors the thumb. */
+  input[type="range"]::-webkit-slider-runnable-track {
+    @apply h-1.5 rounded-full bg-border;
+  }
+
+  input[type="range"]::-moz-range-track {
+    @apply h-1.5 rounded-full bg-border border-0;
+  }
 }
