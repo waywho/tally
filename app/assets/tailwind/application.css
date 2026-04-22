@@ -41,12 +41,26 @@
     @apply appearance-none bg-transparent cursor-pointer;
   }
 
+  /* Filled portion (left of thumb) in primary green, rest in neutral gray.
+     JS updates --range-progress (0–100) on input; Firefox uses its native
+     ::-moz-range-progress pseudo-element instead. */
   input[type="range"]::-webkit-slider-runnable-track {
-    @apply h-1.5 rounded-full bg-border;
+    @apply h-1.5 rounded-full;
+    background: linear-gradient(
+      to right,
+      var(--color-primary) 0%,
+      var(--color-primary) var(--range-progress, 0%),
+      var(--color-border) var(--range-progress, 0%),
+      var(--color-border) 100%
+    );
   }
 
   input[type="range"]::-moz-range-track {
     @apply h-1.5 rounded-full bg-border border-0;
+  }
+
+  input[type="range"]::-moz-range-progress {
+    @apply h-1.5 rounded-full bg-primary;
   }
 
   input[type="range"]::-webkit-slider-thumb {

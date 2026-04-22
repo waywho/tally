@@ -22,6 +22,10 @@ export default class extends Controller {
     fiberPer100: { type: Number, default: 0 }
   }
 
+  connect() {
+    this.update()
+  }
+
   update() {
     const grams = parseFloat(this.inputTarget.value) || 0
     const factor = grams / 100
@@ -31,7 +35,13 @@ export default class extends Controller {
     // Clamp to the slider's max so values above the range don't break it.
     if (this.hasSliderTarget) {
       const max = parseFloat(this.sliderTarget.max) || 0
-      this.sliderTarget.value = max > 0 ? Math.min(grams, max) : grams
+      const clamped = max > 0 ? Math.min(grams, max) : grams
+      this.sliderTarget.value = clamped
+      // Fill the left part of the track in primary color. WebKit has no
+      // native progress pseudo-element, so we paint a gradient via a CSS var.
+      const min = parseFloat(this.sliderTarget.min) || 0
+      const pct = max > min ? ((clamped - min) / (max - min)) * 100 : 0
+      this.sliderTarget.style.setProperty("--range-progress", `${pct}%`)
     }
 
     if (this.hasCaloriesTarget) this.caloriesTarget.textContent = Math.round(this.caloriesPer100Value * factor)
