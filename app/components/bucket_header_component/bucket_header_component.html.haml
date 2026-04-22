@@ -1,5 +1,20 @@
-.bg-primary-tint.px-4.py-3.flex.justify-between.items-center
-  .flex.items-center.gap-3
-    %span.font-semibold.text-primary.text-sm= @meal
-    %span.text-text-secondary.text-xs= t(".cal", count: @subtotal)
-  %a.text-primary.text-sm.font-medium.hover:text-primary-light{:href => "#{@add_path}"}= t(".add")
+.bg-primary-tint.px-4.py-3
+  .flex.justify-between.items-center
+    .flex.items-center.gap-3
+      %span.font-semibold.text-primary.text-sm= @meal
+      %span.text-text-secondary.text-xs= t(".cal", count: @subtotal)
+    %a.text-primary.text-sm.font-medium{ href: @add_path, class: "hover:text-primary-light" }= t(".add")
+  - if @subtotal > 0
+    .flex.gap-3.mt-1
+      %span.text-xs.text-text-secondary
+        %span.font-medium.text-text P
+        = " #{@protein.round(1)}g"
+      %span.text-xs.text-text-secondary
+        %span.font-medium.text-text C
+        = " #{@carbs.round(1)}g"
+      %span.text-xs.text-text-secondary
+        %span.font-medium.text-text F
+        = " #{@fat.round(1)}g"
+      %span.text-xs.text-text-secondary
+        %span.font-medium.text-text Fiber
+        = " #{@fiber.round(1)}g"
