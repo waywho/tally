@@ -16,7 +16,7 @@
   - food_id = is_local ? result.id : nil
   - usda_fdc_id = result.is_a?(Usda::FoodResult) ? result.fdc_id : nil
 
-  %div.border-b.border-border.py-3{ data: { food_result: true }.merge(has_meal_context ? { meal_context_active: true, action: "click->sheet#open", sheet_name_param: result.name, sheet_calories_param: calories, sheet_protein_param: protein, sheet_carbs_param: carbs, sheet_fat_param: fat, sheet_fiber_param: fiber, sheet_food_id_param: food_id, sheet_usda_fdc_id_param: usda_fdc_id } : {}), class: has_meal_context ? "cursor-pointer hover:bg-primary-tint transition-colors" : nil }
+  %div.border-b.border-border.py-3.px-3{ data: { food_result: true }.merge(has_meal_context ? { meal_context_active: true, action: "click->sheet#open", sheet_name_param: result.name, sheet_calories_param: calories, sheet_protein_param: protein, sheet_carbs_param: carbs, sheet_fat_param: fat, sheet_fiber_param: fiber, sheet_food_id_param: food_id, sheet_usda_fdc_id_param: usda_fdc_id } : {}), class: has_meal_context ? "cursor-pointer hover:bg-primary-tint transition-colors" : nil }
     .flex.justify-between.items-start
       .min-w-0.flex-1.mr-3
         %p.text-sm.font-semibold.text-text.truncate= result.name
