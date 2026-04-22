@@ -33,14 +33,28 @@
     @apply text-sm text-over mt-1;
   }
 
-  /* Range slider track — replace the browser default (dark on macOS) with
-     a soft gray that matches the app's neutral border. accent-primary still
-     colors the thumb. */
+  /* Range slider — replace the browser defaults (dark track on macOS) with
+     a soft gray track plus an explicit primary-colored thumb. Once the track
+     pseudo-element is styled, WebKit no longer auto-centers the default thumb,
+     so we size and offset it manually. */
+  input[type="range"] {
+    @apply appearance-none bg-transparent cursor-pointer;
+  }
+
   input[type="range"]::-webkit-slider-runnable-track {
     @apply h-1.5 rounded-full bg-border;
   }
 
   input[type="range"]::-moz-range-track {
     @apply h-1.5 rounded-full bg-border border-0;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    @apply appearance-none w-4 h-4 rounded-full bg-primary;
+    margin-top: -5px; /* center 16px thumb on 6px track */
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    @apply w-4 h-4 rounded-full bg-primary border-0;
   }
 }
