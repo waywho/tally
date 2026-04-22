@@ -30,9 +30,10 @@
       - if @date.present?
         %input{ type: "hidden", name: "date", value: @date }
       .relative
-        %input.input.w-full.pl-10{ type: "text", name: "q", value: @query, placeholder: "Search foods...", autocomplete: "off", data: { search_target: "input", action: "input->search#debounce" } }
+        %input.input.w-full.pl-10.pr-10.peer{ type: "text", name: "q", value: @query, placeholder: "Search foods...", autocomplete: "off", data: { search_target: "input", action: "input->search#debounce" } }
         %div.absolute.left-3{ class: "top-1/2 -translate-y-1/2 text-text-secondary" }
           != '<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>'
+        %button.absolute.right-3.text-xl.leading-none.text-text-secondary{ type: "button", "aria-label": "Clear search", class: "top-1/2 -translate-y-1/2 peer-placeholder-shown:hidden hover:text-text", data: { action: "click->search#clear" } } &times;
 
   = render "meal_templates/templates_section", meal_templates: @meal_templates, date: @date, meal: @meal
 
