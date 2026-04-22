@@ -15,7 +15,7 @@
     = render CaloriePillComponent.new(eaten: @daily_totals[:calories].round, target: @daily_totals[:target_calories], protein: "#{@daily_totals[:protein].round}g / #{@daily_totals[:target_protein]}g", carbs: "#{@daily_totals[:carbs].round}g / #{@daily_totals[:target_carbs]}g", fat: "#{@daily_totals[:fat].round}g / #{@daily_totals[:target_fat]}g", fiber: "#{@daily_totals[:fiber].round}g / #{@daily_totals[:target_fiber]}g")
 
   -# Meal buckets
-  .mt-3.space-y-4
+  .mt-2.space-y-2
     - FoodLogEntry.meals.each_key do |meal|
       - entries = @entries_by_meal[meal]
       - subtotal = @meal_totals[meal][:calories].round
