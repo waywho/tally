@@ -15,7 +15,7 @@
     = render CaloriePillComponent.new(eaten: @daily_totals[:calories].round, target: @daily_totals[:target_calories], protein: "#{@daily_totals[:protein].round}g / #{@daily_totals[:target_protein]}g", carbs: "#{@daily_totals[:carbs].round}g / #{@daily_totals[:target_carbs]}g", fat: "#{@daily_totals[:fat].round}g / #{@daily_totals[:target_fat]}g", fiber: "#{@daily_totals[:fiber].round}g / #{@daily_totals[:target_fiber]}g")
 
   -# Meal buckets
-  .mt-6.space-y-4
+  .mt-3.space-y-4
     - FoodLogEntry.meals.each_key do |meal|
       - entries = @entries_by_meal[meal]
       - subtotal = @meal_totals[meal][:calories].round
@@ -31,7 +31,7 @@
               = link_to edit_day_food_log_entry_path(day_date: @date.iso8601, id: entry.id), class: "block" do
                 .flex.justify-between.items-start.px-4.py-3.border-b.border-border{ data: { entry_id: entry.id } }
                   .min-w-0.flex-1
-                    %p.font-medium.text-text.truncate= entry.food.name
+                    %p.text-sm.font-medium.text-text.truncate= entry.food.name
                     .flex.flex-wrap.gap-2.mt-1
                       %span.text-xs.text-text-secondary
                         %span.font-medium.text-text= t('macros.protein')
