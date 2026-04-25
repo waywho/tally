@@ -50,4 +50,4 @@
                 = t('macros.fiber')
                 %b.text-text{ data: { quantity_preview_target: "fiber" } } 0g
 
-        = render ButtonComponent.new(label: "Add to #{@meal&.capitalize}", tag: :input, type: :submit, class: "w-full")
+          = render ButtonComponent.new(label: "Add to #{@meal&.capitalize}", tag: :input, type: :submit, class: "w-full", data: { quantity_preview_target: "submit" })

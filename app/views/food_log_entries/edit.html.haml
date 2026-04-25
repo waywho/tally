@@ -40,6 +40,7 @@
             = t('macros.fiber')
             %b.text-text{ data: { quantity_preview_target: "fiber" } }= "#{@entry.fiber.to_f.round(1)}g"
 
-    = render ButtonComponent.new(label: "Save", tag: :input, type: :submit, class: "w-full")
+      = render ButtonComponent.new(label: "Save", tag: :input, type: :submit, class: "w-full", data: { quantity_preview_target: "submit" })
+
     .text-center.mt-3
       = link_to "Delete entry", day_food_log_entry_path(day_date: @date.iso8601, id: @entry.id), data: { turbo_method: :delete, turbo_confirm: "Delete this entry?" }, class: "text-danger text-sm font-medium"

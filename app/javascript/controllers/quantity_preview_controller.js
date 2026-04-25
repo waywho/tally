@@ -13,7 +13,7 @@ import { Controller } from "@hotwired/stimulus"
 //     ...
 //   </div>
 export default class extends Controller {
-  static targets = ["input", "slider", "calories", "protein", "carbs", "fat", "fiber"]
+  static targets = ["input", "slider", "calories", "protein", "carbs", "fat", "fiber", "submit"]
   static values = {
     caloriesPer100: { type: Number, default: 0 },
     proteinPer100: { type: Number, default: 0 },
@@ -42,6 +42,15 @@ export default class extends Controller {
       const min = parseFloat(this.sliderTarget.min) || 0
       const pct = max > min ? ((clamped - min) / (max - min)) * 100 : 0
       this.sliderTarget.style.setProperty("--range-progress", `${pct}%`)
+    }
+
+    // Disable the submit button when grams is zero — submitting would just
+    // 422 silently, which looks like nothing happened.
+    if (this.hasSubmitTarget) {
+      const valid = grams > 0
+      this.submitTarget.disabled = !valid
+      this.submitTarget.classList.toggle("opacity-50", !valid)
+      this.submitTarget.classList.toggle("cursor-not-allowed", !valid)
     }
 
     if (this.hasCaloriesTarget) this.caloriesTarget.textContent = Math.round(this.caloriesPer100Value * factor)
