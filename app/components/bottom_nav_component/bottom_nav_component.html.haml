@@ -1,0 +1,17 @@
+%nav.fixed.bottom-0.left-0.right-0.z-40.pointer-events-none{ "aria-label": "Primary" }
+  .max-w-lg.mx-auto.px-4{ style: "padding-bottom: env(safe-area-inset-bottom)" }
+    .pointer-events-auto.relative.flex.items-end.justify-around.gap-1.backdrop-blur-md.border.border-border.rounded-full.shadow-lg.px-3.py-2.mb-3{ class: "bg-bg-page/90" }
+      = link_to today_path, class: "flex flex-col items-center justify-center w-14 py-1 text-xs #{today_active? ? 'text-primary' : 'text-text-secondary'}", "aria-current": (today_active? ? "page" : nil) do
+        != '<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12 12 3l9.75 9M4.5 10.5V21h15V10.5"/></svg>'
+        %span Today
+      = link_to foods_path, class: "flex flex-col items-center justify-center w-14 py-1 text-xs #{search_active? ? 'text-primary' : 'text-text-secondary'}", "aria-current": (search_active? ? "page" : nil) do
+        != '<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.3-4.3M10.5 18a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15Z"/></svg>'
+        %span Search
+      = link_to add_path, class: "-translate-y-3 flex items-center justify-center w-14 h-14 rounded-full bg-primary text-white shadow-lg hover:opacity-90 transition", "aria-label": "Add food" do
+        != '<svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>'
+      = link_to recipes_path, class: "flex flex-col items-center justify-center w-14 py-1 text-xs #{recipes_active? ? 'text-primary' : 'text-text-secondary'}", "aria-current": (recipes_active? ? "page" : nil) do
+        != '<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2h13.5v17H6.5A2.5 2.5 0 0 1 4 16.5v-12A2.5 2.5 0 0 1 6.5 2Z"/></svg>'
+        %span Recipes
+      = link_to edit_settings_path, class: "flex flex-col items-center justify-center w-14 py-1 text-xs #{profile_active? ? 'text-primary' : 'text-text-secondary'}", "aria-current": (profile_active? ? "page" : nil) do
+        != '<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 7.5a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.5 20.25a7.5 7.5 0 0 1 15 0"/></svg>'
+        %span Profile
