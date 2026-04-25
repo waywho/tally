@@ -54,4 +54,48 @@ class Usda::NutrientMapperTest < ActiveSupport::TestCase
     assert_equal 0.0, result[:fat]
     assert_equal 0.0, result[:fiber]
   end
+
+  test "uses Atwater General Factors (2047) when 1008 is missing" do
+    food_nutrients = [
+      { "nutrientId" => 2047, "value" => 64.0 },
+      { "nutrientId" => 1003, "value" => 0.15 }
+    ]
+
+    result = Usda::NutrientMapper.extract(food_nutrients)
+
+    assert_equal 64.0, result[:calories]
+  end
+
+  test "uses Atwater Specific Factors (2048) when 1008 and 2047 are missing" do
+    food_nutrients = [
+      { "nutrientId" => 2048, "value" => 52.0 }
+    ]
+
+    result = Usda::NutrientMapper.extract(food_nutrients)
+
+    assert_equal 52.0, result[:calories]
+  end
+
+  test "prefers 1008 over Atwater factors" do
+    food_nutrients = [
+      { "nutrientId" => 1008, "value" => 100.0 },
+      { "nutrientId" => 2047, "value" => 95.0 },
+      { "nutrientId" => 2048, "value" => 90.0 }
+    ]
+
+    result = Usda::NutrientMapper.extract(food_nutrients)
+
+    assert_equal 100.0, result[:calories]
+  end
+
+  test "falls back to next energy ID when first is zero" do
+    food_nutrients = [
+      { "nutrientId" => 1008, "value" => 0.0 },
+      { "nutrientId" => 2047, "value" => 64.0 }
+    ]
+
+    result = Usda::NutrientMapper.extract(food_nutrients)
+
+    assert_equal 64.0, result[:calories]
+  end
 end
