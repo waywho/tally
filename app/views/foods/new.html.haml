@@ -1,8 +1,5 @@
 - @page_title = "Create Food"
 
-%h1.text-xl.font-bold.mb-4 Create Food
+= render PageHeaderComponent.new(title: "New food", back_href: foods_path, back_label: "Back to search")
 
-= render "form", food: @food, url: foods_path, submit_label: "Create Food"
-
-%p.text-center.text-sm.text-text-secondary.mt-4
-  = link_to "Back to search", foods_path, class: "text-primary"
+= render "form", food: @food, url: foods_path, submit_label: "Create food"
