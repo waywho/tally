@@ -1,5 +1,5 @@
 = render CardComponent.new(class: "p-6") do
-  %h2.text-lg.font-semibold.text-text.mb-4= @page_title
+  %h2.text-lg.font-semibold.text-text.text-center.mb-4= @page_title
   = form_tag rodauth.create_account_path, method: :post do
     .mb-4
       %label.label{for: "email"}= rodauth.login_label
