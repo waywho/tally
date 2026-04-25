@@ -1,13 +1,21 @@
 %div{ data: { controller: @meal.present? ? "sheet" : nil } }
   .sticky.top-0.z-20.bg-bg-page.-mx-4.-mt-6.px-4.pt-6.pb-2
-    %h1.text-xl.font-bold.mb-1 Search Foods
+    %h1.text-xl.font-bold.mb-1= @meal.present? ? "Add Food" : "Search Foods"
 
     - if @meal.present? && @date.present?
+      - parsed_date = (Date.parse(@date) rescue Date.current)
+      - date_label = parsed_date == Date.current ? "Today, #{parsed_date.strftime('%b %-d')}" : parsed_date.strftime('%b %-d, %Y')
       %div.mb-2{ data: { meal_context: true } }
-        %div.text-sm.text-text-secondary.font-medium.mb-1
-          Adding to
-          %span.text-primary.font-semibold= @meal.capitalize
-          &middot; #{Date.parse(@date).strftime("%b %-d")}
+        .flex.items-center.gap-1.text-sm.text-text-secondary.font-medium.mb-1
+          %span Adding to
+          = form_with url: foods_path, method: :get, class: "inline-flex", data: { turbo_frame: "_top" } do
+            %input{ type: "hidden", name: "date", value: @date }
+            - if @query.present?
+              %input{ type: "hidden", name: "q", value: @query }
+            %select.text-primary.font-semibold.bg-transparent.border-0.p-0.pr-5.cursor-pointer.appearance-none{ name: "meal", "aria-label": "Meal", onchange: "this.form.submit()", style: "background-image: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='%2316A34A'><path d='M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z'/></svg>\"); background-repeat: no-repeat; background-position: right center; background-size: 14px 14px;" }
+              - FoodLogEntry.meals.each_key do |meal_key|
+                %option{ value: meal_key, selected: (meal_key == @meal) }= meal_key.capitalize
+          %span &middot; #{date_label}
         - if @meal_totals && @meal_totals[:calories] > 0
           .bg-primary-tint.-mx-4.px-4.py-2.flex.items-center.gap-x-2.text-xs.text-text-secondary
             %span.font-medium.text-text= "#{@meal_totals[:calories].round} kcal"
