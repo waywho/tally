@@ -1,6 +1,6 @@
 en:
   cal: "cal"
-  remaining: "%{count} remaining"
+  remaining: "%{count} cal remaining"
   remaining_label: "of %{target} cal remaining"
-  consumed: "%{count} consumed"
-  over: "%{count} over"
+  consumed: "%{count} cal consumed"
+  over: "%{count} cal over"

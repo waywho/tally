@@ -9,7 +9,7 @@ class CaloriePillComponentTest < ViewComponent::TestCase
 
     assert_text "470"
     assert_text "/ 2,000 cal"
-    assert_text "1,530 remaining"
+    assert_text "1,530 cal remaining"
   end
 
   test "renders macro summary with fiber" do
@@ -39,7 +39,7 @@ class CaloriePillComponentTest < ViewComponent::TestCase
       protein: "0g / 0g", carbs: "0g / 0g", fat: "0g / 0g", fiber: "0g / 0g"
     ))
 
-    assert_text "150 over"
+    assert_text "150 cal over"
     assert_selector ".bg-over"
   end
 
@@ -52,7 +52,7 @@ class CaloriePillComponentTest < ViewComponent::TestCase
 
     assert_selector ".text-3xl.font-bold", text: "1,530"
     assert_text "of 2,000 cal remaining"
-    assert_text "470 consumed"
+    assert_text "470 cal consumed"
   end
 
   test "remaining variant progress bar shows remaining percentage" do
@@ -72,7 +72,7 @@ class CaloriePillComponentTest < ViewComponent::TestCase
       variant: :remaining
     ))
 
-    assert_text "150 over"
+    assert_text "150 cal over"
     assert_selector ".bg-over"
   end
 end
