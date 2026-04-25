@@ -1,48 +1,53 @@
 - @page_title = "Settings"
 
+.flex.items-center.gap-3.mb-4
+  = link_to today_path, "aria-label": "Back to today", class: "flex items-center justify-center w-11 h-11 text-text-secondary hover:text-text rounded-lg hover:bg-primary-tint border border-border transition-colors" do
+    != '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>'
+  %h1.text-xl.font-bold.text-text Settings
+
 = form_with model: @user, url: settings_path, method: :patch do |f|
   -# Profile section
-  = render CardComponent.new(class: "p-6 mb-6") do
-    %h2.text-lg.font-semibold.text-text.mb-4 Profile
-    .mb-4
+  = render CardComponent.new(class: "p-6 mb-4") do
+    %h2.text-base.font-bold.text-text.mb-4 Profile
+    .mb-2
       = f.label :display_name, class: "label"
       = f.text_field :display_name, class: "input", placeholder: "Your name"
       - if @user.errors[:display_name].any?
         %p.field-error= @user.errors[:display_name].first
 
   -# Nutrition Targets section
-  = render CardComponent.new(class: "p-6 mb-6") do
-    %h2.text-lg.font-semibold.text-text.mb-4 Nutrition Targets
+  = render CardComponent.new(class: "p-6 mb-4") do
+    %h2.text-base.font-bold.text-text.mb-4 Nutrition Targets
     .mb-4
       = f.label :daily_calorie_target, "Daily calorie target", class: "label"
       = f.number_field :daily_calorie_target, class: "input", min: 1, max: 10000, step: 1
       - if @user.errors[:daily_calorie_target].any?
         %p.field-error= @user.errors[:daily_calorie_target].first
     .grid.grid-cols-2.gap-4
-      .mb-4
+      %div
         = f.label :protein_target, "Protein (g)", class: "label"
         = f.number_field :protein_target, class: "input", min: 0, max: 1000, step: 1
         - if @user.errors[:protein_target].any?
           %p.field-error= @user.errors[:protein_target].first
-      .mb-4
+      %div
         = f.label :carbs_target, "Carbs (g)", class: "label"
         = f.number_field :carbs_target, class: "input", min: 0, max: 1000, step: 1
         - if @user.errors[:carbs_target].any?
           %p.field-error= @user.errors[:carbs_target].first
-      .mb-4
+      %div
         = f.label :fat_target, "Fat (g)", class: "label"
         = f.number_field :fat_target, class: "input", min: 0, max: 1000, step: 1
         - if @user.errors[:fat_target].any?
           %p.field-error= @user.errors[:fat_target].first
-      .mb-4
+      %div
         = f.label :fiber_target, "Fiber (g)", class: "label"
         = f.number_field :fiber_target, class: "input", min: 0, max: 1000, step: 1
         - if @user.errors[:fiber_target].any?
           %p.field-error= @user.errors[:fiber_target].first
 
   -# Preferences section
-  = render CardComponent.new(class: "p-6 mb-6") do
-    %h2.text-lg.font-semibold.text-text.mb-4 Preferences
+  = render CardComponent.new(class: "p-6 mb-4") do
+    %h2.text-base.font-bold.text-text.mb-4 Preferences
     .mb-4
       = f.label :timezone, class: "label"
       = f.time_zone_select :timezone, nil, {}, class: "input"
@@ -58,25 +63,35 @@
           = f.radio_button :unit_preference, "imperial", class: "accent-primary"
           Imperial
     .mb-4
-      = f.label :country, class: "label"
+      = f.label :country, class: "label" do
+        Country
+        %span.text-text-secondary.font-normal &nbsp;(optional)
       = f.select :country, ISO3166::Country.all.sort_by(&:common_name).map { |c| [c.common_name, c.alpha2] }, { include_blank: "Select a country" }, class: "input"
       - if @user.errors[:country].any?
         %p.field-error= @user.errors[:country].first
-    .mb-4
+    %div
       = f.label :language, class: "label"
       = f.select :language, I18n.available_locales.map { |l| [l.to_s.upcase, l.to_s] }, {}, class: "input"
       - if @user.errors[:language].any?
         %p.field-error= @user.errors[:language].first
 
   -# Submit
-  .mb-6
+  .mb-4
     = render ButtonComponent.new(label: "Save settings", tag: :button, type: "submit", class: "w-full")
 
 -# Account section (outside the form — these are navigation links, not form fields)
-= render CardComponent.new(class: "p-6") do
-  %h2.text-lg.font-semibold.text-text.mb-4 Account
-  .space-y-3
-    %p.text-sm
-      %a.text-primary.font-medium{href: rodauth.change_login_path} Change email
-    %p.text-sm
-      %a.text-primary.font-medium{href: rodauth.change_password_path} Change password
+= render CardComponent.new(class: "p-2") do
+  %h2.text-base.font-bold.text-text.px-4.pt-3.pb-2 Account
+  %ul.divide-y.divide-border
+    %li
+      = link_to rodauth.change_login_path, class: "flex items-center justify-between px-4 py-3 text-text hover:bg-primary-tint rounded-md" do
+        %span Change email
+        != '<svg class="w-4 h-4 text-text-secondary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>'
+    %li
+      = link_to rodauth.change_password_path, class: "flex items-center justify-between px-4 py-3 text-text hover:bg-primary-tint rounded-md" do
+        %span Change password
+        != '<svg class="w-4 h-4 text-text-secondary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>'
+    %li
+      = button_to rodauth.logout_path, method: :post, class: "w-full flex items-center justify-between px-4 py-3 text-danger hover:bg-primary-tint rounded-md", form: { class: "w-full" } do
+        %span.font-medium Log out
+        != '<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/></svg>'
