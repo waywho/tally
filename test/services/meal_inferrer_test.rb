@@ -14,7 +14,7 @@ class MealInferrerTest < ActiveSupport::TestCase
   end
 
   test "afternoon maps to snack" do
-    assert_equal :snack, MealInferrer.call(Time.zone.local(2026, 4, 25, 15, 0))
+    assert_equal :snacks, MealInferrer.call(Time.zone.local(2026, 4, 25, 15, 0))
   end
 
   test "evening maps to dinner" do
@@ -22,11 +22,11 @@ class MealInferrerTest < ActiveSupport::TestCase
   end
 
   test "late night maps to snack" do
-    assert_equal :snack, MealInferrer.call(Time.zone.local(2026, 4, 25, 23, 0))
+    assert_equal :snacks, MealInferrer.call(Time.zone.local(2026, 4, 25, 23, 0))
   end
 
   test "after midnight maps to snack" do
-    assert_equal :snack, MealInferrer.call(Time.zone.local(2026, 4, 25, 1, 30))
+    assert_equal :snacks, MealInferrer.call(Time.zone.local(2026, 4, 25, 1, 30))
   end
 
   test "defaults to Time.current when no arg" do
