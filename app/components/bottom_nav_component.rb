@@ -7,7 +7,12 @@ class BottomNavComponent < ViewComponent::Base
   end
 
   def add_path
-    helpers.foods_path(meal: MealInferrer.call, date: (@viewed_date || Date.current).iso8601)
+    helpers.foods_path(meal: MealInferrer.call, date: viewed_date_iso)
+  end
+
+  def viewed_date_iso
+    return Date.current.iso8601 if @viewed_date.blank?
+    @viewed_date.respond_to?(:iso8601) ? @viewed_date.iso8601 : @viewed_date.to_s
   end
 
   def today_active?

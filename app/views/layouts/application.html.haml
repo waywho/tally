@@ -16,6 +16,7 @@
     = stylesheet_link_tag :app, "data-turbo-track": "reload"
     = javascript_importmap_tags
   %body.bg-bg-page.text-text.font-sans.antialiased
-    %main.max-w-lg.mx-auto.px-4.py-6.relative
+    %main.max-w-lg.mx-auto.px-4.pt-6.pb-24.relative
       = render FlashComponent.new(notice:, alert:)
       = yield
+    = render BottomNavComponent.new(current_path: request.path, viewed_date: @date)
