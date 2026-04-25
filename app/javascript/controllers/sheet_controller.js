@@ -31,11 +31,18 @@ export default class extends Controller {
 
       // Pre-fill the grams input with the last weight the user used for this
       // food (passed via sheet-weight-param from quick-add rows) — otherwise
-      // start blank so the preview resets to zero.
+      // default to 100g so the submit button is enabled and the preview shows
+      // the per-100g values verbatim. Focus + select so the user can type a
+      // different number immediately.
       const input = previewEl.querySelector('input[type="number"]')
       if (input) {
-        input.value = dataset.sheetWeightParam || ""
+        input.value = dataset.sheetWeightParam || "100"
         input.dispatchEvent(new Event("input"))
+        // Focus after the panel is shown so the keyboard pops on mobile.
+        requestAnimationFrame(() => {
+          input.focus()
+          input.select()
+        })
       }
     }
 
@@ -45,15 +52,24 @@ export default class extends Controller {
       this.foodIdFieldTarget.disabled = false
       this.usdaFdcIdFieldTarget.disabled = true
     } else {
+      // USDA transient result: server needs every nutrient param to persist
+      // the food. The hidden inputs ship `disabled` so they don't pollute the
+      // saved-food path — flip them on here.
       this.foodIdFieldTarget.disabled = true
       this.usdaFdcIdFieldTarget.value = dataset.sheetUsdaFdcIdParam
       this.usdaFdcIdFieldTarget.disabled = false
       this.usdaNameFieldTarget.value = dataset.sheetNameParam
+      this.usdaNameFieldTarget.disabled = false
       this.usdaCaloriesFieldTarget.value = dataset.sheetCaloriesParam
+      this.usdaCaloriesFieldTarget.disabled = false
       this.usdaProteinFieldTarget.value = dataset.sheetProteinParam
+      this.usdaProteinFieldTarget.disabled = false
       this.usdaCarbsFieldTarget.value = dataset.sheetCarbsParam
+      this.usdaCarbsFieldTarget.disabled = false
       this.usdaFatFieldTarget.value = dataset.sheetFatParam
+      this.usdaFatFieldTarget.disabled = false
       this.usdaFiberFieldTarget.value = dataset.sheetFiberParam
+      this.usdaFiberFieldTarget.disabled = false
     }
 
     this.overlayTarget.classList.remove("hidden")

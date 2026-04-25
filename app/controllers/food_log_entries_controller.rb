@@ -8,17 +8,19 @@ class FoodLogEntriesController < ApplicationController
 
     if food_params[:food_id].present?
       # Normal flow: food already exists in DB
-    elsif food_params[:usda_fdc_id].present?
-      # USDA transient result: persist the food first
+    elsif params[:usda_fdc_id].present?
+      # USDA transient result: persist the food first. The usda_* fields are
+      # top-level params (not nested under food_log_entry) because the bottom
+      # sheet form uses them as out-of-band metadata for the create action.
       food_result = Usda::FoodResult.new(
-        fdc_id: food_params[:usda_fdc_id],
-        name: food_params[:usda_name],
-        brand: food_params[:usda_brand],
-        calories: food_params[:usda_calories],
-        protein: food_params[:usda_protein],
-        carbs: food_params[:usda_carbs],
-        fat: food_params[:usda_fat],
-        fiber: food_params[:usda_fiber]
+        fdc_id: params[:usda_fdc_id],
+        name: params[:usda_name],
+        brand: params[:usda_brand],
+        calories: params[:usda_calories],
+        protein: params[:usda_protein],
+        carbs: params[:usda_carbs],
+        fat: params[:usda_fat],
+        fiber: params[:usda_fiber]
       )
       food = Usda::Client.new.persist(food_result)
       params[:food_log_entry][:food_id] = food.id
