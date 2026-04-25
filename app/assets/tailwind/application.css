@@ -83,4 +83,9 @@
     border: none;
     box-shadow: none;
   }
+
+  /* <details>/<summary> dropdowns: hide default disclosure markers so we can
+     supply our own chevron icon. */
+  summary::-webkit-details-marker { display: none; }
+  summary::marker { content: ""; }
 }
