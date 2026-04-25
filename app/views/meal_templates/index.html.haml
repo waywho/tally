@@ -1,23 +1,25 @@
 - @page_title = "Meal Templates"
 
-%h1.text-xl.font-bold.mb-4 Meal Templates
+= render PageHeaderComponent.new(title: "Meal templates", back_href: today_path, back_label: "Back to today")
 
 - if @meal_templates.any?
-  = render CardComponent.new(class: "divide-y divide-gray-100") do
-    - @meal_templates.each do |template|
-      - total_calories = template.meal_template_items.sum { |item| item.food.calories * item.weight / 100 }.round
-      - item_count = template.meal_template_items.size
-
-      %div{ data: { template: true } }
-        .flex.justify-between.items-center.px-4.py-3
-          .min-w-0.flex-1
-            %p.font-medium.text-text.truncate= template.name
-            %p.text-xs.text-text-secondary
-              = "#{total_calories} kcal"
-              %span.mx-1 &middot;
-              = pluralize(item_count, "item")
-          = button_to "Delete", meal_template_path(template), method: :delete, class: "text-sm text-danger font-medium ml-3", data: { turbo_confirm: "Delete #{template.name}?" }
+  = render CardComponent.new(class: "p-2") do
+    %ul.divide-y.divide-border
+      - @meal_templates.each do |template|
+        - total_calories = template.meal_template_items.sum { |item| item.food.calories * item.weight / 100 }.round
+        - item_count = template.meal_template_items.size
+        %li{ data: { template: true } }
+          .flex.items-center.justify-between.px-4.py-3
+            .min-w-0.flex-1.mr-3
+              .font-medium.text-text.truncate= template.name
+              .text-xs.text-text-secondary
+                = "#{total_calories} kcal"
+                %span.mx-1 &middot;
+                = pluralize(item_count, "item")
+            = button_to meal_template_path(template), method: :delete, data: { turbo_confirm: "Delete #{template.name}?" }, class: "shrink-0", form: { class: "shrink-0" } do
+              %span.flex.items-center.justify-center.w-10.h-10.text-text-secondary.hover:text-danger.hover:bg-red-50.rounded-md.transition-colors
+                != '<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>'
 - else
-  = render CardComponent.new(class: "p-6 text-center text-text-secondary") do
-    %p You haven't saved any meal templates yet.
-    %p.mt-2.text-sm Save a meal from the Today view to create your first template.
+  = render CardComponent.new(class: "p-8 text-center") do
+    %p.text-text-secondary.mb-1 You haven't saved any meal templates yet.
+    %p.text-sm.text-text-secondary Save a meal from the Today view to create your first template.

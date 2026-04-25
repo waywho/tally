@@ -1,7 +1,7 @@
 - if meal_templates.any?
   %div{ data: { templates_section: true } }
     %h2.text-sm.font-semibold.text-text-secondary.mb-2 Templates
-    = render CardComponent.new(class: "divide-y divide-gray-100 mb-4") do
+    = render CardComponent.new(class: "divide-y divide-border mb-4") do
       - meal_templates.each do |template|
         - total_calories = template.meal_template_items.sum { |item| item.food.calories * item.weight / 100 }.round
         - item_count = template.meal_template_items.size
