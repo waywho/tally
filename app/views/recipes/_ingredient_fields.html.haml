@@ -1,16 +1,17 @@
 .ingredient-row.grid.grid-cols-12.gap-2.items-end.mb-2{ data: { recipe_ingredients_target: "row" } }
-  .col-span-6
+  .col-span-7
     - if index == 0
       %label.label Ingredient
     = form.select :food_id, foods.map { |f| [f.name, f.id] }, { include_blank: "Select food..." }, class: "input w-full"
   .col-span-4
     - if index == 0
       %label.label Weight (g)
-    = form.number_field :weight, class: "input w-full", min: 0, step: "any", placeholder: "grams"
-  .col-span-2.flex.items-center
+    = form.number_field :weight, class: "input w-full", min: 0, step: "any", placeholder: "grams", required: true
+  .col-span-1.flex.items-end
     - if index == 0
       %label.label.invisible &nbsp;
     - if form.object.persisted?
       = form.hidden_field :_destroy, value: "0", data: { recipe_ingredients_target: "destroyField" }
     = form.hidden_field :id if form.object.persisted?
-    %button{ type: "button", class: "text-red-500 text-sm cursor-pointer hover:text-red-700", data: { action: "click->recipe-ingredients#remove" } } Remove
+    %button.flex.items-center.justify-center.w-10.h-10.text-text-secondary.hover:text-danger.hover:bg-red-50.rounded-md.transition-colors.cursor-pointer{ type: "button", "aria-label": "Remove ingredient", data: { action: "click->recipe-ingredients#remove" } }
+      != '<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>'

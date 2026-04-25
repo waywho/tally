@@ -1,70 +1,73 @@
 - @page_title = @recipe.name
 
-%h1.text-xl.font-bold.mb-4= @recipe.name
+.flex.items-center.gap-3.mb-4
+  = link_to recipes_path, "aria-label": "Back to recipes", class: "flex items-center justify-center w-11 h-11 text-text-secondary hover:text-text rounded-lg hover:bg-primary-tint border border-border transition-colors" do
+    != '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>'
+  %h1.text-xl.font-bold.truncate= @recipe.name
 
-= render CardComponent.new(class: "p-6 mb-6") do
-  %h2.text-lg.font-semibold.text-text.mb-4 Ingredients
+- serving_g = @recipe.food.serving_size || 0
+- serving_factor = serving_g / 100.0
+- servings = @recipe.servings_in_recipe
+- servings_label = servings == servings.to_i ? servings.to_i : servings
+= render CardComponent.new(class: "p-4 mb-4") do
+  %h2.text-base.font-bold.text-text.mb-1
+    = "Per serving"
+    %span.text-text-secondary.font-normal.ml-1= "(#{serving_g.round}g · #{pluralize(servings_label, 'serving')} total)"
+  .flex.gap-3.mt-3.mb-3
+    .flex-1.bg-primary-tint.rounded-md.px-3.py-2.text-center
+      .text-xl.font-bold.text-primary= (@recipe.food.calories * serving_factor).round
+      .text-xs.text-text-secondary kcal
+  .grid.grid-cols-4.gap-2.text-center
+    .text-center
+      .text-base.font-bold.text-text= "#{(@recipe.food.protein * serving_factor).round(1)}g"
+      .text-xs.text-text-secondary= t('macros.protein')
+    .text-center
+      .text-base.font-bold.text-text= "#{(@recipe.food.carbs * serving_factor).round(1)}g"
+      .text-xs.text-text-secondary= t('macros.carbs')
+    .text-center
+      .text-base.font-bold.text-text= "#{(@recipe.food.fat * serving_factor).round(1)}g"
+      .text-xs.text-text-secondary= t('macros.fat')
+    .text-center
+      .text-base.font-bold.text-text= "#{(@recipe.food.fiber * serving_factor).round(1)}g"
+      .text-xs.text-text-secondary= t('macros.fiber')
+
+= render CardComponent.new(class: "p-4 mb-4") do
+  %h2.text-base.font-bold.text-text.mb-1
+    Per 100g
+    %span.text-text-secondary.font-normal.ml-1 (reference)
+  .grid.grid-cols-5.gap-2.text-center.mt-3
+    .text-center
+      .text-base.font-bold.text-text= @recipe.food.calories.round
+      .text-xs.text-text-secondary kcal
+    .text-center
+      .text-base.font-bold.text-text= "#{@recipe.food.protein.round(1)}g"
+      .text-xs.text-text-secondary= t('macros.protein')
+    .text-center
+      .text-base.font-bold.text-text= "#{@recipe.food.carbs.round(1)}g"
+      .text-xs.text-text-secondary= t('macros.carbs')
+    .text-center
+      .text-base.font-bold.text-text= "#{@recipe.food.fat.round(1)}g"
+      .text-xs.text-text-secondary= t('macros.fat')
+    .text-center
+      .text-base.font-bold.text-text= "#{@recipe.food.fiber.round(1)}g"
+      .text-xs.text-text-secondary= t('macros.fiber')
+
+= render CardComponent.new(class: "p-4 mb-4") do
+  %h2.text-base.font-bold.text-text.mb-3 Ingredients
   - if @recipe_ingredients.any?
     .divide-y.divide-border
       - @recipe_ingredients.each do |ingredient|
         - ing_cal = (ingredient.food.calories * ingredient.weight / 100).round
         .py-2.flex.justify-between.items-center
           .min-w-0.flex-1
-            .text-text= ingredient.food.name
+            .text-text.truncate= ingredient.food.name
             .text-xs.text-text-secondary= "#{ingredient.weight.to_i}g"
           .text-sm.font-medium.text-text.whitespace-nowrap.ml-3= "#{ing_cal} kcal"
+  - else
+    %p.text-sm.text-text-secondary No ingredients
 
-= render CardComponent.new(class: "p-6 mb-6") do
-  %h2.text-lg.font-semibold.text-text.mb-4 Nutrition (per 100g)
-  .grid.grid-cols-2.gap-4
-    .text-center
-      .text-2xl.font-bold.text-text= @recipe.food.calories.round
-      .text-sm.text-text-secondary Calories
-    .text-center
-      .text-2xl.font-bold.text-text= @recipe.food.protein.round(1)
-      .text-sm.text-text-secondary Protein (g)
-    .text-center
-      .text-2xl.font-bold.text-text= @recipe.food.carbs.round(1)
-      .text-sm.text-text-secondary Carbs (g)
-    .text-center
-      .text-2xl.font-bold.text-text= @recipe.food.fat.round(1)
-      .text-sm.text-text-secondary Fat (g)
-    .text-center
-      .text-2xl.font-bold.text-text= @recipe.food.fiber.round(1)
-      .text-sm.text-text-secondary Fiber (g)
-
-- serving_g = @recipe.food.serving_size || 0
-- serving_factor = serving_g / 100.0
-= render CardComponent.new(class: "p-6 mb-6") do
-  %h2.text-lg.font-semibold.text-text.mb-4 Per Serving (#{serving_g.round}g)
-  .grid.grid-cols-5.gap-2.text-center
-    .text-center
-      .text-lg.font-bold.text-text= (@recipe.food.calories * serving_factor).round
-      .text-xs.text-text-secondary kcal
-    .text-center
-      .text-lg.font-bold.text-text= "#{(@recipe.food.protein * serving_factor).round(1)}g"
-      .text-xs.text-text-secondary Protein
-    .text-center
-      .text-lg.font-bold.text-text= "#{(@recipe.food.carbs * serving_factor).round(1)}g"
-      .text-xs.text-text-secondary Carbs
-    .text-center
-      .text-lg.font-bold.text-text= "#{(@recipe.food.fat * serving_factor).round(1)}g"
-      .text-xs.text-text-secondary Fat
-    .text-center
-      .text-lg.font-bold.text-text= "#{(@recipe.food.fiber * serving_factor).round(1)}g"
-      .text-xs.text-text-secondary Fiber
-
-= render CardComponent.new(class: "p-6 mb-6") do
-  %h2.text-lg.font-semibold.text-text.mb-4 Serving Info
-  .text-sm.text-text-secondary
-    %p= "#{pluralize(@recipe.servings_in_recipe, 'serving')} per recipe"
-    %p= "#{@recipe.food.serving_size&.round}g per serving"
-
-.flex.gap-4
-  = link_to edit_recipe_path(@recipe) do
-    = render ButtonComponent.new(label: "Edit Recipe", scheme: :secondary, size: :md)
-  = button_to recipe_path(@recipe), method: :delete, data: { turbo_confirm: "Delete this recipe?" }, class: "inline-block" do
-    = render ButtonComponent.new(label: "Delete Recipe", scheme: :secondary, size: :md)
-
-%p.text-center.text-sm.text-text-secondary.mt-4
-  = link_to "Back to recipes", recipes_path, class: "text-primary"
+.flex.gap-3
+  = link_to edit_recipe_path(@recipe), class: "flex-1" do
+    = render ButtonComponent.new(label: "Edit", scheme: :secondary, size: :md, class: "w-full")
+  = button_to recipe_path(@recipe), method: :delete, data: { turbo_confirm: "Delete this recipe?" }, class: "flex-1", form: { class: "flex-1" } do
+    = render ButtonComponent.new(label: "Delete", scheme: :danger, size: :md, class: "w-full")

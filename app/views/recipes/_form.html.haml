@@ -1,19 +1,20 @@
 = form_with model: recipe, url: url, data: { controller: "recipe-ingredients" } do |f|
-  = render CardComponent.new(class: "p-6 mb-6") do
-    %h2.text-lg.font-semibold.text-text.mb-4 Recipe Details
+  = render CardComponent.new(class: "p-4 mb-4") do
+    %h2.text-base.font-bold.text-text.mb-4 Recipe details
     .mb-4
       = f.label :name, class: "label"
       = f.text_field :name, class: "input", placeholder: "e.g. Chicken Stir Fry", required: true, maxlength: 255
       - if recipe.errors[:name].any?
         %p.field-error= recipe.errors[:name].first
-    .mb-4
-      = f.label :servings_in_recipe, "Number of servings", class: "label"
-      = f.number_field :servings_in_recipe, class: "input", min: 0.01, step: "any", required: true
-      - if recipe.errors[:servings_in_recipe].any?
-        %p.field-error= recipe.errors[:servings_in_recipe].first
+    .grid.grid-cols-2.gap-3
+      %div
+        = f.label :servings_in_recipe, "Servings", class: "label"
+        = f.number_field :servings_in_recipe, class: "input", min: 0.01, step: "any", required: true, placeholder: "e.g. 4"
+        - if recipe.errors[:servings_in_recipe].any?
+          %p.field-error= recipe.errors[:servings_in_recipe].first
 
-  = render CardComponent.new(class: "p-6 mb-6") do
-    %h2.text-lg.font-semibold.text-text.mb-4 Ingredients
+  = render CardComponent.new(class: "p-4 mb-4") do
+    %h2.text-base.font-bold.text-text.mb-4 Ingredients
     #ingredients-container{ data: { recipe_ingredients_target: "container" } }
       - recipe.recipe_ingredients.each_with_index do |ingredient, index|
         = f.fields_for :recipe_ingredients, ingredient, child_index: index do |ingredient_form|
@@ -24,8 +25,9 @@
       = f.fields_for :recipe_ingredients, new_ingredient, child_index: "NEW_INDEX" do |ingredient_form|
         = render "ingredient_fields", form: ingredient_form, foods: foods, index: 1
 
-    .mt-4
-      %button.text-primary.text-sm.font-semibold.cursor-pointer{ type: "button", data: { action: "click->recipe-ingredients#add" } }
-        + Add Ingredient
+    .mt-3
+      %button.w-full.flex.items-center.justify-center.gap-2.py-2.text-primary.text-sm.font-semibold.border.border-dashed.border-primary.rounded-md.hover:bg-primary-tint.transition-colors.cursor-pointer{ type: "button", data: { action: "click->recipe-ingredients#add" } }
+        != '<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>'
+        Add ingredient
 
   = render ButtonComponent.new(label: submit_label, tag: :button, type: "submit", class: "w-full")

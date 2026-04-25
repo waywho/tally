@@ -1,23 +1,31 @@
 - @page_title = "Recipes"
 
-%h1.text-xl.font-bold.mb-4 Recipes
-
-.mb-4
-  = link_to new_recipe_path do
-    = render ButtonComponent.new(label: "Create Recipe", scheme: :primary, size: :md)
+.flex.items-center.justify-between.gap-3.mb-4
+  .flex.items-center.gap-3
+    = link_to today_path, "aria-label": "Back to today", class: "flex items-center justify-center w-11 h-11 text-text-secondary hover:text-text rounded-lg hover:bg-primary-tint border border-border transition-colors" do
+      != '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>'
+    %h1.text-xl.font-bold Recipes
+  - if @recipes.any?
+    = link_to new_recipe_path, "aria-label": "New recipe", class: "flex items-center justify-center w-11 h-11 text-primary rounded-lg hover:bg-primary-tint border border-primary transition-colors" do
+      != '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>'
 
 - if @recipes.any?
-  = render CardComponent.new(class: "divide-y divide-gray-100") do
-    - @recipes.each do |recipe|
-      %div{ data: { recipe: true } }
-        = link_to recipe_path(recipe), class: "block p-4 hover:bg-gray-50 transition-colors" do
-          .flex.justify-between.items-center
-            .font-medium.text-text= recipe.name
-            .text-sm.text-text-secondary
-              = "#{recipe.food.calories.round} kcal/100g"
-              %span.mx-1 &middot;
-              = pluralize(recipe.servings_in_recipe, "serving")
+  = render CardComponent.new(class: "p-2") do
+    %ul.divide-y.divide-border
+      - @recipes.each do |recipe|
+        %li{ data: { recipe: true } }
+          = link_to recipe_path(recipe), class: "flex items-center justify-between px-4 py-3 text-text hover:bg-primary-tint rounded-md transition-colors" do
+            .min-w-0.flex-1.mr-3
+              .font-medium.truncate= recipe.name
+              .text-xs.text-text-secondary
+                = "#{recipe.food.calories.round} kcal/100g"
+                %span.mx-1 &middot;
+                - servings = recipe.servings_in_recipe
+                - servings_label = servings == servings.to_i ? servings.to_i : servings
+                = pluralize(servings_label, "serving")
+            != '<svg class="w-4 h-4 text-text-secondary shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>'
 - else
-  = render CardComponent.new(class: "p-6 text-center text-text-secondary") do
-    %p You haven't created any recipes yet.
-    %p.mt-2= link_to "Create your first recipe", new_recipe_path, class: "text-primary font-semibold"
+  = render CardComponent.new(class: "p-8 text-center") do
+    %p.text-text-secondary.mb-3 You haven't created any recipes yet.
+    = link_to new_recipe_path do
+      = render ButtonComponent.new(label: "Create your first recipe", scheme: :primary, size: :md)

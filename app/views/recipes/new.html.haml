@@ -1,8 +1,8 @@
 - @page_title = "Create Recipe"
 
-%h1.text-xl.font-bold.mb-4 Create Recipe
+.flex.items-center.gap-3.mb-4
+  = link_to recipes_path, "aria-label": "Back to recipes", class: "flex items-center justify-center w-11 h-11 text-text-secondary hover:text-text rounded-lg hover:bg-primary-tint border border-border transition-colors" do
+    != '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>'
+  %h1.text-xl.font-bold New recipe
 
-= render "form", recipe: @recipe, foods: @foods, url: recipes_path, submit_label: "Create Recipe"
-
-%p.text-center.text-sm.text-text-secondary.mt-4
-  = link_to "Back to recipes", recipes_path, class: "text-primary"
+= render "form", recipe: @recipe, foods: @foods, url: recipes_path, submit_label: "Create recipe"

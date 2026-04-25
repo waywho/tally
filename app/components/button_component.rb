@@ -1,7 +1,8 @@
 class ButtonComponent < ViewComponent::Base
   SCHEMES = {
     primary: "bg-primary text-white hover:bg-primary-light",
-    secondary: "bg-white text-primary border border-primary hover:bg-primary-tint"
+    secondary: "bg-white text-primary border border-primary hover:bg-primary-tint",
+    danger: "bg-white text-danger border border-danger hover:bg-red-50"
   }.freeze
 
   SIZES = {
