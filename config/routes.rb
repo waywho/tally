@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
   resources :foods, only: [:index, :new, :create, :edit, :update, :destroy]
 
+  resource :meal_picker, only: :show
+
   resources :recipes
 
   resources :meal_templates, only: [:index, :new, :create, :destroy] do
