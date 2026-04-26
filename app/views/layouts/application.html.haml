@@ -15,7 +15,7 @@
     %link{:href => "/icon.png", :rel => "apple-touch-icon"}/
     = stylesheet_link_tag :app, "data-turbo-track": "reload"
     = javascript_importmap_tags
-  %body.bg-bg-page.text-text.font-sans.antialiased
+  %body.bg-bg-page.text-text.font-sans.antialiased{ data: { controller: "modal" } }
     %main.max-w-lg.mx-auto.px-4.pt-6.pb-24.relative
       = render FlashComponent.new(notice:, alert:)
       = yield

@@ -3,9 +3,9 @@
 require "test_helper"
 
 class ModalComponentTest < ViewComponent::TestCase
-  test "renders a hidden root with the modal Stimulus controller" do
+  test "renders a hidden root with the modal target" do
     render_inline(ModalComponent.new)
-    assert_selector "[data-controller='modal'][data-modal-target='root'].hidden", visible: :all
+    assert_selector "[data-modal-target='root'].hidden", visible: :all
   end
 
   test "renders an empty turbo-frame named modal as the body slot" do

@@ -4,4 +4,4 @@
     - FoodLogEntry.meals.each_key do |meal_key|
       - active = meal_key.to_s == @current_meal.to_s
       %li
-        = link_to meal_key.to_s.capitalize, foods_path(meal: meal_key, date: @date, q: @query.presence), class: "block px-3 py-2 rounded-md #{active ? 'text-primary font-semibold bg-primary-tint' : 'text-text hover:bg-primary-tint'}"
+        = link_to meal_key.to_s.capitalize, foods_path(meal: meal_key, date: @date, q: @query.presence), class: "block px-3 py-2 rounded-md #{active ? 'text-primary font-semibold bg-primary-tint' : 'text-text hover:bg-primary-tint'}", data: { turbo_frame: "_top" }

@@ -1,4 +1,4 @@
-%div.fixed.inset-0.z-50.hidden.items-center.justify-center.p-4{ data: { controller: "modal", modal_target: "root", action: "keydown.esc@window->modal#close" } }
+%div.fixed.inset-0.z-50.hidden.items-center.justify-center.p-4{ data: { modal_target: "root", action: "keydown.esc@window->modal#close" } }
   %div.absolute.inset-0{ class: "bg-black/40", data: { action: "click->modal#close" } }
   %div.relative.bg-bg.rounded-lg.shadow-xl.w-full.max-w-sm.overflow-auto{ class: "max-h-[85vh]" }
     %button.absolute.top-2.right-2.p-1.text-text-secondary.hover:text-text{ type: "button", "aria-label": t(".close"), data: { action: "click->modal#close" } }
