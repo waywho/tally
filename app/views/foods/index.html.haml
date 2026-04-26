@@ -8,14 +8,9 @@
       %div.mb-2{ data: { meal_context: true } }
         .flex.items-center.gap-1.text-base.text-text-secondary.font-medium.mb-1
           %span Adding to
-          %details.relative.inline-block{ data: { meal_picker: true } }
-            %summary.list-none.cursor-pointer.text-primary.font-semibold.inline-flex.items-center.gap-1
-              = @meal.capitalize
-              != '<svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"/></svg>'
-            %ul.absolute.left-0.mt-1.min-w-32.bg-bg.border.border-border.rounded-md.shadow-lg.py-1.z-30
-              - FoodLogEntry.meals.each_key do |meal_key|
-                %li
-                  = link_to meal_key.capitalize, foods_path(meal: meal_key, date: @date, q: @query.presence), class: "block px-3 py-1.5 text-sm #{meal_key == @meal ? 'text-primary font-semibold bg-primary-tint' : 'text-text hover:bg-primary-tint'}"
+          = link_to meal_picker_path(meal: @meal, date: @date, q: @query.presence), class: "text-primary font-semibold inline-flex items-center gap-1", data: { turbo_frame: "modal", action: "click->modal#open" } do
+            = @meal.capitalize
+            != '<svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"/></svg>'
           %span &middot; #{date_label}
         - if @meal_totals && @meal_totals[:calories] > 0
           .bg-primary-tint.-mx-4.px-4.py-2.flex.items-center.gap-x-2.text-xs.text-text-secondary
