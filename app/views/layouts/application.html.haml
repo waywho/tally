@@ -15,9 +15,10 @@
     %link{:href => "/icon.png", :rel => "apple-touch-icon"}/
     = stylesheet_link_tag :app, "data-turbo-track": "reload"
     = javascript_importmap_tags
-  %body.bg-bg-page.text-text.font-sans.antialiased{ data: { controller: "modal" } }
-    %main.max-w-lg.mx-auto.px-4.pt-6.pb-24.relative
+  %body.bg-bg-page.text-text.font-sans.antialiased{ data: { controller: "modal" }, class: native_app? ? "native-app" : nil }
+    %main.max-w-lg.mx-auto.px-4.pt-6.relative{ class: native_app? ? "pb-4" : "pb-24" }
       = render FlashComponent.new(notice:, alert:)
       = yield
-    = render BottomNavComponent.new(current_path: request.path, viewed_date: @date)
+    - unless native_app?
+      = render BottomNavComponent.new(current_path: request.path, viewed_date: @date)
     = render ModalComponent.new

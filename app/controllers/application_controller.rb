@@ -26,4 +26,9 @@ class ApplicationController < ActionController::Base
     @current_account ||= Account.find_by(id: rodauth.session_value)
   end
   helper_method :current_account
+
+  def native_app?
+    request.user_agent.to_s.include?("Turbo Native")
+  end
+  helper_method :native_app?
 end
