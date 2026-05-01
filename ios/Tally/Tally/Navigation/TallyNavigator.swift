@@ -3,7 +3,7 @@ import UIKit
 
 /// Wraps a Hotwire Navigator for a single tab. Each tab in the app gets its
 /// own TallyNavigator so navigation stacks are independent.
-final class TallyNavigator {
+final class TallyNavigator: NavigatorDelegate {
     let navigator: Navigator
     let rootURL: URL
 
@@ -13,6 +13,7 @@ final class TallyNavigator {
             name: name,
             startLocation: rootURL
         ))
+        navigator.delegate = self
         // Hide the native nav bar — web views have their own headers
         navigationController.setNavigationBarHidden(true, animated: false)
     }
@@ -36,5 +37,16 @@ final class TallyNavigator {
     /// Pop to the root view controller (used when the tab is re-tapped).
     func popToRoot() {
         navigationController.popToRootViewController(animated: true)
+    }
+
+    // MARK: - NavigatorDelegate
+
+    func handle(proposal: VisitProposal) -> ProposalResult {
+        // If the server redirected to /login, the session expired or user logged out
+        if proposal.url.path == "/login" && SessionStore.loadCookies() != nil {
+            NotificationCenter.default.post(name: .tallyDidLogout, object: nil)
+            return .reject
+        }
+        return .accept
     }
 }
