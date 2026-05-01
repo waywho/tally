@@ -1,6 +1,12 @@
 %div{ data: { controller: @meal.present? ? "sheet" : nil } }
   .sticky.top-0.z-20.bg-bg-page.-mx-4.-mt-6.px-4.pt-6.pb-2
-    %h1.text-xl.font-bold.mb-1= @meal.present? ? "Add Food" : "Search Foods"
+    - if @meal.present?
+      %h1.text-xl.font-bold.mb-1 Add Food
+    - else
+      = render PageHeaderComponent.new(title: "My Foods") do |h|
+        - h.with_action do
+          = link_to new_food_path, "aria-label": "New food", class: "flex items-center justify-center w-11 h-11 text-primary rounded-lg hover:bg-primary-tint border border-primary transition-colors" do
+            != '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>'
 
     - if @meal.present? && @date.present?
       - parsed_date = (Date.parse(@date) rescue Date.current)
@@ -12,7 +18,7 @@
             = @meal.capitalize
             != '<svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"/></svg>'
           %span &middot; #{date_label}
-        - if @meal_totals && @meal_totals[:calories] > 0
+        - if @meal_totals
           .bg-primary-tint.-mx-4.px-4.py-2.flex.items-center.gap-x-2.text-xs.text-text-secondary
             %span.font-medium.text-text= "#{@meal_totals[:calories].round} kcal"
             %span
