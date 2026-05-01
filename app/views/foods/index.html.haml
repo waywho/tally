@@ -39,10 +39,13 @@
         %input{ type: "hidden", name: "meal", value: @meal }
       - if @date.present?
         %input{ type: "hidden", name: "date", value: @date }
-      .relative
-        %input.input.w-full.pl-10.pr-10.peer{ type: "text", name: "q", value: @query, placeholder: "Search foods...", autocomplete: "off", data: { search_target: "input", action: "input->search#debounce" } }
+      .relative{ native_app? ? { data: { controller: "barcode-scanner", barcode_scanner_mode_value: "search", barcode_scanner_meal_value: @meal, barcode_scanner_date_value: @date } } : {} }
+        %input.input.w-full.pl-10.peer{ type: "text", name: "q", value: @query, placeholder: "Search foods...", autocomplete: "off", class: native_app? ? "pr-20" : "pr-10", data: { search_target: "input", action: "input->search#debounce" } }
         %div.absolute.left-3{ class: "top-1/2 -translate-y-1/2 text-text-secondary" }
           != '<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>'
+        - if native_app?
+          %button.absolute.right-10.text-text-secondary{ type: "button", "aria-label": "Scan barcode", class: "top-1/2 -translate-y-1/2 hover:text-text", data: { action: "click->barcode-scanner#scan" } }
+            != '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM14.25 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14.25 14.625v6.75h6.75v-6.75h-6.75z"/></svg>'
         %button.absolute.right-3.text-xl.leading-none.text-text-secondary{ type: "button", "aria-label": "Clear search", class: "top-1/2 -translate-y-1/2 peer-placeholder-shown:hidden hover:text-text", data: { action: "click->search#clear" } } &times;
 
   - if params[:barcode_not_found].present?

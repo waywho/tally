@@ -55,6 +55,10 @@
       = f.label :barcode, class: "label" do
         Barcode
         %span.text-text-secondary.font-normal &nbsp;(optional)
-      = f.text_field :barcode, class: "input"
+      .relative{ native_app? ? { data: { controller: "barcode-scanner", barcode_scanner_mode_value: "input", barcode_scanner_input_selector_value: "#food_barcode" } } : {} }
+        = f.text_field :barcode, class: "input", id: "food_barcode"
+        - if native_app?
+          %button.absolute.right-3.text-text-secondary{ type: "button", "aria-label": "Scan barcode", class: "top-1/2 -translate-y-1/2 hover:text-text", data: { action: "click->barcode-scanner#scan" } }
+            != '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM14.25 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14.25 14.625v6.75h6.75v-6.75h-6.75z"/></svg>'
 
   = render ButtonComponent.new(label: submit_label, tag: :button, type: "submit", class: "w-full")
