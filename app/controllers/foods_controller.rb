@@ -69,7 +69,7 @@ class FoodsController < ApplicationController
   end
 
   def new
-    @food = Food.new(name: params[:name])
+    @food = Food.new(name: params[:name], barcode: params[:barcode])
   end
 
   def create
