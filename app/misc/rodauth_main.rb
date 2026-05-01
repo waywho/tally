@@ -34,6 +34,9 @@ class RodauthMain < Rodauth::Rails::Auth
     # Specify the controller used for view rendering, CSRF, and callbacks.
     rails_controller { RodauthController }
 
+    # Skip CSRF verification for native iOS login (no web form = no token)
+    check_csrf? { !request.env["HTTP_USER_AGENT"].to_s.include?("Turbo Native") }
+
     # Make built-in page titles accessible in your views via an instance variable.
     title_instance_variable :@page_title
 
