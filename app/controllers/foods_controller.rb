@@ -46,6 +46,28 @@ class FoodsController < ApplicationController
     end
   end
 
+  def barcode_lookup
+    code = params[:code].to_s.strip
+    food = Food.find_by(barcode: code)
+
+    unless food
+      begin
+        result = Off::Client.new.fetch(code)
+        food = Off::Client.new.persist(result)
+      rescue Off::ProductNotFoundError
+        # Not found in OFF either
+      rescue Off::ApiError
+        # API unavailable — treat as not found
+      end
+    end
+
+    if food
+      redirect_to foods_path(q: food.name, meal: params[:meal], date: params[:date])
+    else
+      redirect_to foods_path(barcode_not_found: 1, barcode: code, meal: params[:meal], date: params[:date])
+    end
+  end
+
   def new
     @food = Food.new(name: params[:name])
   end

@@ -10,7 +10,11 @@ Rails.application.routes.draw do
 
   resource :settings, only: [:edit, :update], controller: "users"
 
-  resources :foods, only: [:index, :new, :create, :edit, :update, :destroy]
+  resources :foods, only: [:index, :new, :create, :edit, :update, :destroy] do
+    collection do
+      get :barcode_lookup
+    end
+  end
 
   resource :meal_picker, only: :show
 
