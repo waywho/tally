@@ -46,18 +46,15 @@ class FoodLogEntriesControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference ["FoodLogEntry.count", "Food.count"], 1 do
       post day_food_log_entries_path(day_date: @date), params: {
-        food_log_entry: {
-          meal: "breakfast",
-          weight: 100,
-          usda_fdc_id: "12345",
-          usda_name: "Test USDA Food",
-          usda_brand: "Test Brand",
-          usda_calories: 200,
-          usda_protein: 15,
-          usda_carbs: 25,
-          usda_fat: 8,
-          usda_fiber: 4
-        }
+        food_log_entry: { meal: "breakfast", weight: 100 },
+        usda_fdc_id: "12345",
+        usda_name: "Test USDA Food",
+        usda_brand: "Test Brand",
+        usda_calories: 200,
+        usda_protein: 15,
+        usda_carbs: 25,
+        usda_fat: 8,
+        usda_fiber: 4
       }
     end
 
