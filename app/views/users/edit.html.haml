@@ -1,6 +1,6 @@
 - @page_title = "Settings"
 
-= render PageHeaderComponent.new(title: "Settings", back_href: today_path, back_label: "Back to today")
+= render PageHeaderComponent.new(title: "Settings", back_href: native_app? ? nil : today_path, back_label: "Back to today")
 
 = form_with model: @user, url: settings_path, method: :patch do |f|
   -# Profile section

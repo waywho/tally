@@ -1,6 +1,6 @@
 - @page_title = "Recipes"
 
-= render PageHeaderComponent.new(title: "Recipes", back_href: today_path, back_label: "Back to today") do |h|
+= render PageHeaderComponent.new(title: "Recipes", back_href: native_app? ? nil : today_path, back_label: "Back to today") do |h|
   - if @recipes.any?
     - h.with_action do
       = link_to new_recipe_path, "aria-label": "New recipe", class: "flex items-center justify-center w-11 h-11 text-primary rounded-lg hover:bg-primary-tint border border-primary transition-colors" do
