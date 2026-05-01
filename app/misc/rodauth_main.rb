@@ -117,7 +117,16 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # ==> Remember Feature
     # Remember all logged in users.
-    after_login { remember_login }
+    after_login do
+      remember_login
+
+      if request.env["HTTP_USER_AGENT"].to_s.include?("Turbo Native")
+        response.status = 200
+        response["Content-Type"] = "application/json"
+        response.write({ success: true }.to_json)
+        request.halt
+      end
+    end
 
     # Or only remember users that have ticked a "Remember Me" checkbox on login.
     # after_login { remember_login if param_or_nil("remember") }
