@@ -156,6 +156,18 @@ class Off::ClientTest < ActiveSupport::TestCase
     end
   end
 
+  test "persist sets barcode column on the Food record" do
+    result = Off::FoodResult.new(
+      barcode: "5060337500234",
+      name: "Test Product",
+      brand: "Test Brand",
+      calories: 100, protein: 5, carbs: 20, fat: 3, fiber: 2,
+      serving_size: 30, serving_label: "1 bar"
+    )
+    food = Off::Client.new.persist(result)
+    assert_equal "5060337500234", food.barcode
+  end
+
   test "persist updates existing Food with new data" do
     food_result = Off::FoodResult.new(
       barcode: "3017620422003", name: "Nutella", brand: "Ferrero",

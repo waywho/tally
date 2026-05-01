@@ -27,6 +27,7 @@ module Off
     def persist(food_result)
       food = Food.find_or_initialize_by(source: :off, external_id: food_result.barcode)
       food.update!(
+        barcode: food_result.barcode,
         name: food_result.name,
         brand: food_result.brand,
         calories: food_result.calories,
