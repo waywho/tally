@@ -1,5 +1,5 @@
 app = 'tally-quest'
-primary_region = 'lhr'
+primary_region = 'ams'
 
 [build]
 
