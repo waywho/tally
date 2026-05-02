@@ -75,14 +75,14 @@ class FoodSearch
   end
 
   def merge_results(local_results, external_results)
-    local_ids = local_results.map { |f| [f.source, f.external_id] }.to_set
+    local_ids = local_results.map { |f| [ f.source, f.external_id ] }.to_set
 
     deduped_external = external_results.reject do |result|
       case result
       when Food
-        local_ids.include?([result.source, result.external_id])
+        local_ids.include?([ result.source, result.external_id ])
       when Usda::FoodResult
-        local_ids.include?(["usda", result.fdc_id.to_s])
+        local_ids.include?([ "usda", result.fdc_id.to_s ])
       else
         false
       end
@@ -118,7 +118,7 @@ class FoodSearch
 
     # Cap the length penalty so very long names aren't crushed entirely — they
     # can still beat poor matches via their base score.
-    length_penalty = [name.length, 40].min * 0.5
+    length_penalty = [ name.length, 40 ].min * 0.5
     priority = SOURCE_PRIORITY.fetch(item_source(item), 0)
 
     base - length_penalty + priority

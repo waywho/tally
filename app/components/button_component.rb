@@ -24,14 +24,14 @@ class ButtonComponent < ViewComponent::Base
         :input,
         **@system_arguments,
         value: @label,
-        class: [class_names, @system_arguments[:class]].compact.join(" ")
+        class: [ class_names, @system_arguments[:class] ].compact.join(" ")
       )
     else
       content_tag(
         @tag,
         @label,
         **@system_arguments,
-        class: [class_names, @system_arguments[:class]].compact.join(" ")
+        class: [ class_names, @system_arguments[:class] ].compact.join(" ")
       )
     end
   end

@@ -75,7 +75,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 
     login(@account)
 
-    assert_difference ["Recipe.count", "Food.count"], 1 do
+    assert_difference [ "Recipe.count", "Food.count" ], 1 do
       post recipes_path, params: {
         recipe: {
           name: "Grilled Chicken",

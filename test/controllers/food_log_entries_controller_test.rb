@@ -44,7 +44,7 @@ class FoodLogEntriesControllerTest < ActionDispatch::IntegrationTest
 
     ENV["USDA_API_KEY"] = "test-key"
 
-    assert_difference ["FoodLogEntry.count", "Food.count"], 1 do
+    assert_difference [ "FoodLogEntry.count", "Food.count" ], 1 do
       post day_food_log_entries_path(day_date: @date), params: {
         food_log_entry: { meal: "breakfast", weight: 100 },
         usda_fdc_id: "12345",
@@ -75,7 +75,7 @@ class FoodLogEntriesControllerTest < ActionDispatch::IntegrationTest
   test "POST with neither food_id nor usda_fdc_id returns error" do
     login(@account)
 
-    assert_no_difference ["FoodLogEntry.count", "Food.count"] do
+    assert_no_difference [ "FoodLogEntry.count", "Food.count" ] do
       post day_food_log_entries_path(day_date: @date), params: {
         food_log_entry: { meal: "breakfast", weight: 100 }
       }

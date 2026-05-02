@@ -1,6 +1,6 @@
 class MealTemplatesController < ApplicationController
   before_action :require_authentication
-  before_action :set_meal_template, only: [:destroy, :log]
+  before_action :set_meal_template, only: [ :destroy, :log ]
 
   def index
     @meal_templates = current_user.meal_templates

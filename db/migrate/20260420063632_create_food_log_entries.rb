@@ -10,7 +10,7 @@ class CreateFoodLogEntries < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :food_log_entries, [:user_id, :logged_on]
-    add_index :food_log_entries, [:user_id, :food_id]
+    add_index :food_log_entries, [ :user_id, :logged_on ]
+    add_index :food_log_entries, [ :user_id, :food_id ]
   end
 end

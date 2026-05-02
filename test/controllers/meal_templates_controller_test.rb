@@ -167,7 +167,7 @@ class MealTemplatesControllerTest < ActionDispatch::IntegrationTest
     assert_includes food_ids, food_b.id
 
     weights = entries.sort_by(&:food_id).map(&:weight)
-    expected_weights = [food_a, food_b].sort_by(&:id).map { |f| f == food_a ? 120.0 : 60.0 }
+    expected_weights = [ food_a, food_b ].sort_by(&:id).map { |f| f == food_a ? 120.0 : 60.0 }
     expected_weights.each_with_index do |w, i|
       assert_in_delta w, weights[i], 0.01
     end

@@ -1,6 +1,6 @@
 class RecipesController < ApplicationController
   before_action :require_authentication
-  before_action :set_recipe, only: [:show, :edit, :update, :destroy]
+  before_action :set_recipe, only: [ :show, :edit, :update, :destroy ]
 
   def index
     @recipes = current_user.recipes.includes(:food).order(updated_at: :desc)
@@ -66,7 +66,7 @@ class RecipesController < ApplicationController
   def recipe_params
     params.require(:recipe).permit(
       :name, :servings_in_recipe,
-      recipe_ingredients_attributes: [:id, :food_id, :weight, :_destroy]
+      recipe_ingredients_attributes: [ :id, :food_id, :weight, :_destroy ]
     )
   end
 

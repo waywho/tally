@@ -22,7 +22,7 @@ class CreateFoods < ActiveRecord::Migration[8.1]
     end
 
     add_index :foods, :barcode
-    add_index :foods, [:source, :external_id], unique: true, where: "external_id IS NOT NULL"
+    add_index :foods, [ :source, :external_id ], unique: true, where: "external_id IS NOT NULL"
     add_index :foods, :name, using: :gin, opclass: :gin_trgm_ops, name: "index_foods_on_name_trigram"
 
     reversible do |dir|

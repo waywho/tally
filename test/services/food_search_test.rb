@@ -51,9 +51,9 @@ class FoodSearchTest < ActiveSupport::TestCase
 
     persisted_off = create(:food, name: "Chicken OFF", source: :off, external_id: "123456789")
 
-    off_client.expect(:search, [off_result]) { |q, **kw| q == "chicken" }
+    off_client.expect(:search, [ off_result ]) { |q, **kw| q == "chicken" }
     off_client.expect(:persist, persisted_off) { |r| r.is_a?(Off::FoodResult) }
-    usda_client.expect(:search, [usda_result]) { |q, **kw| q == "chicken" }
+    usda_client.expect(:search, [ usda_result ]) { |q, **kw| q == "chicken" }
 
     results = FoodSearch.call("chicken", off_client: off_client, usda_client: usda_client)
 
@@ -73,7 +73,7 @@ class FoodSearchTest < ActiveSupport::TestCase
     )
     persisted_food = create(:food, name: "OFF Food", source: :off, external_id: "555555")
 
-    off_client.expect(:search, [off_result]) { true }
+    off_client.expect(:search, [ off_result ]) { true }
     off_client.expect(:persist, persisted_food) { true }
     usda_client.expect(:search, []) { true }
 
@@ -94,7 +94,7 @@ class FoodSearchTest < ActiveSupport::TestCase
     )
 
     off_client.expect(:search, []) { true }
-    usda_client.expect(:search, [usda_result]) { true }
+    usda_client.expect(:search, [ usda_result ]) { true }
 
     initial_count = Food.count
     results = FoodSearch.call("food", off_client: off_client, usda_client: usda_client)
@@ -116,7 +116,7 @@ class FoodSearchTest < ActiveSupport::TestCase
     )
 
     off_client.expect(:search, []) { true }
-    usda_client.expect(:search, [usda_result]) { true }
+    usda_client.expect(:search, [ usda_result ]) { true }
 
     results = FoodSearch.call("chicken", off_client: off_client, usda_client: usda_client)
 
@@ -135,7 +135,7 @@ class FoodSearchTest < ActiveSupport::TestCase
     )
 
     off_client.expect(:search, nil) { raise Off::ApiError, "OFF is down" }
-    usda_client.expect(:search, [usda_result]) { true }
+    usda_client.expect(:search, [ usda_result ]) { true }
 
     results = FoodSearch.call("food", off_client: off_client, usda_client: usda_client)
 
@@ -153,7 +153,7 @@ class FoodSearchTest < ActiveSupport::TestCase
     )
     persisted = create(:food, name: "OFF Fallback", source: :off, external_id: "graceful-1")
 
-    off_client.expect(:search, [off_result]) { true }
+    off_client.expect(:search, [ off_result ]) { true }
     off_client.expect(:persist, persisted) { true }
     usda_client.expect(:search, nil) { raise Usda::ApiError, "USDA is down" }
 
@@ -188,7 +188,7 @@ class FoodSearchTest < ActiveSupport::TestCase
     )
     persisted = create(:food, name: "Apple Juice", source: :off, external_id: "1234")
 
-    off_client.expect(:search, [with_barcode, without_barcode]) { true }
+    off_client.expect(:search, [ with_barcode, without_barcode ]) { true }
     off_client.expect(:persist, persisted) { |r| r.barcode == "1234" }
     usda_client.expect(:search, []) { true }
 

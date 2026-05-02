@@ -25,7 +25,7 @@ class Off::ClientTest < ActiveSupport::TestCase
       serving_size: "1 bar (22 g)"
     )
 
-    stub_product(:search, [mock_product_1, mock_product_2]) do
+    stub_product(:search, [ mock_product_1, mock_product_2 ]) do
       results = @client.search("nutella")
 
       assert_equal 2, results.size

@@ -3,7 +3,7 @@ require_relative "error"
 module Usda
   class Client
     BASE_URL = "https://api.nal.usda.gov/fdc/v1".freeze
-    DATA_TYPES = ["Foundation", "SR Legacy"].freeze
+    DATA_TYPES = [ "Foundation", "SR Legacy" ].freeze
 
     def initialize(api_key: Rails.application.credentials.usda_api_key)
       @api_key = api_key

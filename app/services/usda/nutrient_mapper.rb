@@ -5,7 +5,7 @@ module Usda
     # newer Foundation records may only return 2047/2048 ("Energy (Atwater
     # General/Specific Factors)"). Without these fallbacks, foods like
     # "Apples, fuji, with skin, raw" show 0 kcal in the bottom sheet.
-    ENERGY_IDS = [1008, 2047, 2048].freeze
+    ENERGY_IDS = [ 1008, 2047, 2048 ].freeze
 
     NUTRIENT_IDS = {
       1003 => :protein,
@@ -14,7 +14,7 @@ module Usda
       1079 => :fiber
     }.freeze
 
-    DEFAULTS = (NUTRIENT_IDS.values + [:calories]).index_with { 0.0 }.freeze
+    DEFAULTS = (NUTRIENT_IDS.values + [ :calories ]).index_with { 0.0 }.freeze
 
     def self.extract(food_nutrients)
       nutrients = DEFAULTS.dup

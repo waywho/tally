@@ -1,6 +1,6 @@
 class FoodsController < ApplicationController
   before_action :require_authentication
-  before_action :set_food, only: [:edit, :update, :destroy]
+  before_action :set_food, only: [ :edit, :update, :destroy ]
 
   def index
     @query = params[:q].to_s.strip
@@ -29,7 +29,7 @@ class FoodsController < ApplicationController
         .select("DISTINCT ON (food_id) food_id, weight")
         .order("food_id, created_at DESC")
         .to_a
-        .to_h { |e| [e.food_id, e.weight] }
+        .to_h { |e| [ e.food_id, e.weight ] }
     else
       {}
     end

@@ -49,7 +49,7 @@ class Usda::ClientTest < ActiveSupport::TestCase
 
   test "search filters to Foundation and SR Legacy" do
     stub_request(:post, "https://api.nal.usda.gov/fdc/v1/foods/search?api_key=test-key")
-      .with(body: hash_including("dataType" => ["Foundation", "SR Legacy"]))
+      .with(body: hash_including("dataType" => [ "Foundation", "SR Legacy" ]))
       .to_return(status: 200, body: @search_fixture, headers: { "Content-Type" => "application/json" })
 
     @client.search("chicken")

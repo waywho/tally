@@ -1,7 +1,7 @@
 class FoodLogEntriesController < ApplicationController
   before_action :require_authentication
   before_action :set_date
-  before_action :set_entry, only: [:edit, :update, :destroy]
+  before_action :set_entry, only: [ :edit, :update, :destroy ]
 
   def create
     food_params = params.require(:food_log_entry)
