@@ -62,11 +62,15 @@ class FoodsController < ApplicationController
     end
 
     if food
-      @barcode_food = food
-      params[:meal] = params[:meal]
-      params[:date] = params[:date]
-      index
-      render :index
+      if params[:meal].present?
+        # With meal context: render index with auto-open bottom sheet
+        @barcode_food = food
+        index
+        render :index
+      else
+        # Without meal context (My Foods): show as search result
+        redirect_to foods_path(q: food.name)
+      end
     else
       redirect_to foods_path(barcode_not_found: 1, barcode: code, meal: params[:meal], date: params[:date])
     end
