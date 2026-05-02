@@ -72,8 +72,9 @@ COPY --chown=rails:rails --from=build /rails /rails
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
-# Thruster (HTTP proxy) listens on HTTP_PORT, auto-assigns TARGET_PORT to Rails.
-# Do NOT set PORT — it conflicts with Thruster's HTTP_PORT.
+# Thruster listens on HTTP_PORT (3000, for Fly proxy).
+# Thruster sets PORT=TARGET_PORT for Puma. TARGET_PORT must differ from HTTP_PORT.
 EXPOSE 3000
 ENV HTTP_PORT=3000
+ENV TARGET_PORT=3001
 CMD ["./bin/thrust", "./bin/rails", "server"]
