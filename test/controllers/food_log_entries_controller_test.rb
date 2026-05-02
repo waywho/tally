@@ -42,8 +42,6 @@ class FoodLogEntriesControllerTest < ActionDispatch::IntegrationTest
   test "POST creates entry from USDA transient result" do
     login(@account)
 
-    ENV["USDA_API_KEY"] = "test-key"
-
     assert_difference [ "FoodLogEntry.count", "Food.count" ], 1 do
       post day_food_log_entries_path(day_date: @date), params: {
         food_log_entry: { meal: "breakfast", weight: 100 },
@@ -68,8 +66,6 @@ class FoodLogEntriesControllerTest < ActionDispatch::IntegrationTest
     assert_equal food.id, entry.food_id
     assert_equal @user.id, entry.user_id
     assert_redirected_to day_path(date: @date)
-  ensure
-    ENV.delete("USDA_API_KEY")
   end
 
   test "POST with neither food_id nor usda_fdc_id returns error" do
