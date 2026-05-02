@@ -25,6 +25,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         Hotwire.loadPathConfiguration(from: sources)
 
+        // Register bridge components
+        Hotwire.registerBridgeComponents([
+            BarcodeScannerComponent.self
+        ])
+
         return true
     }
 
