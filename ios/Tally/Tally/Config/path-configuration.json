@@ -11,7 +11,8 @@
     {
       "patterns": ["/new$", "/edit$"],
       "properties": {
-        "presentation": "modal"
+        "presentation": "modal",
+        "pull_to_refresh_enabled": false
       }
     },
     {

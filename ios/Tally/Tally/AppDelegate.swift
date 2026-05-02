@@ -25,6 +25,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         Hotwire.loadPathConfiguration(from: sources)
 
+        // Custom error screen for offline / server errors
+        Hotwire.config.makeCustomErrorView = { error, retryHandler in
+            ErrorView(retryHandler: retryHandler)
+        }
+
         // Register bridge components
         Hotwire.registerBridgeComponents([
             BarcodeScannerComponent.self
