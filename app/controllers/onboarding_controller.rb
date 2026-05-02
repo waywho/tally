@@ -11,7 +11,7 @@ class OnboardingController < ApplicationController
 
   def show
     @user = current_user
-    @step = params[:step]
+    @step = STEPS.include?(params[:step]) ? params[:step] : STEPS.first
     render @step
   end
 
