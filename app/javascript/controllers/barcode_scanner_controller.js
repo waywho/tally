@@ -14,8 +14,8 @@ export default class extends BridgeComponent {
   }
 
   scan() {
-    this.send("scan", {}, (data) => {
-      const barcode = data?.barcode
+    this.send("scan", {}, (message) => {
+      const barcode = message?.data?.barcode
       if (!barcode) return
 
       if (this.modeValue === "input") {

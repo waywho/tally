@@ -7,12 +7,14 @@ class FoodsBarcodeLoopkupTest < ActionDispatch::IntegrationTest
     login(@account)
   end
 
-  test "redirects to search when barcode found locally" do
+  test "renders index with barcode food when found locally" do
     food = create(:food, barcode: "1234567890123", name: "Test Local Food")
 
     get barcode_lookup_foods_path(code: "1234567890123", meal: "lunch", date: "2026-05-01")
 
-    assert_redirected_to foods_path(q: "Test Local Food", meal: "lunch", date: "2026-05-01")
+    assert_response :success
+    assert_select "#barcode-auto-open", false # no hidden button
+    assert response.body.include?("Test Local Food") # food name appears in the auto-open script
   end
 
   test "redirects with not_found when barcode not in DB and OFF unavailable" do

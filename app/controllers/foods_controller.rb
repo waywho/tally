@@ -62,7 +62,11 @@ class FoodsController < ApplicationController
     end
 
     if food
-      redirect_to foods_path(q: food.name, meal: params[:meal], date: params[:date])
+      @barcode_food = food
+      params[:meal] = params[:meal]
+      params[:date] = params[:date]
+      index
+      render :index
     else
       redirect_to foods_path(barcode_not_found: 1, barcode: code, meal: params[:meal], date: params[:date])
     end

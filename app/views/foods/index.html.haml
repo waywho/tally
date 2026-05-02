@@ -64,3 +64,32 @@
 
   - if @meal.present? && @date.present?
     = render "bottom_sheet"
+
+  - if @barcode_food.present? && @meal.present?
+    :javascript
+      requestAnimationFrame(function() {
+        const sheet = document.querySelector("[data-controller='sheet']")
+        if (!sheet) return
+
+        const overlay = sheet.querySelector("[data-sheet-target='overlay']")
+        const foodName = sheet.querySelector("[data-sheet-target='foodName']")
+        const foodCal = sheet.querySelector("[data-sheet-target='foodCalories']")
+        const foodIdField = sheet.querySelector("[data-sheet-target='foodIdField']")
+        const previewEl = sheet.querySelector("[data-controller='quantity-preview']")
+
+        if (foodName) foodName.textContent = "#{j @barcode_food.name}"
+        if (foodCal) foodCal.textContent = "#{@barcode_food.calories.to_f.round} kcal per 100g"
+        if (foodIdField) { foodIdField.value = "#{@barcode_food.id}"; foodIdField.disabled = false }
+
+        if (previewEl) {
+          previewEl.dataset.quantityPreviewCaloriesPer100Value = "#{@barcode_food.calories.to_f}"
+          previewEl.dataset.quantityPreviewProteinPer100Value = "#{@barcode_food.protein.to_f}"
+          previewEl.dataset.quantityPreviewCarbsPer100Value = "#{@barcode_food.carbs.to_f}"
+          previewEl.dataset.quantityPreviewFatPer100Value = "#{@barcode_food.fat.to_f}"
+          previewEl.dataset.quantityPreviewFiberPer100Value = "#{@barcode_food.fiber.to_f}"
+          var input = previewEl.querySelector("input[type='number']")
+          if (input) { input.value = "100"; input.dispatchEvent(new Event("input")) }
+        }
+
+        if (overlay) { overlay.classList.remove("hidden"); document.body.classList.add("overflow-hidden") }
+      })
