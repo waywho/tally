@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   workflow_run:
-    workflows: ["Ruby on Rails CI"]
+    workflows: ["Tally CI"]
     branches: [main]
     types:
       - completed
