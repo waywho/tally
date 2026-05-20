@@ -21,6 +21,8 @@ gem "jbuilder"
 # Haml templating [https://haml.info/]
 gem "haml-rails"
 gem "html2haml"
+# SolidQueue Mission Control UI
+gem "mission_control-jobs"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"

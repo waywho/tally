@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   get "onboarding/:step", to: "onboarding#show", as: :onboarding_step
   patch "onboarding/:step", to: "onboarding#update", as: :update_onboarding_step
 
+  mount MissionControl::Jobs::Engine, at: "/jobs"
   mount Lookbook::Engine, at: "/lookbook" if Rails.env.development?
 
   namespace :api do

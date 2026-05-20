@@ -37,7 +37,7 @@ Rails.application.configure do
 
   # Open emails in the browser with letter_opener.
   config.action_mailer.delivery_method = :letter_opener
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   # Make template changes take effect immediately.
   config.action_mailer.perform_caching = false
