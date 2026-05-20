@@ -69,8 +69,7 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # ==> Emails
     send_email do |email|
-      # queue email delivery on the mailer after the transaction commits
-      db.after_commit { email.deliver_later }
+      email.deliver_later
     end
 
     # ==> Mailers
