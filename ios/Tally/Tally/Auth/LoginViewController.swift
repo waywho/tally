@@ -28,7 +28,7 @@ final class LoginViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 247/255, green: 247/255, blue: 245/255, alpha: 1)
+        view.backgroundColor = .tallyPageBackground
         setupUI()
     }
 
@@ -40,7 +40,7 @@ final class LoginViewController: UIViewController {
 
         logoLabel.text = "Tally"
         logoLabel.font = .systemFont(ofSize: 32, weight: .bold)
-        logoLabel.textColor = UIColor(red: 34/255, green: 197/255, blue: 94/255, alpha: 1)
+        logoLabel.textColor = .tallyPrimary
         logoLabel.textAlignment = .center
 
         emailField.placeholder = "Email"
@@ -60,7 +60,7 @@ final class LoginViewController: UIViewController {
         loginButton.setTitle("Login", for: .normal)
         loginButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
         loginButton.setTitleColor(.white, for: .normal)
-        loginButton.backgroundColor = UIColor(red: 34/255, green: 197/255, blue: 94/255, alpha: 1)
+        loginButton.backgroundColor = .tallyPrimary
         loginButton.layer.cornerRadius = 10
         loginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)

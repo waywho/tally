@@ -83,7 +83,7 @@ final class TabBarController: UITabBarController {
         let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .semibold)
         addButton.setImage(UIImage(systemName: "plus", withConfiguration: config), for: .normal)
         addButton.tintColor = .white
-        addButton.backgroundColor = UIColor(red: 34/255, green: 197/255, blue: 94/255, alpha: 1)
+        addButton.backgroundColor = .tallyPrimary
         addButton.layer.cornerRadius = size / 2
         addButton.clipsToBounds = true
         addButton.frame = CGRect(x: 0, y: 0, width: size, height: size)

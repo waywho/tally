@@ -41,7 +41,7 @@ final class TallyNavigator: NavigatorDelegate {
 
     // MARK: - NavigatorDelegate
 
-    func handle(proposal: VisitProposal) -> ProposalResult {
+    func handle(proposal: VisitProposal, from navigator: Navigator) -> ProposalResult {
         // If the server redirected to /login, the session expired or user logged out
         if proposal.url.path == "/login" && SessionStore.loadCookies() != nil {
             NotificationCenter.default.post(name: .tallyDidLogout, object: nil)
