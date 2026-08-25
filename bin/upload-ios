@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# Export an archive and upload it to App Store Connect.
+#
+# Usage: bin/upload-ios [build_number]   (defaults to the current commit count)
+#
+# Signing in with Xcode once (Settings → Accounts) is enough — xcodebuild reuses
+# those credentials, so no API key lives in the repo.
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+build_number="${1:-$(git rev-list --count HEAD)}"
+archive_path="build/Tally-${build_number}.xcarchive"
+
+if [[ ! -d "$archive_path" ]]; then
+  echo "No archive at ${archive_path}. Run bin/archive-ios first." >&2
+  exit 1
+fi
+
+options_plist=$(mktemp -t tally-export).plist
+cat > "$options_plist" <<'PLIST'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>method</key>
+  <string>app-store-connect</string>
+  <key>destination</key>
+  <string>upload</string>
+  <key>uploadSymbols</key>
+  <true/>
+  <key>manageAppVersionAndBuildNumber</key>
+  <false/>
+</dict>
+</plist>
+PLIST
+
+echo "Uploading build ${build_number} from ${archive_path}"
+
+xcodebuild -exportArchive \
+  -archivePath "$archive_path" \
+  -exportOptionsPlist "$options_plist" \
+  -exportPath "build/export-${build_number}" \
+  -allowProvisioningUpdates
+
+rm -f "$options_plist"
+
+echo
+echo "Uploaded. It appears in App Store Connect → TestFlight after processing (usually 5-15 min)."
