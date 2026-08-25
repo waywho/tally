@@ -250,13 +250,14 @@ extension LoginViewController: UITextFieldDelegate {
 // MARK: - WebFallbackViewController
 
 /// Minimal webview for "Create account" and "Forgot password" flows.
-final class WebFallbackViewController: UIViewController, WKNavigationDelegate {
+final class WebFallbackViewController: UIViewController {
     /// Paths that only a signed-in account can reach, so landing on one means
     /// the account was created and is now logged in.
     private static let signedInPaths = ["/today", "/onboarding"]
 
     private let url: URL
     private let onSignedIn: () -> Void
+    private var urlObservation: NSKeyValueObservation?
 
     init(url: URL, onSignedIn: @escaping () -> Void) {
         self.url = url
@@ -276,8 +277,15 @@ final class WebFallbackViewController: UIViewController, WKNavigationDelegate {
 
         let webView = WKWebView(frame: view.bounds)
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        webView.navigationDelegate = self
         view.addSubview(webView)
+
+        // Turbo navigates with pushState rather than real page loads, so
+        // WKNavigationDelegate never fires past the first request.
+        urlObservation = webView.observe(\.url, options: [.new]) { [weak self] _, change in
+            guard let url = change.newValue ?? nil else { return }
+            self?.checkSignedIn(path: url.path)
+        }
+
         webView.load(URLRequest(url: url))
     }
 
@@ -285,11 +293,10 @@ final class WebFallbackViewController: UIViewController, WKNavigationDelegate {
         dismiss(animated: true)
     }
 
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        guard let path = webView.url?.path,
-              Self.signedInPaths.contains(where: { path == $0 || path.hasPrefix("\($0)/") })
-        else { return }
+    private func checkSignedIn(path: String) {
+        guard Self.signedInPaths.contains(where: { path == $0 || path.hasPrefix("\($0)/") }) else { return }
 
+        urlObservation = nil
         onSignedIn()
     }
 }
