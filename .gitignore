@@ -62,3 +62,6 @@ ios/Tally/Signing.xcconfig
 
 # iOS archives
 /build/
+
+# Generated App Store screenshots
+/tmp/screenshots/

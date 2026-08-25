@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   get "privacy", to: "pages#privacy"
   get "terms", to: "pages#terms"
+  get "support", to: "pages#support"
 
   get "today", to: "days#show", as: :today
   resources :days, only: [ :show ], param: :date do

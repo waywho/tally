@@ -1,0 +1,49 @@
+- @page_title = "Support"
+
+= render PageHeaderComponent.new(title: "Support", back_href: native_app? ? nil : today_path, back_label: "Back to today")
+
+= render CardComponent.new(class: "p-6 mb-4") do
+  .legal-copy
+    %h2 Getting help
+    %p
+      Email
+      %a.text-primary.underline{href: "mailto:hello@tally.quest"} hello@tally.quest
+      and you'll get a reply from the person who built Tally. Include what you
+      were doing and what happened; a screenshot helps.
+
+    %h2 A food's calories look wrong
+    %p
+      Most foods come from Open Food Facts, a community-maintained database, so
+      entries can be incomplete or out of date — and manufacturers change
+      recipes without changing the barcode. Create your own food with the
+      correct numbers and Tally will prefer yours in future searches.
+
+    %h2 A barcode isn't recognised
+    %p
+      That product isn't in Open Food Facts yet. Add it as your own food, and
+      consider contributing it to
+      %a.text-primary.underline{href: "https://world.openfoodfacts.org"} Open Food Facts
+      so the next person finds it.
+
+    %h2 The scanner won't open
+    %p
+      Tally needs camera access. Check Settings → Tally → Camera on your device.
+      Barcodes can also be typed in by hand if the camera can't read one.
+
+    %h2 I forgot my password
+    %p
+      Use "Forgot password?" on the login screen. The reset email arrives within
+      a few minutes — check your spam folder before emailing about it.
+
+    %h2 Deleting your account
+    %p
+      Settings → Delete account. It takes effect immediately and erases
+      everything you have logged. Want a copy of your data first? Email the
+      address above and ask.
+
+    %h2 Tally is not medical advice
+    %p
+      Tally adds up numbers you enter; it is not a clinician and gives no
+      medical, nutritional or dietary advice. Speak to a qualified professional
+      before changing what you eat — especially if you are pregnant, managing a
+      medical condition, or have a history of disordered eating.

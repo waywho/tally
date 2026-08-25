@@ -15,6 +15,12 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_select "h1", text: "Terms of Use"
   end
 
+  test "GET /support renders for an anonymous visitor" do
+    get support_path
+    assert_response :success
+    assert_select "h1", text: "Support"
+  end
+
   test "GET /manifest serves valid JSON with icons the app actually has" do
     get pwa_manifest_path
     assert_response :success

@@ -1,0 +1,139 @@
+#!/usr/bin/env bash
+# Capture App Store screenshots from the iOS simulator.
+#
+#   bin/rails demo:seed          # populate the demo account first
+#   bin/screenshots-ios          # both required sizes
+#   bin/screenshots-ios iphone   # just one
+#
+# Log in to the app by hand once per simulator before running this — the script
+# only navigates and captures, it never types.
+#
+# Apple requires 6.9" iPhone (1320x2868) and 13" iPad (2064x2752) images, so
+# those two simulators are the ones we drive. The Debug build points at
+# localhost, which is where the demo data lives, so the dev server must be up.
+#
+# Taps go through System Events because simctl has no input API. Coordinates are
+# fractions of the device screen, mapped into the Simulator window and
+# self-calibrated from the device aspect ratio, so they survive window resizing.
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+OUT_ROOT="${OUT_ROOT:-tmp/screenshots}"
+BUNDLE_ID="quest.tally"
+
+iphone_name="iPhone 17 Pro Max"
+iphone_points="440 956"
+ipad_name="iPad Pro 13-inch (M5)"
+ipad_points="1032 1376"
+
+udid_for() {
+  xcrun simctl list devices available \
+    | grep -F "$1 (" \
+    | head -1 \
+    | sed -E 's/.*\(([0-9A-F-]{36})\).*/\1/'
+}
+
+ensure_window() {
+  if [[ -z "$(osascript -e 'tell application "System Events" to tell process "Simulator" to get name of every window' 2>/dev/null)" ]]; then
+    echo "   device window missing, restarting Simulator"
+    osascript -e 'tell application "Simulator" to quit' >/dev/null 2>&1 || true
+    sleep 4
+    open -a Simulator
+    sleep 10
+  fi
+}
+
+# click_frac <x fraction> <y fraction> <points wide> <points tall>
+click_frac() {
+  ensure_window
+  osascript <<EOF >/dev/null
+tell application "System Events" to tell process "Simulator"
+  set {wx, wy} to position of window 1
+  set {ww, wh} to size of window 1
+  set screenH to ww * ($4 / $3)
+  set barH to wh - screenH
+  click at {wx + (ww * $1), wy + barH + (screenH * $2)}
+end tell
+EOF
+  sleep 2
+}
+
+capture_device() {
+  local name="$1" points="$2" label="$3"
+  local udid points_w points_h out
+  udid="$(udid_for "$name")"
+  read -r points_w points_h <<<"$points"
+  out="$OUT_ROOT/$label"
+
+  if [[ -z "$udid" ]]; then
+    echo "!! no simulator named '$name' — skipping $label" >&2
+    return
+  fi
+
+  mkdir -p "$out"
+  echo "== $label ($name)"
+
+  # Build before the window matters: xcodebuild re-prepares the simulator
+  # destination, which closes the device window we are about to click on.
+  xcodebuild -project ios/Tally/Tally.xcodeproj -scheme Tally \
+    -destination "id=$udid" -configuration Debug build >/dev/null 2>&1
+  local build_dir app
+  build_dir="$(xcodebuild -project ios/Tally/Tally.xcodeproj -scheme Tally \
+    -destination "id=$udid" -configuration Debug -showBuildSettings 2>/dev/null \
+    | awk -F' = ' '/ TARGET_BUILD_DIR = /{print $2; exit}')"
+  app="$build_dir/Tally.app"
+  if [[ ! -d "$app" ]]; then
+    echo "!! built app not found at $app" >&2
+    return 1
+  fi
+
+  xcrun simctl boot "$udid" 2>/dev/null || true
+  open -a Simulator
+  sleep 4
+
+  # Simulator won't reopen a closed device window on activate — only a relaunch
+  # brings it back.
+  if [[ -z "$(osascript -e 'tell application "System Events" to tell process "Simulator" to get name of every window' 2>/dev/null)" ]]; then
+    echo "   device window missing, restarting Simulator"
+    osascript -e 'tell application "Simulator" to quit' >/dev/null 2>&1 || true
+    sleep 4
+    open -a Simulator
+    sleep 10
+  fi
+
+  xcrun simctl install "$udid" "$app"
+  xcrun simctl terminate "$udid" "$BUNDLE_ID" 2>/dev/null || true
+  xcrun simctl launch "$udid" "$BUNDLE_ID" >/dev/null
+  sleep 5
+
+  # This script never types. Sending keystrokes through System Events delivers
+  # them to whatever is frontmost, and if the Simulator window closes mid-run —
+  # which it does — the rest of the text lands in the terminal that started the
+  # script. Log in by hand once per simulator; the session persists in the
+  # Keychain across reinstalls.
+
+  shoot() {
+    xcrun simctl io "$udid" screenshot "$out/$1.png" >/dev/null 2>&1
+    echo "   $1.png"
+  }
+
+  # Tab bar slots, left to right: Today, My Foods, (+), Recipes, Settings.
+  click_frac 0.10 0.955 "$points_w" "$points_h"; shoot 1-today
+  click_frac 0.70 0.955 "$points_w" "$points_h"; shoot 2-recipes
+  click_frac 0.30 0.955 "$points_w" "$points_h"; shoot 3-my-foods
+  click_frac 0.90 0.955 "$points_w" "$points_h"; shoot 4-settings
+  click_frac 0.10 0.955 "$points_w" "$points_h"; shoot 5-today
+
+  echo "   -> $out"
+}
+
+case "${1:-all}" in
+  iphone) capture_device "$iphone_name" "$iphone_points" iphone-6.9 ;;
+  ipad)   capture_device "$ipad_name" "$ipad_points" ipad-13 ;;
+  all)
+    capture_device "$iphone_name" "$iphone_points" iphone-6.9
+    capture_device "$ipad_name" "$ipad_points" ipad-13
+    ;;
+  *) echo "usage: bin/screenshots-ios [iphone|ipad|all]" >&2; exit 1 ;;
+esac

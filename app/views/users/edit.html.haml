@@ -100,6 +100,8 @@
 = render CardComponent.new(class: "p-2 mb-4") do
   %ul.divide-y.divide-border
     %li
+      = link_to "Support", support_path, class: "block px-4 py-3 text-text hover:bg-primary-tint rounded-md"
+    %li
       = link_to "Privacy Policy", privacy_path, class: "block px-4 py-3 text-text hover:bg-primary-tint rounded-md"
     %li
       = link_to "Terms of Use", terms_path, class: "block px-4 py-3 text-text hover:bg-primary-tint rounded-md"

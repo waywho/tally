@@ -42,6 +42,8 @@ final class TabBarController: UITabBarController {
     // MARK: - Tab setup
 
     private func setupTabs() {
+        tabBar.tintColor = .tallyPrimary
+
         navigators = tabDefinitions.map { tab in
             let url = Endpoints.baseURL.appendingPathComponent(tab.path)
             let nav = TallyNavigator(name: tab.title.lowercased(), rootURL: url)

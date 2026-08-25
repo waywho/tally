@@ -32,6 +32,11 @@ final class LoginViewController: UIViewController {
         setupUI()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        emailField.becomeFirstResponder()
+    }
+
     // MARK: - UI Setup
 
     private func setupUI() {
@@ -73,10 +78,12 @@ final class LoginViewController: UIViewController {
 
         createAccountButton.setTitle("Don't have an account? Create one", for: .normal)
         createAccountButton.titleLabel?.font = .systemFont(ofSize: 14)
+        createAccountButton.setTitleColor(.tallyPrimary, for: .normal)
         createAccountButton.addTarget(self, action: #selector(createAccountTapped), for: .touchUpInside)
 
         forgotPasswordButton.setTitle("Forgot password?", for: .normal)
         forgotPasswordButton.titleLabel?.font = .systemFont(ofSize: 14)
+        forgotPasswordButton.setTitleColor(.tallyPrimary, for: .normal)
         forgotPasswordButton.addTarget(self, action: #selector(forgotPasswordTapped), for: .touchUpInside)
 
         stackView.axis = .vertical
@@ -99,10 +106,17 @@ final class LoginViewController: UIViewController {
 
         view.addSubview(stackView)
 
+        // Cap the width so the form stays a readable column on iPad instead of
+        // stretching the full screen; the 32pt insets still win on iPhone.
+        let width = stackView.widthAnchor.constraint(equalToConstant: 380)
+        width.priority = .defaultHigh
+
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -40),
+            width,
+            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 32),
+            stackView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -32),
         ])
     }
 
