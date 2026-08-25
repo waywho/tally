@@ -7,6 +7,8 @@
     %meta{:content => "yes", :name => "apple-mobile-web-app-capable"}/
     %meta{:content => "Tally", :name => "application-name"}/
     %meta{:content => "yes", :name => "mobile-web-app-capable"}/
+    %meta{:content => "#16A34A", :name => "theme-color"}/
+    = tag.link rel: "manifest", href: pwa_manifest_path
     = csrf_meta_tags
     = csp_meta_tag
     = yield :head

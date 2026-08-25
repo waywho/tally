@@ -14,4 +14,16 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "h1", text: "Terms of Use"
   end
+
+  test "GET /manifest serves valid JSON with icons the app actually has" do
+    get pwa_manifest_path
+    assert_response :success
+
+    manifest = JSON.parse(response.body)
+    assert_equal "Tally", manifest["name"]
+    manifest["icons"].each do |icon|
+      assert File.exist?(Rails.public_path.join(icon["src"].delete_prefix("/"))),
+        "manifest references missing icon #{icon["src"]}"
+    end
+  end
 end
