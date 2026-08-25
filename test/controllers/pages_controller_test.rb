@@ -22,6 +22,14 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_select "img[src*=?]", "screenshot-today"
   end
 
+  # Logout and close-account both redirect to "/", and the iOS shell watches for
+  # /login to know the session is gone. Serving the marketing page to the native
+  # webview would strand it on the tab bar with no session.
+  test "GET / redirects the native app to login rather than the landing page" do
+    get root_path, headers: { "User-Agent" => "Tally/1.0 Turbo Native iOS" }
+    assert_redirected_to "/login"
+  end
+
   test "GET /support renders for an anonymous visitor" do
     get support_path
     assert_response :success
