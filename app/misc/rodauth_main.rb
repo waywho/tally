@@ -62,15 +62,18 @@ class RodauthMain < Rodauth::Rails::Auth
     # reset_password_autologin? true
 
     # Delete the account record when the user has closed their account.
-    # delete_account_on_close? true
+    delete_account_on_close? true
 
     # Redirect to the app from login and registration pages if already logged in.
     # already_logged_in { redirect login_redirect }
 
     # ==> Emails
     send_email do |email|
-      # queue email delivery on the mailer after the transaction commits
-      db.after_commit { email.deliver_later }
+      if db.in_transaction?
+        db.after_commit { email.deliver_later }
+      else
+        email.deliver_later
+      end
     end
 
     # ==> Mailers
