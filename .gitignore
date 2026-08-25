@@ -50,3 +50,12 @@
 
 .DS_Store
 */.DS_Store
+
+# Playwright MCP session output
+/.playwright-mcp/
+
+# Xcode per-user UI state
+*.xcuserstate
+
+# Local Xcode signing identity
+ios/Tally/Signing.xcconfig

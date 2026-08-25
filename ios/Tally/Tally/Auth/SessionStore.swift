@@ -4,7 +4,7 @@ import Security
 /// Persists session cookies in the iOS Keychain so login survives app restarts.
 enum SessionStore {
 
-    private static let service = "com.placeholder.tally"
+    private static let service = "quest.tally"
     private static let account = "session.cookies"
 
     /// Save an array of HTTPCookie to the Keychain.
