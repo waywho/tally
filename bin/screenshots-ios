@@ -27,6 +27,13 @@ iphone_points="440 956"
 ipad_name="iPad Pro 13-inch (M5)"
 ipad_points="1032 1376"
 
+# Tab positions as fractions of the device screen: "y today foods recipes
+# settings". iPhone puts the tab bar along the bottom; iPadOS renders the same
+# tabs as a pill at the top, so tapping the bottom there hits a food row and
+# opens the edit sheet instead.
+iphone_tabs="0.955 0.10 0.30 0.70 0.90"
+ipad_tabs="0.028 0.33 0.42 0.57 0.66"
+
 udid_for() {
   xcrun simctl list devices available \
     | grep -F "$1 (" \
@@ -113,17 +120,34 @@ capture_device() {
   # script. Log in by hand once per simulator; the session persists in the
   # Keychain across reinstalls.
 
-  shoot() {
-    xcrun simctl io "$udid" screenshot "$out/$1.png" >/dev/null 2>&1
-    echo "   $1.png"
+  # Tap a tab and capture, retrying until the screen actually changes. Taps go
+  # through the window server and silently do nothing often enough that a run
+  # can otherwise produce five identical images.
+  local last_hash=""
+  shoot_tab() {
+    local label="$1" x_frac="$2" attempt
+    for attempt in 1 2 3; do
+      click_frac "$x_frac" 0.955 "$points_w" "$points_h"
+      xcrun simctl io "$udid" screenshot "$out/$label.png" >/dev/null 2>&1
+      local hash
+      hash="$(md5 -q "$out/$label.png" 2>/dev/null)"
+      if [[ "$hash" != "$last_hash" ]]; then
+        last_hash="$hash"
+        echo "   $label.png"
+        return 0
+      fi
+      echo "   $label.png unchanged, retrying ($attempt)"
+      sleep 2
+    done
+    echo "!! $label.png never changed — tap is not landing" >&2
+    return 1
   }
 
   # Tab bar slots, left to right: Today, My Foods, (+), Recipes, Settings.
-  click_frac 0.10 0.955 "$points_w" "$points_h"; shoot 1-today
-  click_frac 0.70 0.955 "$points_w" "$points_h"; shoot 2-recipes
-  click_frac 0.30 0.955 "$points_w" "$points_h"; shoot 3-my-foods
-  click_frac 0.90 0.955 "$points_w" "$points_h"; shoot 4-settings
-  click_frac 0.10 0.955 "$points_w" "$points_h"; shoot 5-today
+  shoot_tab 1-today 0.10 || true
+  shoot_tab 2-recipes 0.70 || true
+  shoot_tab 3-my-foods 0.30 || true
+  shoot_tab 4-settings 0.90 || true
 
   echo "   -> $out"
 }

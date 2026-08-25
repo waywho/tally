@@ -2,10 +2,10 @@ class PagesController < ApplicationController
   skip_before_action :ensure_onboarded
 
   def home
-    if rodauth.logged_in?
-      redirect_to today_path
-    else
-      redirect_to rodauth.login_path
-    end
+    return redirect_to today_path if rodauth.logged_in?
+
+    # Signed-out visitors get the marketing page; the native app never lands
+    # here because it opens straight into /today behind its own login screen.
+    render :home, layout: "marketing"
   end
 end

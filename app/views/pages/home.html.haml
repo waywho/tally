@@ -1,3 +1,82 @@
-.text-center.py-12
-  %h2.text-xl.font-semibold.text-text Welcome to Tally
-  %p.text-text-secondary.mt-2 Your calorie tracker. Today view coming soon.
+%header.max-w-5xl.mx-auto.px-6.py-5.flex.items-center.justify-between
+  .flex.items-center.gap-2
+    = image_tag "logo.svg", alt: "", class: "w-8 h-8"
+    %span.text-lg.font-bold.text-primary Tally
+  = link_to "Log in", rodauth.login_path, class: "text-sm font-medium text-text hover:text-primary"
+
+%section.max-w-5xl.mx-auto.px-6.pt-10.pb-16
+  .grid.gap-12{class: "md:grid-cols-2 md:items-center"}
+    %div
+      %h1.text-4xl.font-bold.leading-tight.text-text{class: "md:text-5xl"}
+        Calorie tracking
+        %span.text-primary without the clutter
+      %p.mt-5.text-lg.text-text-secondary.leading-relaxed
+        Log what you eat in a few taps. Scan a barcode, pick a food, done.
+        Your day on one screen — calories and macros against targets you set.
+      .mt-8.flex.flex-wrap.items-center.gap-4
+        = link_to "Create a free account", rodauth.create_account_path, class: "inline-flex items-center justify-center px-5 py-3 rounded-md bg-primary text-white font-semibold hover:bg-primary-light transition-colors"
+        = link_to "I already have one", rodauth.login_path, class: "text-sm font-medium text-primary hover:underline"
+      %p.mt-4.text-sm.text-text-secondary
+        Works in any browser. iPhone and iPad app coming to the App Store.
+    .flex.justify-center
+      = image_tag "screenshot-today.png", alt: "Tally's day view, showing meals with calories and macros", class: "w-full max-w-xs rounded-3xl border border-border shadow-xl"
+
+%section.bg-bg-page.border-y.border-border
+  .max-w-5xl.mx-auto.px-6.py-16
+    %h2.text-2xl.font-bold.text-text.text-center Everything you need, nothing you don't
+    .mt-12.grid.gap-10{class: "md:grid-cols-3"}
+      %div
+        %h3.text-base.font-bold.text-text Scan a barcode
+        %p.mt-2.text-sm.text-text-secondary.leading-relaxed
+          Point the camera at any supermarket product. Over a million foods from
+          Open Food Facts and USDA FoodData Central, free and open.
+      %div
+        %h3.text-base.font-bold.text-text Your own foods
+        %p.mt-2.text-sm.text-text-secondary.leading-relaxed
+          Enter the things you actually eat once, and reuse them forever. Build
+          recipes from ingredients and log them by the serving.
+      %div
+        %h3.text-base.font-bold.text-text Macros that add up
+        %p.mt-2.text-sm.text-text-secondary.leading-relaxed
+          Calories plus protein, carbs, fat and fibre, per meal and per day,
+          against targets you choose yourself.
+
+%section.max-w-5xl.mx-auto.px-6.py-16
+  .grid.gap-12{class: "md:grid-cols-2 md:items-center"}
+    .flex.justify-center{class: "md:order-2"}
+      = image_tag "screenshot-recipes.png", alt: "Recipes list showing calories per 100g and servings", class: "w-full max-w-xs rounded-3xl border border-border shadow-xl"
+    %div{class: "md:order-1"}
+      %h2.text-2xl.font-bold.text-text Cook once, log all week
+      %p.mt-4.text-text-secondary.leading-relaxed
+        Build a recipe from its ingredients and Tally works out the numbers per
+        serving. Save the breakfast you eat every day as a template and log it
+        with one tap.
+      %ul.mt-6.space-y-2.text-sm.text-text-secondary
+        %li • Four meals a day: breakfast, lunch, dinner, snacks
+        %li • Recent and frequent foods, one tap away
+        %li • Edit a portion and every total recalculates
+
+%section.bg-primary-tint.border-y.border-border
+  .max-w-3xl.mx-auto.px-6.py-16.text-center
+    %h2.text-2xl.font-bold.text-text Your data stays yours
+    %p.mt-4.text-text-secondary.leading-relaxed
+      Tally shows no adverts, runs no third-party analytics or tracking, and
+      doesn't sell or share what you log. Delete your account from inside the
+      app and everything you logged goes with it, immediately.
+    .mt-8
+      = link_to "Create a free account", rodauth.create_account_path, class: "inline-flex items-center justify-center px-5 py-3 rounded-md bg-primary text-white font-semibold hover:bg-primary-light transition-colors"
+
+%footer.max-w-5xl.mx-auto.px-6.py-10
+  .flex.flex-wrap.items-center.justify-between.gap-4
+    %p.text-sm.text-text-secondary © 2026 Tally
+    %nav.flex.flex-wrap.gap-5.text-sm
+      = link_to "Privacy", privacy_path, class: "text-text-secondary hover:text-primary"
+      = link_to "Terms", terms_path, class: "text-text-secondary hover:text-primary"
+      = link_to "Support", support_path, class: "text-text-secondary hover:text-primary"
+  %p.mt-6.text-xs.text-text-secondary.leading-relaxed
+    Nutrition data from
+    %a.underline{href: "https://world.openfoodfacts.org", rel: "noopener"} Open Food Facts
+    (ODbL) and
+    %a.underline{href: "https://fdc.nal.usda.gov", rel: "noopener"} USDA FoodData Central
+    \. Figures are estimates, not laboratory measurements. Tally is not medical
+    advice.

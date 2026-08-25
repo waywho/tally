@@ -27,9 +27,10 @@ class AuthFlowTest < ActionDispatch::IntegrationTest
     assert_select "input[name='email']"
   end
 
-  test "unauthenticated root redirects to login" do
+  test "unauthenticated root shows the landing page" do
     get "/"
-    assert_redirected_to "/login"
+    assert_response :success
+    assert_select "a[href=?]", "/login"
   end
 
   test "can create account and log in" do

@@ -19,9 +19,10 @@ class OnboardingRedirectTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "unauthenticated user is not redirected to onboarding" do
+  test "unauthenticated user gets the landing page rather than onboarding" do
     get root_path
-    assert_redirected_to "/login"
+    assert_response :success
+    assert_select "h1", text: /Calorie tracking/
   end
 
   test "full wizard flow completes without redirect loop" do
