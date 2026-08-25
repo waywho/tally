@@ -30,6 +30,10 @@ final class LoginViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .tallyPageBackground
         setupUI()
+
+        let dismissKeyboard = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardTapped))
+        dismissKeyboard.cancelsTouchesInView = false
+        view.addGestureRecognizer(dismissKeyboard)
     }
 
     // MARK: - UI Setup
@@ -116,6 +120,10 @@ final class LoginViewController: UIViewController {
     }
 
     // MARK: - Actions
+
+    @objc private func dismissKeyboardTapped() {
+        view.endEditing(true)
+    }
 
     @objc private func loginTapped() {
         guard let email = emailField.text, !email.isEmpty,
