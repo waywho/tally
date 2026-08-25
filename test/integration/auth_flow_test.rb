@@ -5,7 +5,7 @@ class AuthFlowTest < ActionDispatch::IntegrationTest
     get "/login"
     assert_response :success
     assert_select "h1", "Tally"
-    assert_select "h2", /Login/i
+    assert_select "h2", /Welcome back/i
     assert_select "input[name='email']"
     assert_select "input[name='password']"
   end
