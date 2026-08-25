@@ -42,7 +42,10 @@ final class TabBarController: UITabBarController {
     // MARK: - Tab setup
 
     private func setupTabs() {
+        // tabBar.tintColor covers the bottom bar on iPhone; the iPadOS top tab
+        // bar takes its colour from the view's tint.
         tabBar.tintColor = .tallyPrimary
+        view.tintColor = .tallyPrimary
 
         navigators = tabDefinitions.map { tab in
             let url = Endpoints.baseURL.appendingPathComponent(tab.path)
