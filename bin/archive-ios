@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Archive the iOS app for App Store submission.
+#
+# Every upload to App Store Connect needs a build number no previous upload
+# used, so it comes from the commit count — monotonic, and reproducible from a
+# given checkout. MARKETING_VERSION (the user-visible "1.0") stays in the
+# Xcode project and is bumped by hand when you decide a release deserves it.
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+if [[ -n "$(git status --porcelain)" ]]; then
+  echo "Working tree is dirty. Commit first so the build number matches a real commit." >&2
+  exit 1
+fi
+
+build_number=$(git rev-list --count HEAD)
+archive_path="build/Tally-${build_number}.xcarchive"
+
+echo "Archiving build ${build_number} → ${archive_path}"
+
+xcodebuild archive \
+  -project ios/Tally/Tally.xcodeproj \
+  -scheme Tally \
+  -destination 'generic/platform=iOS' \
+  -archivePath "${archive_path}" \
+  -allowProvisioningUpdates \
+  CURRENT_PROJECT_VERSION="${build_number}"
+
+echo
+echo "Done: ${archive_path}"
+echo "Upload it with:  xcrun xcodebuild -exportArchive ... (or Xcode Organizer → Distribute App)"
