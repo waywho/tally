@@ -92,3 +92,14 @@
       = button_to rodauth.logout_path, method: :post, class: "w-full flex items-center justify-between px-4 py-3 text-danger hover:bg-primary-tint rounded-md", form: { class: "w-full" } do
         %span.font-medium Log out
         != '<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/></svg>'
+    %li
+      = link_to rodauth.close_account_path, class: "flex items-center justify-between px-4 py-3 text-danger hover:bg-primary-tint rounded-md" do
+        %span Delete account
+        != '<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>'
+
+= render CardComponent.new(class: "p-2 mb-4") do
+  %ul.divide-y.divide-border
+    %li
+      = link_to "Privacy Policy", privacy_path, class: "block px-4 py-3 text-text hover:bg-primary-tint rounded-md"
+    %li
+      = link_to "Terms of Use", terms_path, class: "block px-4 py-3 text-text hover:bg-primary-tint rounded-md"

@@ -33,6 +33,20 @@
     @apply text-sm text-over mt-1;
   }
 
+  /* Long-form body copy for the privacy policy and terms pages. Styles bare
+     elements so the pages stay plain markup. */
+  .legal-copy h2 {
+    @apply text-base font-bold text-text mt-6 mb-2;
+  }
+
+  .legal-copy p {
+    @apply text-sm text-text leading-relaxed mb-3;
+  }
+
+  .legal-copy ul {
+    @apply list-disc pl-5 text-sm text-text leading-relaxed mb-3 space-y-1;
+  }
+
   /* Range slider — replace the browser defaults (dark track on macOS) with
      a soft gray track plus an explicit primary-colored thumb. Once the track
      pseudo-element is styled, WebKit no longer auto-centers the default thumb,

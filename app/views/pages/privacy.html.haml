@@ -1,0 +1,81 @@
+- @page_title = "Privacy Policy"
+
+= render PageHeaderComponent.new(title: "Privacy Policy", back_href: native_app? ? nil : today_path, back_label: "Back to today")
+
+= render CardComponent.new(class: "p-6 mb-4") do
+  .legal-copy
+    %p.text-sm.text-text-secondary.mb-6
+      Last updated 25 August 2026
+
+    %h2 What Tally stores
+    %p
+      Tally is a calorie tracker. To work, it stores the following in a database
+      hosted in Amsterdam:
+    %ul
+      %li Your email address, and your password as a one-way hash — never as readable text.
+      %li Your display name, if you set one.
+      %li Your calorie, protein, carbohydrate, fat and fibre targets.
+      %li Your timezone, language, units preference, and country if you set one.
+      %li Everything you log: foods, dates, meals and portion sizes.
+      %li Foods, recipes and meal templates you create yourself.
+
+    %h2 What Tally does not do
+    %ul
+      %li No advertising, and no advertising identifiers.
+      %li No third-party analytics or tracking SDKs.
+      %li No selling or sharing of your data with anyone, for any purpose.
+      %li No location tracking. Tally never asks for your location.
+      %li No health or fitness data read from your device. Tally does not connect to Apple Health.
+
+    %h2 The camera
+    %p
+      The barcode scanner uses your camera to read a barcode and nothing else.
+      Frames are processed on your device and are never uploaded or stored.
+      Only the resulting barcode number is sent to look the product up.
+
+    %h2 Who else sees anything
+    %p
+      Tally uses two public food databases. When you search for a food or scan a
+      barcode, that search text or barcode number is sent to them so they can
+      answer. Neither receives your email address or anything else about you.
+    %ul
+      %li
+        %strong Open Food Facts
+        — an open food database. Used for searches and all barcode lookups.
+      %li
+        %strong USDA FoodData Central
+        — the US government food database. Used for searches.
+    %p
+      Beyond those, two service providers process data on Tally's behalf:
+      %strong Fly.io
+      hosts the application and its database, and
+      %strong Google
+      delivers Tally's account emails (sign-up confirmation, password resets),
+      which means your email address passes through it.
+
+    %h2 Emails you get
+    %p
+      Only account emails: confirming your address, verifying an email change, and
+      resetting your password. Tally sends no marketing email.
+
+    %h2 Deleting your account
+    %p
+      Settings → Delete account removes your account immediately and permanently.
+      That deletion cascades: your profile, every food you logged, and every
+      custom food, recipe and meal template you created are erased along with it.
+      Nothing is retained in a soft-deleted or archived state, and there is no
+      undo. Foods that came from Open Food Facts or USDA stay in Tally's shared
+      food database, since they were never yours to begin with.
+    %p
+      Want a copy of your data before you go, or have a question about any of
+      this? Email
+      = succeed "." do
+        %a.text-primary.underline{href: "mailto:privacy@tally.quest"} privacy@tally.quest
+
+    %h2 Children
+    %p
+      Tally is not intended for children under 13, and is not directed at them.
+
+    %h2 Changes
+    %p
+      If this policy changes, the date at the top changes with it.

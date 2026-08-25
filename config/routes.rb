@@ -3,6 +3,9 @@ Rails.application.routes.draw do
 
   root "pages#home"
 
+  get "privacy", to: "pages#privacy"
+  get "terms", to: "pages#terms"
+
   get "today", to: "days#show", as: :today
   resources :days, only: [ :show ], param: :date do
     resources :food_log_entries, only: [ :create, :edit, :update, :destroy ], path: "entries"

@@ -1,0 +1,68 @@
+- @page_title = "Terms of Use"
+
+= render PageHeaderComponent.new(title: "Terms of Use", back_href: native_app? ? nil : today_path, back_label: "Back to today")
+
+= render CardComponent.new(class: "p-6 mb-4") do
+  .legal-copy
+    %p.text-sm.text-text-secondary.mb-6
+      Last updated 25 August 2026
+
+    %h2 Tally is not medical advice
+    %p
+      Tally records what you tell it you ate and adds up the numbers. It is a
+      notebook, not a clinician. Nothing in it is medical, nutritional or dietary
+      advice, and it is not a substitute for a doctor or a registered dietitian.
+      Talk to a qualified professional before changing what you eat, especially
+      if you are pregnant, are managing a medical condition, or have a history of
+      disordered eating.
+
+    %h2 Nutrition numbers are estimates
+    %p
+      Calorie and macronutrient figures come from Open Food Facts, USDA
+      FoodData Central, and foods entered by you. Open Food Facts is
+      community-maintained, so entries can be incomplete or wrong, and
+      manufacturers change recipes without changing barcodes. Treat every number
+      as an approximation. If one looks wrong, it may well be — correct it by
+      creating your own food entry.
+
+    %h2 Your account
+    %p
+      Keep your password to yourself; you are responsible for what happens under
+      your account. Give a real email address, because password resets go there.
+      One person per account.
+
+    %h2 Your content
+    %p
+      The foods, recipes and meal templates you create stay yours. Tally stores
+      them to show them back to you and claims no ownership. They are visible only
+      to you.
+
+    %h2 Acceptable use
+    %p
+      Don't attack the service, scrape it, or use it to break the law. Tally's
+      food searches ride on free public APIs, so automated bulk querying spoils
+      it for everyone.
+
+    %h2 Availability
+    %p
+      Tally is provided as-is, with no guarantee of uptime and no warranty. It is
+      a small independent app, not an enterprise service. Keep your own record of
+      anything you cannot afford to lose. To the extent the law allows, Tally's
+      developer is not liable for losses arising from your use of the app.
+
+    %h2 Ending things
+    %p
+      Delete your account whenever you like, from Settings → Delete account. It
+      takes effect immediately and cannot be undone. Accounts used to abuse the
+      service may be suspended.
+
+    %h2 Changes
+    %p
+      These terms may change; the date at the top will say when. Continuing to
+      use Tally after a change means accepting it.
+
+    %h2 Contact
+    %p
+      Questions go to
+      = succeed "." do
+        %a.text-primary.underline{href: "mailto:hello@tally.quest"} hello@tally.quest

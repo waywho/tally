@@ -1,0 +1,14 @@
+= render CardComponent.new(class: "p-6") do
+  %h2.text-lg.font-semibold.text-text.text-center.mb-4 Delete account
+  %p.text-sm.text-text.leading-relaxed.mb-2
+    This deletes your account immediately and permanently.
+  %p.text-sm.text-text-secondary.leading-relaxed.mb-4
+    Everything goes with it: your targets, every food you have logged, and every
+    custom food, recipe and meal template you created. This cannot be undone.
+  = form_tag rodauth.close_account_path, method: :post do
+    - if rodauth.close_account_requires_password?
+      .mb-4
+        %label.label{for: "password"}= rodauth.password_label
+        %input.input{type: "password", name: "password", id: "password", autofocus: true, autocomplete: "current-password"}
+    = render ButtonComponent.new(label: "Delete my account", scheme: :danger, tag: :button, type: "submit", class: "w-full")
+  = link_to "Cancel", edit_settings_path, class: "block text-center text-sm text-text-secondary mt-4"
