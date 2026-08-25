@@ -160,8 +160,8 @@ class RodauthMain < Rodauth::Rails::Auth
     # After account creation, show the "check your email" page.
     create_account_redirect { verify_account_resend_path }
 
-    # Redirect to home page after logout.
-    logout_redirect "/"
+    logout_redirect { login_path }
+    close_account_redirect { login_path }
 
     # Redirect to settings after account verification so the user can set up their profile.
     verify_account_redirect { "/" }
