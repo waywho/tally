@@ -11,6 +11,7 @@
   %body.bg-bg-page.text-text.font-sans.antialiased
     .min-h-screen.flex.flex-col.items-center.justify-center.px-4.py-8
       .mb-6.text-center
+        = image_tag "logo.svg", alt: "", class: "w-16 h-16 mx-auto mb-3"
         %h1.text-2xl.font-bold.text-primary Tally
       .w-full.max-w-sm.relative
         = render FlashComponent.new(notice:, alert:)

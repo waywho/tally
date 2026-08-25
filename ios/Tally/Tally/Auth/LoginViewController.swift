@@ -7,6 +7,7 @@ final class LoginViewController: UIViewController {
 
     private let onLogin: () -> Void
 
+    private let logoImageView = UIImageView(image: UIImage(named: "Logo"))
     private let logoLabel = UILabel()
     private let emailField = UITextField()
     private let passwordField = UITextField()
@@ -34,6 +35,9 @@ final class LoginViewController: UIViewController {
     // MARK: - UI Setup
 
     private func setupUI() {
+        logoImageView.contentMode = .scaleAspectFit
+        logoImageView.heightAnchor.constraint(equalToConstant: 72).isActive = true
+
         logoLabel.text = "Tally"
         logoLabel.font = .systemFont(ofSize: 32, weight: .bold)
         logoLabel.textColor = UIColor(red: 34/255, green: 197/255, blue: 94/255, alpha: 1)
@@ -78,6 +82,7 @@ final class LoginViewController: UIViewController {
         stackView.axis = .vertical
         stackView.spacing = 16
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(logoImageView)
         stackView.addArrangedSubview(logoLabel)
         stackView.addArrangedSubview(UIView())
         stackView.addArrangedSubview(emailField)
@@ -87,6 +92,7 @@ final class LoginViewController: UIViewController {
         stackView.addArrangedSubview(createAccountButton)
         stackView.addArrangedSubview(forgotPasswordButton)
 
+        stackView.setCustomSpacing(12, after: logoImageView)
         stackView.setCustomSpacing(32, after: logoLabel)
         stackView.setCustomSpacing(8, after: errorLabel)
         stackView.setCustomSpacing(8, after: createAccountButton)
