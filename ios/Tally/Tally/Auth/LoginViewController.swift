@@ -207,38 +207,21 @@ final class LoginViewController: UIViewController {
 
     private func presentWebPage(url: URL) {
         let webVC = WebFallbackViewController(url: url) { [weak self] in
-            self?.adoptWebSessionIfSignedIn()
+            self?.adoptWebSession()
         }
         let nav = UINavigationController(rootViewController: webVC)
         present(nav, animated: true)
     }
 
-    /// Signing up happens in a webview, so the session it establishes is
-    /// invisible to the shell. Ask the server whether those cookies are logged
-    /// in — a Rails session cookie exists either way, so its presence proves
-    /// nothing — and if they are, adopt them instead of showing login again.
-    private func adoptWebSessionIfSignedIn() {
+    /// Signing up happens in a modal webview, so the session it establishes is
+    /// invisible to the shell. Once that webview reaches a signed-in page, take
+    /// its cookies, close the modal and enter the app.
+    private func adoptWebSession() {
         WKWebsiteDataStore.default().httpCookieStore.getAllCookies { [weak self] cookies in
             guard let self, !cookies.isEmpty else { return }
 
-            var request = URLRequest(url: Endpoints.baseURL.appendingPathComponent("/today"))
-            request.setValue("Tally/1.0 Turbo Native iOS", forHTTPHeaderField: "User-Agent")
-            request.setValue(
-                HTTPCookie.requestHeaderFields(with: cookies)["Cookie"],
-                forHTTPHeaderField: "Cookie"
-            )
-
-            URLSession.shared.dataTask(with: request) { _, response, _ in
-                guard let http = response as? HTTPURLResponse,
-                      http.statusCode == 200,
-                      let path = http.url?.path,
-                      !path.hasPrefix("/login") else { return }
-
-                DispatchQueue.main.async {
-                    SessionStore.save(cookies: cookies)
-                    self.onLogin()
-                }
-            }.resume()
+            SessionStore.save(cookies: cookies)
+            self.dismiss(animated: true) { self.onLogin() }
         }
     }
 }
@@ -259,13 +242,17 @@ extension LoginViewController: UITextFieldDelegate {
 // MARK: - WebFallbackViewController
 
 /// Minimal webview for "Create account" and "Forgot password" flows.
-final class WebFallbackViewController: UIViewController {
-    private let url: URL
-    private let onDismiss: () -> Void
+final class WebFallbackViewController: UIViewController, WKNavigationDelegate {
+    /// Paths that only a signed-in account can reach, so landing on one means
+    /// the account was created and is now logged in.
+    private static let signedInPaths = ["/today", "/onboarding"]
 
-    init(url: URL, onDismiss: @escaping () -> Void) {
+    private let url: URL
+    private let onSignedIn: () -> Void
+
+    init(url: URL, onSignedIn: @escaping () -> Void) {
         self.url = url
-        self.onDismiss = onDismiss
+        self.onSignedIn = onSignedIn
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -281,11 +268,20 @@ final class WebFallbackViewController: UIViewController {
 
         let webView = WKWebView(frame: view.bounds)
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        webView.navigationDelegate = self
         view.addSubview(webView)
         webView.load(URLRequest(url: url))
     }
 
     @objc private func dismissSelf() {
-        dismiss(animated: true) { [onDismiss] in onDismiss() }
+        dismiss(animated: true)
+    }
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        guard let path = webView.url?.path,
+              Self.signedInPaths.contains(where: { path == $0 || path.hasPrefix("\($0)/") })
+        else { return }
+
+        onSignedIn()
     }
 }
