@@ -12,7 +12,8 @@
     = yield :head
     %link{:href => "/icon.png", :rel => "icon", :type => "image/png"}/
     %link{:href => "/icon.svg", :rel => "icon", :type => "image/svg+xml"}/
-    %link{:href => "/icon.png", :rel => "apple-touch-icon"}/
+    -# Opaque and square: iOS masks this itself and composites transparency onto black.
+    %link{:href => "/apple-touch-icon.png", :rel => "apple-touch-icon"}/
     = stylesheet_link_tag :app, "data-turbo-track": "reload"
     = javascript_importmap_tags
   %body.bg-bg-page.text-text.font-sans.antialiased{ data: { controller: "modal" }, class: native_app? ? "native-app" : nil }
